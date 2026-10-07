@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>R.M. Vision Academy OpenAI — 🌍 Ask Me Geography</title>
   
-  <!-- Modern Fonts & Icons -->
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
@@ -134,7 +134,6 @@
       color: white;
     }
 
-    /* Special Ask Me Geography Button in Nav */
     .btn-ask-geography {
       background: linear-gradient(135deg, var(--brand-gold), #b38600);
       color: #07172c !important;
@@ -154,7 +153,7 @@
       box-shadow: 0 4px 14px rgba(218, 165, 32, 0.5);
     }
 
-    /* Main Layout */
+    /* Main Container */
     .app-container {
       display: flex;
       flex: 1;
@@ -274,7 +273,7 @@
       justify-content: space-between;
     }
 
-    /* Main Chat Center */
+    /* Main Chat View */
     .chat-view {
       flex: 1;
       display: flex;
@@ -284,7 +283,6 @@
       overflow: hidden;
     }
 
-    /* Controls Bar: Answer Mode, Language, Theme */
     .chat-controls-bar {
       height: 48px;
       background: var(--bg-surface);
@@ -313,7 +311,6 @@
       cursor: pointer;
     }
 
-    /* Message Area */
     .messages-container {
       flex: 1;
       overflow-y: auto;
@@ -599,7 +596,6 @@
       transform: scale(1.05);
     }
 
-    /* Example Prompts Pill Carousel */
     .example-pills {
       display: flex;
       gap: 8px;
@@ -626,7 +622,7 @@
       color: var(--text-main);
     }
 
-    /* Modals & Dialogs */
+    /* Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -727,7 +723,6 @@
       cursor: pointer;
     }
 
-    /* Chart Canvas Container */
     .chart-box-display {
       background: white;
       padding: 1rem;
@@ -736,7 +731,6 @@
       margin-top: 10px;
     }
 
-    /* Loading Spinner */
     .spinner {
       display: inline-block;
       width: 20px;
@@ -751,7 +745,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Responsive */
     @media (max-width: 900px) {
       .sidebar {
         position: fixed;
@@ -792,10 +785,10 @@
     </div>
 
     <ul class="nav-links">
-      <li><a href="#courses">Courses</a></li>
-      <li><a href="#materials">Study Materials</a></li>
-      <li><a href="#research">Research Lab</a></li>
-      <li><a href="#tests">NET/JRF Mock</a></li>
+      <li><a href="javascript:void(0)" onclick="insertPrompt('What are the main geography courses offered at R.M. Vision Academy?')">Courses</a></li>
+      <li><a href="javascript:void(0)" onclick="openModal('notesModal')">Study Materials</a></li>
+      <li><a href="javascript:void(0)" onclick="openModal('researchModal')">Research Lab</a></li>
+      <li><a href="javascript:void(0)" onclick="insertPrompt('Generate 5 UGC NET Geography sample MCQs with answers.')">NET/JRF Mock</a></li>
       <li>
         <button class="btn-ask-geography" onclick="resetToWelcome()">
           <span>🌍</span> Ask Me Geography
@@ -807,8 +800,8 @@
       <button class="sidebar-btn" style="padding: 5px 10px;" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
         <i class="fas fa-moon" id="themeIcon"></i>
       </button>
-      <button class="sidebar-btn" id="loginBtn" onclick="openModal('authModal')">
-        <i class="fas fa-user-circle"></i> Student Login
+      <button class="sidebar-btn" id="keySettingBtn" onclick="openModal('keyModal')">
+        <i class="fas fa-key"></i> <span id="keyBtnLabel">Set API Key</span>
       </button>
     </div>
   </header>
@@ -825,27 +818,23 @@
 
       <div class="quick-tools-title">Academic Modules</div>
       <div class="tool-list">
-        <div class="tool-item" onclick="openModal('diagramModal')"><i class="fas fa-project-diagram"></i> Diagram Generator</div>
-        <div class="tool-item" onclick="openModal('mapModal')"><i class="fas fa-map-marked-alt"></i> Thematic Map Studio</div>
         <div class="tool-item" onclick="openModal('graphModal')"><i class="fas fa-chart-line"></i> Graph & Stats Engine</div>
         <div class="tool-item" onclick="openModal('pdfModal')"><i class="fas fa-file-pdf"></i> Generate PDF Notes</div>
-        <div class="tool-item" onclick="openModal('pptModal')"><i class="fas fa-file-powerpoint"></i> Generate PPT (16:9)</div>
         <div class="tool-item" onclick="openModal('notesModal')"><i class="fas fa-book-open"></i> Syllabus Notes Engine</div>
-        <div class="tool-item" onclick="openModal('quizModal')"><i class="fas fa-question-circle"></i> Exam Question Bank</div>
         <div class="tool-item" onclick="openModal('researchModal')"><i class="fas fa-microscope"></i> Research Assistant</div>
-        <div class="tool-item" id="adminSidebarBtn" style="display:none;" onclick="openModal('adminModal')"><i class="fas fa-user-shield"></i> Academy Admin Panel</div>
+        <div class="tool-item" onclick="openModal('keyModal')"><i class="fas fa-cog"></i> API Key Settings</div>
       </div>
 
-      <div class="quick-tools-title">Saved Discussions</div>
+      <div class="quick-tools-title">Common Topics</div>
       <div class="history-section" id="chatHistoryList">
-        <div class="history-item" onclick="loadSampleDiscussion('Mechanism of Indian Monsoon')">📌 Mechanism of Indian Monsoon</div>
-        <div class="history-item" onclick="loadSampleDiscussion('Davis vs Penck Cycle of Erosion')">📌 Davis vs Penck Geomorphology</div>
-        <div class="history-item" onclick="loadSampleDiscussion('Calculation of Chi-Square in Settlement')">📌 Settlement Chi-Square Stats</div>
-        <div class="history-item" onclick="loadSampleDiscussion('Sundarbans Mangrove Conservation')">📌 Sundarbans Ecology Profile</div>
+        <div class="history-item" onclick="insertPrompt('Explain the Jet Stream theory of Indian Monsoon and its impact on West Bengal.')">📌 Jet Stream & Indian Monsoon</div>
+        <div class="history-item" onclick="insertPrompt('Compare the Davisian and Penckian models of landform evolution.')">📌 Davis vs Penck Geomorphology</div>
+        <div class="history-item" onclick="insertPrompt('How do I calculate standard deviation and coefficient of variation for rainfall data?')">📌 Spatial Statistics & SD</div>
+        <div class="history-item" onclick="insertPrompt('Describe the mangrove ecosystem and morphological threats of the Sundarbans Delta.')">📌 Sundarbans Ecology Profile</div>
       </div>
 
       <div class="sidebar-footer">
-        <span style="font-size: 0.72rem; color: #8da9c4;">R.M. Vision OpenAI v2.4</span>
+        <span style="font-size: 0.72rem; color: #8da9c4;">R.M. Vision OpenAI v2.5</span>
         <span style="font-size: 0.72rem; color: var(--brand-gold);">WBBSE • UG • NET</span>
       </div>
     </aside>
@@ -861,9 +850,9 @@
             <option value="UG/PG Level">UG / PG Level</option>
             <option value="Quick Answer">Quick High-Yield</option>
             <option value="Detailed Answer">Detailed Descriptive</option>
-            <option value="Exam Answer">University Exam Answer (WBBSE/CU/JU)</option>
+            <option value="Exam Answer">University Exam Answer</option>
             <option value="NET/JRF Level">UGC NET / JRF Syllabus</option>
-            <option value="Research Level">Research / Post-Doctoral</option>
+            <option value="Research Level">Research / Advanced</option>
           </select>
         </div>
 
@@ -888,33 +877,33 @@
           <h1 class="welcome-title">🌍 Welcome to R.M. Vision Academy OpenAI</h1>
           <div class="welcome-subtitle">Your AI Geography Teacher & Research Assistant</div>
           <p class="welcome-desc">
-            Ask me anything about Physical, Human, Regional, or Technical Geography. I can explain complex geomorphic processes, analyze topomaps and satellite imagery, draft exam notes, generate charts, compute geographic statistics, and export academic PDFs and PowerPoint slides.
+            Ask me anything about Physical, Human, Regional, or Technical Geography. I can explain geomorphic processes, analyze topomaps, draft examination notes, plot statistical graphs, and create printable study summaries.
           </p>
 
           <div class="quick-tiles-grid">
-            <div class="quick-tile" onclick="insertPrompt('Explain the Jet Stream theory of Indian Monsoon and its impact on West Bengal.')">
+            <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ, Jet Streams and Tibetan Plateau heating.')">
               <i class="fas fa-wind"></i>
               <span>Indian Monsoon</span>
             </div>
-            <div class="quick-tile" onclick="openModal('diagramModal')">
-              <i class="fas fa-water"></i>
-              <span>River Meander Diagram</span>
+            <div class="quick-tile" onclick="insertPrompt('Provide a structured academic note on Plate Tectonics and landform features at convergent boundaries.')">
+              <i class="fas fa-layer-group"></i>
+              <span>Plate Tectonics</span>
             </div>
-            <div class="quick-tile" onclick="insertPrompt('How do I calculate standard deviation and coefficient of variation for rainfall data?')">
-              <i class="fas fa-calculator"></i>
-              <span>Stats & Quantitative</span>
+            <div class="quick-tile" onclick="openModal('graphModal')">
+              <i class="fas fa-chart-bar"></i>
+              <span>Plot Graph</span>
             </div>
-            <div class="quick-tile" onclick="openModal('mapModal')">
-              <i class="fas fa-globe-asia"></i>
-              <span>Thematic Maps</span>
+            <div class="quick-tile" onclick="insertPrompt('Explain False Color Composites (FCC) and formula for NDVI calculation in Remote Sensing.')">
+              <i class="fas fa-satellite"></i>
+              <span>Remote Sensing & GIS</span>
             </div>
-            <div class="quick-tile" onclick="openModal('pptModal')">
-              <i class="fas fa-file-powerpoint"></i>
-              <span>Create Geography PPT</span>
+            <div class="quick-tile" onclick="openModal('notesModal')">
+              <i class="fas fa-book"></i>
+              <span>Generate Notes</span>
             </div>
             <div class="quick-tile" onclick="openModal('researchModal')">
-              <i class="fas fa-flask"></i>
-              <span>Research Proposal</span>
+              <i class="fas fa-microscope"></i>
+              <span>Research Lab</span>
             </div>
           </div>
         </div>
@@ -924,15 +913,11 @@
       <div class="input-dock">
         <div class="dock-container">
           
-          <!-- Attachment Previews -->
           <div class="file-preview-strip" id="filePreviewStrip" style="display:none;"></div>
 
           <div class="input-box-wrapper">
-            <button class="btn-dock-icon" title="Upload Image (Topomap / Diagram)" onclick="triggerFileInput('imageInput')">
+            <button class="btn-dock-icon" title="Upload Image / Diagram" onclick="triggerFileInput('imageInput')">
               <i class="fas fa-camera"></i>
-            </button>
-            <button class="btn-dock-icon" title="Upload Document (PDF / DOCX / CSV)" onclick="triggerFileInput('docInput')">
-              <i class="fas fa-paperclip"></i>
             </button>
 
             <textarea id="chatInput" rows="1" placeholder="Ask your Geography question (e.g., Explain Plate Tectonics, calculate correlation, analyse topomap)..." onkeydown="handleKeyDown(event)" oninput="autoGrow(this)"></textarea>
@@ -947,17 +932,15 @@
             </div>
           </div>
 
-          <!-- Hidden File Inputs -->
           <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="handleImageSelected(event)">
-          <input type="file" id="docInput" accept=".pdf,.docx,.xlsx,.xls,.txt,.csv" style="display:none;" onchange="handleDocSelected(event)">
 
           <!-- Example Pills -->
           <div class="example-pills">
-            <span class="example-pill" onclick="insertPrompt('Explain Plate Tectonics and Wilson Cycle.')">Explain Plate Tectonics</span>
-            <span class="example-pill" onclick="insertPrompt('Explain the geographical factors affecting population distribution in West Bengal.')">Population of West Bengal</span>
-            <span class="example-pill" onclick="insertPrompt('Differentiate between Davisian and Penckian models of landform evolution.')">Davis vs Penck Model</span>
-            <span class="example-pill" onclick="insertPrompt('What are False Color Composites (FCC) in Remote Sensing and how is NDVI calculated?')">Remote Sensing & NDVI</span>
-            <span class="example-pill" onclick="insertPrompt('Give step-by-step procedure to test hypothesis using Pearson correlation in SPSS/R.')">Geography Statistical Analysis</span>
+            <span class="example-pill" onclick="insertPrompt('Explain Plate Tectonics and Wilson Cycle.')">Plate Tectonics</span>
+            <span class="example-pill" onclick="insertPrompt('Describe the demographic features and regional variations in West Bengal.')">West Bengal Geography</span>
+            <span class="example-pill" onclick="insertPrompt('Differentiate between Davisian and Penckian cycles of erosion.')">Davis vs Penck Model</span>
+            <span class="example-pill" onclick="insertPrompt('How do you calculate Pearson Correlation Coefficient in Geography?')">Spatial Statistics</span>
+            <span class="example-pill" onclick="insertPrompt('Write short notes on Urban Heat Island effect and mitigation strategies.')">Urban Geography</span>
           </div>
 
         </div>
@@ -965,71 +948,32 @@
     </main>
   </div>
 
-  <!-- ==================== MODALS & SPECIAL TOOLS ==================== -->
+  <!-- ==================== MODALS ==================== -->
 
-  <!-- DIAGRAM GENERATOR MODAL -->
-  <div class="modal-overlay" id="diagramModal">
-    <div class="modal-box">
+  <!-- API KEY MODAL -->
+  <div class="modal-overlay" id="keyModal">
+    <div class="modal-box" style="max-width: 480px;">
       <div class="modal-header">
-        <h3><i class="fas fa-project-diagram"></i> 🖼️ Create Geography Diagram</h3>
-        <button class="btn-action" style="color:white;" onclick="closeModal('diagramModal')"><i class="fas fa-times"></i></button>
+        <h3><i class="fas fa-key"></i> OpenAI API Configuration</h3>
+        <button class="btn-action" style="color:white;" onclick="closeModal('keyModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
+        <p style="font-size:0.85rem; color:var(--text-muted);">
+          To run AI questions on GitHub Pages, paste your OpenAI API key below. It will be stored securely inside your personal browser storage (localStorage).
+        </p>
         <div class="form-group">
-          <label>Select or Describe Geographical Process:</label>
-          <input type="text" class="form-control" id="diagramPrompt" placeholder="E.g., Ox-bow lake formation with cross-section, Soil profile horizons, Atmospheric Hadley cell">
-        </div>
-        <div class="form-group">
-          <label>Category Preset:</label>
-          <select class="form-control" onchange="document.getElementById('diagramPrompt').value = this.value">
-            <option value="">-- Choose a standard syllabus diagram --</option>
-            <option value="River meander, slip-off slope, and ox-bow lake development sequence">Fluvial: River Meander & Ox-bow</option>
-            <option value="Subduction zone volcanic arc with oceanic and continental plate boundary">Tectonic: Subduction Zone Cross-Section</option>
-            <option value="Tri-cellular model of atmospheric circulation showing Hadley, Ferrel, Polar cells">Climatology: Atmospheric Pressure Belts</option>
-            <option value="Standard Soil Horizon Profile showing O, A, E, B, C, R layers labeled">Pedology: Soil Profile</option>
-            <option value="Von Thunen Isolated State agricultural rings layout with labels">Economic: Von Thunen Isolated State</option>
-          </select>
-        </div>
-        <div id="diagramOutputArea" style="text-align: center; display: none;">
-          <img id="generatedDiagramImg" src="" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color);" alt="Diagram">
-          <p id="diagramDisclaimer" style="font-size:0.75rem; color:var(--text-muted); margin-top:5px;"></p>
+          <label>OpenAI API Key (sk-...):</label>
+          <input type="password" class="form-control" id="apiKeyInput" placeholder="sk-proj-...">
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('diagramModal')">Close</button>
-        <button class="btn-gold" id="btnGenDiagram" onclick="generateVisual('diagram')"><i class="fas fa-magic"></i> Generate Diagram</button>
+        <button class="btn-secondary" onclick="closeModal('keyModal')">Close</button>
+        <button class="btn-gold" onclick="saveApiKey()"><i class="fas fa-check"></i> Save Key</button>
       </div>
     </div>
   </div>
 
-  <!-- THEMATIC MAP STUDIO MODAL -->
-  <div class="modal-overlay" id="mapModal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3><i class="fas fa-map-marked-alt"></i> 🗺️ Thematic Map Studio</h3>
-        <button class="btn-action" style="color:white;" onclick="closeModal('mapModal')"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Map Subject & Region:</label>
-          <input type="text" class="form-control" id="mapPrompt" placeholder="E.g., India Physiographic divisions, West Bengal agro-climatic zones, World ocean currents">
-        </div>
-        <div style="background: var(--brand-gold-light); padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; color:#855300; border-left: 3px solid var(--brand-gold);">
-          <strong>Cartographic Note:</strong> AI generated maps serve as schematic study illustrations. For high-precision Survey of India (SOI) or GIS layers, use the R.M. Vision GIS Shapefile directory.
-        </div>
-        <div id="mapOutputArea" style="text-align: center; display: none;">
-          <img id="generatedMapImg" src="" style="max-width: 100%; border-radius: 8px; border: 1px solid var(--border-color);" alt="Map">
-          <p id="mapDisclaimer" style="font-size:0.75rem; color:var(--text-muted); margin-top:5px;"></p>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('mapModal')">Close</button>
-        <button class="btn-gold" id="btnGenMap" onclick="generateVisual('map')"><i class="fas fa-compass"></i> Create Map Draft</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- GRAPH & STATISTICS MODAL -->
+  <!-- GRAPH MODAL -->
   <div class="modal-overlay" id="graphModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -1040,9 +984,9 @@
         <div class="form-group">
           <label>Graph Type:</label>
           <select class="form-control" id="chartType">
-            <option value="bar">Bar Chart (Rainfall / Production)</option>
-            <option value="line">Line Chart (Temperature Trend)</option>
-            <option value="pie">Pie Chart (Land Use Distribution)</option>
+            <option value="bar">Bar Chart (Monthly Rainfall / Crop Production)</option>
+            <option value="line">Line Chart (Temperature Trend / Population Growth)</option>
+            <option value="pie">Pie Chart (Land Use Classification)</option>
           </select>
         </div>
         <div class="form-group">
@@ -1068,7 +1012,7 @@
   <div class="modal-overlay" id="pdfModal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3><i class="fas fa-file-pdf"></i> 📄 Generate Professional PDF Notes</h3>
+        <h3><i class="fas fa-file-pdf"></i> 📄 Generate Printable PDF Notes</h3>
         <button class="btn-action" style="color:white;" onclick="closeModal('pdfModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
@@ -1078,50 +1022,45 @@
         </div>
         <div class="form-group">
           <label>Subject / Syllabus Module:</label>
-          <input type="text" class="form-control" id="pdfTopic" value="Physical Geography (Undergraduate Paper 1)">
+          <input type="text" class="form-control" id="pdfTopic" value="Physical Geography (Undergraduate Syllabus)">
         </div>
         <div class="form-group">
-          <label>Content (Paste lecture or generate from chat):</label>
-          <textarea class="form-control" id="pdfContent" rows="8">Fluvial landforms are those generated by the action of river flow. These encompass both erosional features such as V-shaped valleys, gorges, potholes, waterfalls, and river meanders, as well as depositional features including alluvial fans, floodplains, natural levees, braided channels, and deltas.
-
-In the upper course, vertical corrasion dominates, resulting in deep valley incisions. In the middle course, lateral erosion produces extensive meandering belts governed by helicoidal flow. In the senile or lower stage, hydraulic gradients diminish significantly, provoking sediment dropping and the evolution of arcuate, bird-foot, or cuspidate deltaic systems.</textarea>
+          <label>Content:</label>
+          <textarea class="form-control" id="pdfContent" rows="8">Fluvial landforms are those generated by the dynamic action of running water. These encompass erosional features such as V-shaped valleys, gorges, waterfalls, and meanders, as well as depositional features including alluvial fans, floodplains, and deltas.</textarea>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeModal('pdfModal')">Close</button>
-        <button class="btn-gold" onclick="downloadAcademicPdf()"><i class="fas fa-download"></i> Download PDF Document</button>
+        <button class="btn-gold" onclick="printFormattedDoc()"><i class="fas fa-print"></i> Print / Save as PDF</button>
       </div>
     </div>
   </div>
 
-  <!-- PPT GENERATOR MODAL -->
-  <div class="modal-overlay" id="pptModal">
-    <div class="modal-box">
+  <!-- NOTES ENGINE MODAL -->
+  <div class="modal-overlay" id="notesModal">
+    <div class="modal-box" style="max-width: 500px;">
       <div class="modal-header">
-        <h3><i class="fas fa-file-powerpoint"></i> 📊 Create PowerPoint Presentation (16:9)</h3>
-        <button class="btn-action" style="color:white;" onclick="closeModal('pptModal')"><i class="fas fa-times"></i></button>
+        <h3><i class="fas fa-book-open"></i> 📝 Syllabus Notes Generator</h3>
+        <button class="btn-action" style="color:white;" onclick="closeModal('notesModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Presentation Title:</label>
-          <input type="text" class="form-control" id="pptTitle" value="Mechanism of Indian Monsoon">
+          <label>Geography Topic:</label>
+          <input type="text" class="form-control" id="notesTopic" placeholder="E.g., Atmospheric Inversion, Koppen Classification, Weber Industrial Location">
         </div>
         <div class="form-group">
-          <label>Target Academic Level:</label>
-          <input type="text" class="form-control" id="pptLevel" value="BA/BSc Geography (CBCS Curriculum)">
-        </div>
-        <div class="form-group">
-          <label>Number of Slides:</label>
-          <select class="form-control" id="pptSlideCount">
-            <option value="5">5 Core Slides (Executive Summary)</option>
-            <option value="8">8 Slides (Standard Lecture)</option>
-            <option value="12">12 Slides (Comprehensive Academic Unit)</option>
+          <label>Academic Level:</label>
+          <select class="form-control" id="notesLevel">
+            <option value="Undergraduate (BA/BSc)">Undergraduate (BA/BSc)</option>
+            <option value="Postgraduate (MA/MSc)">Postgraduate (MA/MSc)</option>
+            <option value="UGC NET / JRF">UGC NET / JRF</option>
+            <option value="West Bengal Higher Secondary">West Bengal HS (WBCHSE)</option>
           </select>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('pptModal')">Close</button>
-        <button class="btn-gold" id="btnGenPpt" onclick="generateAcademicPpt()"><i class="fas fa-file-export"></i> Export PPTX</button>
+        <button class="btn-secondary" onclick="closeModal('notesModal')">Cancel</button>
+        <button class="btn-gold" onclick="generateSyllabusNotes()"><i class="fas fa-pencil-alt"></i> Create Notes</button>
       </div>
     </div>
   </div>
@@ -1134,128 +1073,37 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
         <button class="btn-action" style="color:white;" onclick="closeModal('researchModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
-        <p style="font-size:0.85rem; color:var(--text-muted);">
-          Design research questions, GIS methodologies, sampling frameworks, and thesis chapters with verified scientific rigor.
-        </p>
         <div class="form-group">
-          <label>Research Topic / Interest:</label>
+          <label>Research Topic / Research Question:</label>
           <input type="text" class="form-control" id="researchTopic" placeholder="E.g., Urban Heat Island effect in Kolkata Metropolitan Region using Landsat 8/9">
         </div>
         <div class="form-group">
-          <label>Deliverable Required:</label>
+          <label>Component Required:</label>
           <select class="form-control" id="researchType">
             <option value="Research Proposal Framework (Title, Objectives, Hypotheses, Methodology)">Complete Proposal Structure</option>
             <option value="Remote Sensing & GIS Methodology workflow">GIS & Remote Sensing Workflow</option>
             <option value="Questionnaire Design for Socio-Economic Survey">Socio-Economic Questionnaire Format</option>
-            <option value="Statistical Data Analysis Plan (Parametric vs Non-Parametric)">Statistical Framework</option>
+            <option value="Statistical Data Analysis Plan">Statistical Methodology</option>
           </select>
         </div>
       </div>
       <div class="modal-footer">
         <button class="btn-secondary" onclick="closeModal('researchModal')">Close</button>
-        <button class="btn-gold" onclick="sendResearchRequest()"><i class="fas fa-brain"></i> Generate Research Framework</button>
+        <button class="btn-gold" onclick="sendResearchRequest()"><i class="fas fa-brain"></i> Generate Research Plan</button>
       </div>
     </div>
   </div>
 
-  <!-- AUTHENTICATION MODAL -->
-  <div class="modal-overlay" id="authModal">
-    <div class="modal-box" style="max-width: 420px;">
-      <div class="modal-header">
-        <h3 id="authTitle"><i class="fas fa-user-lock"></i> Student Authentication</h3>
-        <button class="btn-action" style="color:white;" onclick="closeModal('authModal')"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group" id="usernameGroup" style="display:none;">
-          <label>Full Name:</label>
-          <input type="text" class="form-control" id="authUsername" placeholder="e.g., Ananya Ghosh">
-        </div>
-        <div class="form-group">
-          <label>Email Address:</label>
-          <input type="email" class="form-control" id="authEmail" placeholder="student@rmvisionacademy.com">
-        </div>
-        <div class="form-group">
-          <label>Password:</label>
-          <input type="password" class="form-control" id="authPassword" placeholder="••••••••">
-        </div>
-        <div style="font-size:0.8rem; text-align:center;">
-          <a href="javascript:void(0)" id="toggleAuthMode" style="color:var(--brand-gold);" onclick="toggleAuthForm()">Don't have an account? Register</a>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('authModal')">Cancel</button>
-        <button class="btn-gold" id="authSubmitBtn" onclick="submitAuth()">Sign In</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN MANAGEMENT MODAL -->
-  <div class="modal-overlay" id="adminModal">
-    <div class="modal-box" style="max-width: 800px;">
-      <div class="modal-header">
-        <h3><i class="fas fa-user-shield"></i> R.M. Vision Academy Admin Knowledge Base</h3>
-        <button class="btn-action" style="color:white;" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;" id="adminStatsGrid">
-          <div style="background:var(--bg-primary); padding:10px; border-radius:8px; border:1px solid var(--border-color);">
-            <div style="font-size:0.75rem; color:var(--text-muted);">Active Knowledge Base Documents</div>
-            <div style="font-size:1.4rem; font-weight:bold; color:var(--brand-gold);" id="kbDocCount">0</div>
-          </div>
-          <div style="background:var(--bg-primary); padding:10px; border-radius:8px; border:1px solid var(--border-color);">
-            <div style="font-size:0.75rem; color:var(--text-muted);">AI Model Architecture</div>
-            <div style="font-size:1.1rem; font-weight:bold; color:var(--text-main);" id="adminModelName">GPT-4o</div>
-          </div>
-        </div>
-
-        <h4 style="margin-top:10px; font-size:0.95rem;">Upload Academy Private Lecture / Material</h4>
-        <div class="form-group">
-          <label>Document Title:</label>
-          <input type="text" class="form-control" id="kbTitle" placeholder="E.g., Sundarbans Coastal Geomorphology Special Note">
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-          <div class="form-group">
-            <label>Subject:</label>
-            <input type="text" class="form-control" id="kbSubject" placeholder="Geomorphology / WB Geography">
-          </div>
-          <div class="form-group">
-            <label>Class/Exam Category:</label>
-            <select class="form-control" id="kbCategory">
-              <option value="UG">Undergraduate (BA/BSc)</option>
-              <option value="PG">Postgraduate (MA/MSc)</option>
-              <option value="NET">UGC NET / JRF</option>
-              <option value="WB">West Bengal Board (HS)</option>
-              <option value="GIS">GIS & Remote Sensing</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Document Content / Teacher Notes:</label>
-          <textarea class="form-control" id="kbText" rows="4" placeholder="Paste custom Academy study text here... The AI will prioritize this material during student inquiries."></textarea>
-        </div>
-        <button class="btn-gold" onclick="saveKbEntry()"><i class="fas fa-save"></i> Save to Academy Knowledge Base</button>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeModal('adminModal')">Done</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT CONTROLLER -->
+  <!-- ==================== JAVASCRIPT ENGINE ==================== -->
   <script>
-    // State Management
     let chatHistory = [];
     let activeImageBase64 = null;
-    let activeDocContext = null;
-    let currentUser = null;
-    let authToken = localStorage.getItem('rm_token') || null;
-    let isRegisterMode = false;
     let chartInstance = null;
 
-    // Initialize on load
+    // Load initial settings
     window.addEventListener('DOMContentLoaded', () => {
-      checkSavedUser();
       initChart();
+      checkSavedApiKey();
     });
 
     function toggleSidebar() {
@@ -1305,8 +1153,7 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
     function startNewChat() {
       chatHistory = [];
       activeImageBase64 = null;
-      activeDocContext = null;
-      updateFilePreview();
+      document.getElementById('filePreviewStrip').style.display = 'none';
       resetToWelcome();
     }
 
@@ -1316,7 +1163,28 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
       }
     }
 
-    // ---------------- File Handling (Image & Doc) ----------------
+    // ---------------- API Key Storage ----------------
+    function checkSavedApiKey() {
+      const key = localStorage.getItem('rm_openai_key');
+      if (key) {
+        document.getElementById('keyBtnLabel').textContent = 'Key Saved ✓';
+        document.getElementById('apiKeyInput').value = key;
+      }
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById('apiKeyInput').value.trim();
+      if (!key) {
+        alert('Please enter a valid OpenAI API key.');
+        return;
+      }
+      localStorage.setItem('rm_openai_key', key);
+      document.getElementById('keyBtnLabel').textContent = 'Key Saved ✓';
+      closeModal('keyModal');
+      alert('API Key saved successfully in your browser storage.');
+    }
+
+    // ---------------- Image Upload Handling ----------------
     function triggerFileInput(id) {
       document.getElementById(id).click();
     }
@@ -1328,118 +1196,94 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
       const reader = new FileReader();
       reader.onload = function(e) {
         activeImageBase64 = e.target.result;
-        updateFilePreview();
+        const strip = document.getElementById('filePreviewStrip');
+        strip.innerHTML = `<div class="file-tag"><i class="fas fa-image"></i> Image Attached <i class="fas fa-times" onclick="removeImage()"></i></div>`;
+        strip.style.display = 'flex';
       };
       reader.readAsDataURL(file);
-    }
-
-    async function handleDocSelected(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      try {
-        const res = await fetch('/api/upload-document', {
-          method: 'POST',
-          body: formData
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-
-        activeDocContext = `[File: ${data.filename}]\n${data.textSnippet}`;
-        updateFilePreview(data.filename);
-      } catch (err) {
-        alert('Upload Error: ' + err.message);
-      }
-    }
-
-    function updateFilePreview(docName) {
-      const strip = document.getElementById('filePreviewStrip');
-      strip.innerHTML = '';
-
-      if (activeImageBase64) {
-        const tag = document.createElement('div');
-        tag.className = 'file-tag';
-        tag.innerHTML = `<i class="fas fa-image"></i> Image Attached <i class="fas fa-times" onclick="removeImage()"></i>`;
-        strip.appendChild(tag);
-      }
-
-      if (activeDocContext) {
-        const tag = document.createElement('div');
-        tag.className = 'file-tag';
-        tag.innerHTML = `<i class="fas fa-file-alt"></i> ${docName || 'Document Loaded'} <i class="fas fa-times" onclick="removeDoc()"></i>`;
-        strip.appendChild(tag);
-      }
-
-      strip.style.display = (activeImageBase64 || activeDocContext) ? 'flex' : 'none';
     }
 
     function removeImage() {
       activeImageBase64 = null;
       document.getElementById('imageInput').value = '';
-      updateFilePreview();
+      document.getElementById('filePreviewStrip').style.display = 'none';
     }
 
-    function removeDoc() {
-      activeDocContext = null;
-      document.getElementById('docInput').value = '';
-      updateFilePreview();
-    }
-
-    // ---------------- Sending Message ----------------
+    // ---------------- Main AI Message Dispatcher ----------------
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
 
-      if (!message && !activeImageBase64 && !activeDocContext) return;
+      if (!message && !activeImageBase64) return;
 
-      // Hide Welcome hero on first exchange
+      let apiKey = localStorage.getItem('rm_openai_key');
+      if (!apiKey) {
+        openModal('keyModal');
+        return;
+      }
+
       document.getElementById('welcomeScreen').style.display = 'none';
-
-      // Render User Bubble
-      appendMessage('user', message || (activeImageBase64 ? 'Uploaded Image for Analysis' : 'Document Analysis'));
+      appendMessage('user', message || 'Uploaded Image for Analysis');
       input.value = '';
       input.style.height = 'auto';
 
-      // Render Thinking Bubble
       const loadingId = appendLoadingBubble();
-
       const answerMode = document.getElementById('answerMode').value;
       const language = document.getElementById('languageMode').value;
 
-      try {
-        const headers = { 'Content-Type': 'application/json' };
-        if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+      const systemPrompt = `You are the specialized AI Geography Teacher, Academic Tutor, and Senior Research Assistant for R.M. Vision Academy ("🌍 R.M. Vision Academy OpenAI - Ask Me Geography").
+You specialize in Physical Geography (Geomorphology, Climatology, Oceanography, Soil, Biogeography), Human Geography (Population, Settlement, Economic, Urban), Regional Geography (India, West Bengal, Sundarbans), Cartography, GIS, Remote Sensing (NDVI, Satellite Bands), and Geographic Statistics (Mean, SD, Chi-Square, Correlation).
+Mode: ${answerMode}.
+Language: ${language}.
+Important Bilingual Rule: If communicating in Bengali, write primarily in natural Bengali script, but MANDATORILY provide key technical geography terms in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure), পাতের চলন (Plate Tectonics).
+Academic Standard: For academic questions, provide Definition → Detailed Explanation → Key Features → Physical Processes → Real-world Examples → Summary.`;
 
-        const res = await fetch('/api/chat', {
+      try {
+        let messagesPayload = [
+          { role: 'system', content: systemPrompt }
+        ];
+
+        chatHistory.slice(-6).forEach(m => messagesPayload.push(m));
+
+        if (activeImageBase64) {
+          messagesPayload.push({
+            role: 'user',
+            content: [
+              { type: 'text', text: message || 'Analyze this geographical map/diagram in detail.' },
+              { type: 'image_url', image_url: { url: activeImageBase64 } }
+            ]
+          });
+        } else {
+          messagesPayload.push({ role: 'user', content: message });
+        }
+
+        const res = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
-          headers,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
           body: JSON.stringify({
-            message,
-            history: chatHistory,
-            answerMode,
-            language,
-            imageBase64: activeImageBase64,
-            docContext: activeDocContext
+            model: 'gpt-4o',
+            messages: messagesPayload,
+            temperature: 0.25
           })
         });
 
         const data = await res.json();
         removeBubble(loadingId);
 
-        if (data.error) throw new Error(data.error);
+        if (data.error) throw new Error(data.error.message);
 
-        appendMessage('ai', data.reply);
+        const reply = data.choices[0].message.content;
+        appendMessage('ai', reply);
         chatHistory.push({ role: 'user', content: message });
-        chatHistory.push({ role: 'assistant', content: data.reply });
+        chatHistory.push({ role: 'assistant', content: reply });
 
-        // Clear one-time file attachments
         if (activeImageBase64) removeImage();
       } catch (err) {
         removeBubble(loadingId);
-        appendMessage('ai', `⚠️ **Academic Notice**: ${err.message}`);
+        appendMessage('ai', `⚠️ **Notice**: ${err.message}`);
       }
     }
 
@@ -1459,7 +1303,6 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
       if (role === 'ai') {
         bubble.innerHTML = marked.parse(rawContent);
 
-        // Action Toolbar
         const actions = document.createElement('div');
         actions.className = 'bubble-actions';
         actions.innerHTML = `
@@ -1513,7 +1356,24 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
     function printAnswer(btn) {
       const text = btn.closest('.bubble').innerHTML;
       const win = window.open('', '', 'width=800,height=600');
-      win.document.write(`<html><head><title>R.M. Vision Academy - Geography</title></head><body style="font-family:Arial;padding:30px;">${text}</body></html>`);
+      win.document.write(`
+        <html>
+          <head>
+            <title>R.M. Vision Academy - Geography</title>
+            <style>
+              body { font-family: Arial, sans-serif; padding: 40px; color: #1e293b; line-height: 1.6; }
+              h1, h2, h3 { color: #0b2545; }
+            </style>
+          </head>
+          <body>
+            <div style="border-bottom: 2px solid #daa520; padding-bottom: 10px; margin-bottom: 20px;">
+              <h2 style="margin: 0; color: #0b2545;">R.M. VISION ACADEMY</h2>
+              <p style="margin: 5px 0 0; color: #64748b; font-size: 13px;">Department of Geography & Geospatial Studies</p>
+            </div>
+            ${text}
+          </body>
+        </html>
+      `);
       win.document.close();
       win.print();
     }
@@ -1522,44 +1382,6 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
       const text = btn.closest('.bubble').innerText.replace(/Copy|Print|Make PDF/g, '').trim();
       document.getElementById('pdfContent').value = text;
       openModal('pdfModal');
-    }
-
-    // ---------------- DIAGRAM & MAP VISUAL ENGINE ----------------
-    async function generateVisual(type) {
-      const promptInput = document.getElementById(type === 'map' ? 'mapPrompt' : 'diagramPrompt');
-      const btn = document.getElementById(type === 'map' ? 'btnGenMap' : 'btnGenDiagram');
-      const prompt = promptInput.value.trim();
-
-      if (!prompt) return alert('Please enter a description.');
-
-      const originalHtml = btn.innerHTML;
-      btn.innerHTML = `<div class="spinner"></div> Creating Visual...`;
-      btn.disabled = true;
-
-      try {
-        const res = await fetch('/api/generate-diagram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt, type })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-
-        if (type === 'map') {
-          document.getElementById('generatedMapImg').src = data.imageUrl;
-          document.getElementById('mapDisclaimer').textContent = data.disclaimer;
-          document.getElementById('mapOutputArea').style.display = 'block';
-        } else {
-          document.getElementById('generatedDiagramImg').src = data.imageUrl;
-          document.getElementById('diagramDisclaimer').textContent = data.disclaimer;
-          document.getElementById('diagramOutputArea').style.display = 'block';
-        }
-      } catch (err) {
-        alert('Generation failed: ' + err.message);
-      } finally {
-        btn.innerHTML = originalHtml;
-        btn.disabled = false;
-      }
     }
 
     // ---------------- CHART.JS STATS ENGINE ----------------
@@ -1606,177 +1428,72 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
       });
     }
 
-    // ---------------- PDF & PPT EXPORTS ----------------
-    async function downloadAcademicPdf() {
+    // ---------------- CLIENT-SIDE PDF PRINT ----------------
+    function printFormattedDoc() {
       const title = document.getElementById('pdfTitle').value;
       const topic = document.getElementById('pdfTopic').value;
       const content = document.getElementById('pdfContent').value;
 
-      try {
-        const res = await fetch('/api/generate-pdf', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, topic, content })
-        });
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${title.replace(/\s+/g, '_')}.pdf`;
-        a.click();
-        closeModal('pdfModal');
-      } catch (err) {
-        alert('PDF Export Error: ' + err.message);
-      }
+      const win = window.open('', '', 'width=850,height=700');
+      win.document.write(`
+        <html>
+          <head>
+            <title>${title}</title>
+            <style>
+              body { font-family: 'Helvetica', Arial, sans-serif; padding: 40px; color: #1e293b; line-height: 1.6; }
+              .header { border-bottom: 3px solid #daa520; padding-bottom: 12px; margin-bottom: 25px; }
+              .brand { color: #0b2545; font-size: 24px; font-weight: bold; margin: 0; }
+              .sub { color: #64748b; font-size: 13px; margin-top: 4px; }
+              h1 { color: #0b2545; font-size: 20px; margin-bottom: 15px; }
+              p { white-space: pre-wrap; font-size: 14px; text-align: justify; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <div class="brand">R.M. VISION ACADEMY</div>
+              <div class="sub">AI Study Module • ${topic} • Date: ${new Date().toLocaleDateString('en-GB')}</div>
+            </div>
+            <h1>${title}</h1>
+            <p>${content}</p>
+          </body>
+        </html>
+      `);
+      win.document.close();
+      win.print();
+      closeModal('pdfModal');
     }
 
-    async function generateAcademicPpt() {
-      const title = document.getElementById('pptTitle').value;
-      const level = document.getElementById('pptLevel').value;
-      const btn = document.getElementById('btnGenPpt');
+    // ---------------- NOTES & RESEARCH ENGINE ----------------
+    function generateSyllabusNotes() {
+      const topic = document.getElementById('notesTopic').value.trim();
+      const level = document.getElementById('notesLevel').value;
+      if (!topic) return alert('Please enter a topic.');
 
-      btn.innerHTML = `<div class="spinner"></div> Generating Slides...`;
-      btn.disabled = true;
-
-      const dummySlides = [
-        { slideTitle: 'Introduction & Scope', points: ['Definition and spatial context', 'Significance in Regional Geography', 'Key underlying parameters'] },
-        { slideTitle: 'Theoretical Framework', points: ['Classical models & modern adaptations', 'Thermodynamic and aerodynamic drivers', 'Seasonal variations'] },
-        { slideTitle: 'Methodology & Data Sources', points: ['IMD and NOAA observational data', 'Spatial interpolation through GIS', 'Statistical significance testing'] },
-        { slideTitle: 'Conclusion & Exam Takeaways', points: ['Model answers points', 'Critical questions for NET/JRF', 'Summary of findings'] }
-      ];
-
-      try {
-        const res = await fetch('/api/generate-ppt', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, targetLevel: level, slides: dummySlides })
-        });
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${title.replace(/\s+/g, '_')}.pptx`;
-        a.click();
-        closeModal('pptModal');
-      } catch (err) {
-        alert('PPT Export Error: ' + err.message);
-      } finally {
-        btn.innerHTML = `<i class="fas fa-file-export"></i> Export PPTX`;
-        btn.disabled = false;
-      }
-    }
-
-    // ---------------- RESEARCH PROPOSAL HELPER ----------------
-    function sendResearchRequest() {
-      const topic = document.getElementById('researchTopic').value;
-      const type = document.getElementById('researchType').value;
-      if (!topic) return alert('Please enter research topic');
-
-      closeModal('researchModal');
-      insertPrompt(`Act as Senior Geography Research Assistant. For the research topic: "${topic}", prepare a rigorous ${type}. Include research questions, testable hypotheses, GIS/Remote Sensing workflow steps, sampling frame, and standard academic methodology without inventing false references.`);
+      closeModal('notesModal');
+      insertPrompt(`Prepare complete, high-scoring syllabus notes on "${topic}" for ${level} level. Follow this academic format: Definition, Key Hypotheses/Theories, Landform/Process Mechanics, Schematic diagram description, and Final Examination points.`);
       sendMessage();
     }
 
-    // ---------------- AUTHENTICATION & ADMIN ----------------
-    function toggleAuthForm() {
-      isRegisterMode = !isRegisterMode;
-      document.getElementById('usernameGroup').style.display = isRegisterMode ? 'block' : 'none';
-      document.getElementById('authTitle').innerHTML = isRegisterMode ? '<i class="fas fa-user-plus"></i> Student Registration' : '<i class="fas fa-user-lock"></i> Student Authentication';
-      document.getElementById('authSubmitBtn').textContent = isRegisterMode ? 'Register' : 'Sign In';
-      document.getElementById('toggleAuthMode').textContent = isRegisterMode ? 'Already registered? Sign In' : "Don't have an account? Register";
-    }
+    function sendResearchRequest() {
+      const topic = document.getElementById('researchTopic').value.trim();
+      const type = document.getElementById('researchType').value;
+      if (!topic) return alert('Please enter a research topic.');
 
-    async function submitAuth() {
-      const email = document.getElementById('authEmail').value;
-      const password = document.getElementById('authPassword').value;
-      const username = document.getElementById('authUsername').value;
-      const endpoint = isRegisterMode ? '/api/auth/register' : '/api/auth/login';
-
-      try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, username })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-
-        authToken = data.token;
-        currentUser = data.user;
-        localStorage.setItem('rm_token', authToken);
-        localStorage.setItem('rm_user', JSON.stringify(currentUser));
-
-        updateAuthUI();
-        closeModal('authModal');
-      } catch (err) {
-        alert('Auth Error: ' + err.message);
-      }
-    }
-
-    function checkSavedUser() {
-      const saved = localStorage.getItem('rm_user');
-      if (saved && authToken) {
-        currentUser = JSON.parse(saved);
-        updateAuthUI();
-      }
-    }
-
-    function updateAuthUI() {
-      if (currentUser) {
-        document.getElementById('loginBtn').innerHTML = `<i class="fas fa-user-check"></i> ${currentUser.username}`;
-        if (currentUser.role === 'admin') {
-          document.getElementById('adminSidebarBtn').style.display = 'flex';
-          loadAdminStats();
-        }
-      }
-    }
-
-    async function loadAdminStats() {
-      try {
-        const res = await fetch('/api/admin/stats', {
-          headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        const data = await res.json();
-        document.getElementById('kbDocCount').textContent = data.kbEntries;
-        document.getElementById('adminModelName').textContent = data.activeModel;
-      } catch (e) {}
-    }
-
-    async function saveKbEntry() {
-      const title = document.getElementById('kbTitle').value;
-      const subject = document.getElementById('kbSubject').value;
-      const category = document.getElementById('kbCategory').value;
-      const text = document.getElementById('kbText').value;
-
-      try {
-        const res = await fetch('/api/admin/kb', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`
-          },
-          body: JSON.stringify({ title, subject, category, text })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        alert('Saved to R.M. Vision Academy Knowledge Base!');
-        document.getElementById('kbTitle').value = '';
-        document.getElementById('kbText').value = '';
-        loadAdminStats();
-      } catch (err) {
-        alert('Admin Error: ' + err.message);
-      }
+      closeModal('researchModal');
+      insertPrompt(`Act as Senior Geography Research Assistant. For the research inquiry: "${topic}", prepare a structured ${type}. Include research questions, testable hypotheses, GIS/Remote Sensing workflow steps, sampling frame, and methodology without inventing false references.`);
+      sendMessage();
     }
 
     // ---------------- VOICE INPUT (Web Speech API) ----------------
     function toggleVoiceInput() {
       if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        alert('Speech recognition is not supported in this browser. Please use Google Chrome.');
+        alert('Voice input is not supported in this browser. Please use Google Chrome.');
         return;
       }
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
-      recognition.lang = document.getElementById('languageMode').value === 'Bengali' ? 'bn-BD' : 'en-US';
+      const lang = document.getElementById('languageMode').value;
+      recognition.lang = lang === 'Bengali' ? 'bn-BD' : 'en-US';
 
       const voiceBtn = document.getElementById('voiceBtn');
       voiceBtn.style.color = '#ef4444';
@@ -1790,6 +1507,10 @@ In the upper course, vertical corrasion dominates, resulting in deep valley inci
       };
 
       recognition.onerror = function() {
+        voiceBtn.style.color = 'var(--text-muted)';
+      };
+
+      recognition.onend = function() {
         voiceBtn.style.color = 'var(--text-muted)';
       };
 
