@@ -616,7 +616,7 @@
   </div>
 
   <script>
-    // Stable High-Speed Groq Engine
+    // Stable Free Production Model on Groq
     const GROQ_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
@@ -880,30 +880,43 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // Direct, ultra-fast generation via Groq API (llama-3.1-8b-instant with 30k TPM quota)
+    // Call Groq production models with fallback
     async function requestGroqChat(systemPrompt, userQuery) {
       const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
+      const models = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
 
-      const response = await fetch(targetUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${GROQ_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userQuery }
-          ],
-          temperature: 0.6,
-          max_tokens: 1024
-        })
-      });
+      let lastError = null;
+      for (const model of models) {
+        try {
+          const res = await fetch(targetUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${GROQ_API_KEY}`
+            },
+            body: JSON.stringify({
+              model: model,
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userQuery }
+              ],
+              temperature: 0.6,
+              max_tokens: 1500
+            })
+          });
 
-      const data = await response.json();
-      if (data.error) throw new Error(data.error.message);
-      return data.choices[0].message.content;
+          const data = await res.json();
+          if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+            return data.choices[0].message.content;
+          }
+          if (data.error) {
+            lastError = data.error.message;
+          }
+        } catch (e) {
+          lastError = e.message;
+        }
+      }
+      throw new Error(lastError || "Chat request failed.");
     }
 
     async function sendMessage() {
@@ -920,13 +933,13 @@
 
       let levelPromptInstruction = "";
       if (activeLevel === 'Research / Thesis (APA)') {
-        levelPromptInstruction = `Target Level: Advanced Empirical Research, Spatial Data Evaluation & Academic Thesis. Deliver detailed paragraphs with academic citations and an APA 7th References section.`;
+        levelPromptInstruction = `Target Level: Advanced Empirical Research, Spatial Data Evaluation & Academic Thesis. Deliver structured scholarly paragraphs with academic citations and an APA 7th Edition References section.`;
       } else if (activeLevel === 'School Level') {
-        levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Exam). Keep notes point-wise, concise, and high-scoring.";
+        levelPromptInstruction = "Target Level: School Level (Class 9-12). Keep notes strictly point-wise, concise, and high-scoring.";
       } else if (activeLevel === 'CUET UG/PG') {
         levelPromptInstruction = "Target Level: CUET UG/PG Entrance. Deliver concise definitions, seminal theorists, publication years, and core points.";
       } else if (activeLevel === 'UGC NET/JRF') {
-        levelPromptInstruction = "Target Level: UGC NET / JRF. Provide rigorous academic depth, assertions, reasons, and thinkers.";
+        levelPromptInstruction = "Target Level: UGC NET / JRF. Provide rigorous academic points, seminal geographers/works, assertion-reason concepts.";
       } else {
         levelPromptInstruction = "Target Level: Undergraduate & Postgraduate (UG/PG) Degree. Deliver comprehensive academic notes: Core Definition → Key Characteristics → Scientific/Geographic Mechanics → Regional Examples → Geographical Significance.";
       }
@@ -935,9 +948,9 @@
 ${levelPromptInstruction}
 Language: ${language} (Write in clear academic style. In Bengali mode, keep technical geography terms in English within parentheses).
 
-STRICT GENERAL GUIDELINES:
-1. Explain geographic concepts clearly and thoroughly.
-2. Provide complete, high-quality educational notes without truncation.`;
+STRICT GUIDELINES:
+1. Explain geographic concepts clearly, rigorously, and comprehensively.
+2. Provide complete educational notes without truncation.`;
 
       const userQuery = `${message}${attachedDocText ? `\n\n[Attached File / Data]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
