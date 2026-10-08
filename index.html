@@ -30,18 +30,6 @@
       --transition: all 0.25s ease;
     }
 
-    [data-theme="dark"] {
-      --bg-primary: #0b1120;
-      --bg-surface: #131c31;
-      --bg-sidebar: #070c18;
-      --brand-blue: #1a365d;
-      --brand-gold: #f59e0b;
-      --brand-gold-light: #2c2512;
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --border-color: #27354f;
-    }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', 'Hind Siliguri', sans-serif;
@@ -228,9 +216,9 @@
         <button class="sidebar-btn" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
       </div>
       <div class="tool-list">
-        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ, Jet Streams and Tibetan Plateau heating.')"><i class="fas fa-wind"></i> Indian Monsoon</div>
+        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ and Jet Streams.')"><i class="fas fa-wind"></i> Indian Monsoon</div>
         <div class="tool-item" onclick="insertPrompt('Explain Davis vs Penck Cycle of Erosion.')"><i class="fas fa-mountain"></i> Davis vs Penck</div>
-        <div class="tool-item" onclick="insertPrompt('Explain False Color Composites (FCC) and NDVI in Remote Sensing.')"><i class="fas fa-satellite"></i> Remote Sensing</div>
+        <div class="tool-item" onclick="insertPrompt('What is Remote Sensing and NDVI?')"><i class="fas fa-satellite"></i> Remote Sensing</div>
         <div class="tool-item" onclick="openModal('keyModal')"><i class="fas fa-cog"></i> Free API Key Settings</div>
       </div>
     </aside>
@@ -266,7 +254,7 @@
             <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ and Jet Streams.')">
               <i class="fas fa-wind"></i><span>Indian Monsoon</span>
             </div>
-            <div class="quick-tile" onclick="insertPrompt('Explain Plate Tectonics theory.')">
+            <div class="quick-tile" onclick="insertPrompt('Explain Plate Tectonics theory and plate boundaries.')">
               <i class="fas fa-layer-group"></i><span>Plate Tectonics</span>
             </div>
             <div class="quick-tile" onclick="insertPrompt('What is Remote Sensing and how is NDVI calculated?')">
@@ -287,7 +275,6 @@
     </main>
   </div>
 
-  <!-- API KEY MODAL -->
   <div class="modal-overlay" id="keyModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -297,7 +284,7 @@
       <div class="modal-body">
         <p style="font-size:0.85rem; color:var(--text-muted);">
           1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--brand-gold); font-weight:600;">Google AI Studio</a>.<br>
-          2. Click <b>"Create API key"</b> (100% Free without card).<br>
+          2. Click <b>"Create API key"</b> (100% Free).<br>
           3. Paste your key below:
         </p>
         <input type="password" class="form-control" id="geminiApiKey" placeholder="AIzaSy...">
@@ -310,8 +297,6 @@
   </div>
 
   <script>
-    let chatHistory = [];
-
     window.addEventListener('DOMContentLoaded', () => {
       const key = localStorage.getItem('rm_gemini_key');
       if (key) {
@@ -334,7 +319,6 @@
     }
 
     function startNewChat() {
-      chatHistory = [];
       resetToWelcome();
     }
 
@@ -380,18 +364,20 @@ Language Mode: ${language}.
 Rule: If answering in Bengali, write primarily in Bengali and put important technical geography terms in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure).
 Question: ${message}`;
 
-      // Stable endpoints with automatic fallback
-      const endpoints = [
-        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`
+      // Gemini 2.0 / 1.5 current active universal model list
+      const candidateModels = [
+        'gemini-2.0-flash',
+        'gemini-2.0-flash-lite',
+        'gemini-1.5-flash-8b',
+        'gemini-1.5-flash'
       ];
 
       let lastError = null;
       let reply = null;
 
-      for (let url of endpoints) {
+      for (let modelName of candidateModels) {
         try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
           const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -417,7 +403,7 @@ Question: ${message}`;
       if (reply) {
         appendMessage('ai', reply);
       } else {
-        appendMessage('ai', `⚠️ Error: ${lastError || 'Could not connect to Gemini service.'}`);
+        appendMessage('ai', `⚠️ Error: ${lastError || 'Could not connect to Gemini service. Please check your API key.'}`);
       }
     }
 
