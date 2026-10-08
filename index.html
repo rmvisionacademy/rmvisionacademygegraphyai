@@ -616,13 +616,14 @@
   </div>
 
   <script>
-    // Groq High-Speed Free API Key
+    // Groq API Key
     const DEFAULT_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
+    let cachedModelName = null;
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -880,6 +881,26 @@
       document.getElementById('docFileInput').value = '';
     }
 
+    // Auto-detect currently active Groq chat model
+    async function getActiveGroqModel(apiKey) {
+      if (cachedModelName) return cachedModelName;
+      try {
+        const res = await fetch("https://api.groq.com/openai/v1/models", {
+          headers: { 'Authorization': `Bearer ${apiKey}` }
+        });
+        const data = await res.json();
+        if (data.data && data.data.length > 0) {
+          // Find standard chat models (llama3-70b, llama3-8b, mixtral, or fallback to first)
+          const preferred = data.data.find(m => m.id.includes("llama3-70b") || m.id.includes("llama3-8b") || m.id.includes("mixtral"));
+          cachedModelName = preferred ? preferred.id : data.data[0].id;
+          return cachedModelName;
+        }
+      } catch (e) {
+        console.warn("Model list fetch failed, using fallback:", e);
+      }
+      return "llama3-8b-8192";
+    }
+
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
@@ -927,12 +948,10 @@ STRICT GENERAL GUIDELINES:
 User Request: ${message}
 ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
-      // Gemma 2 9B is globally active and free on all Groq tiers
-      const modelName = "gemma2-9b-it";
-
-      const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
-
       try {
+        const modelName = await getActiveGroqModel(apiKey);
+        const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
+
         const response = await fetch(targetUrl, {
           method: 'POST',
           headers: { 
