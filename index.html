@@ -617,7 +617,7 @@
 
   <script>
     // Exact API Key from your Google AI Studio Dashboard
-    const DEFAULT_API_KEY = "AQ.Ab8RN6L8mg_55-aRo0ALXaPyhO9hgxl47604gsDQ0v7lIK7Uzg";
+    const DEFAULT_API_KEY = "AQ.Ab8RN6KlFH6NPZ1J83YM68XmWic8R9WhASXwLlj_OsW0_waB9w";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
@@ -938,15 +938,15 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
         payloadContents.push({ parts: [{ text: promptText }] });
       }
 
-      // Standard Gemini 1.5 Flash endpoint with query parameter
-      const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      // Endpoint without query param key
+      const targetUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
       try {
         const response = await fetch(targetUrl, {
           method: 'POST',
           headers: { 
-            'Content-Type': 'application/json'
-            // 'Authorization: Bearer' shoriye fela hoyechhe jate OAuth error na ase
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey
           },
           body: JSON.stringify({ contents: payloadContents })
         });
@@ -1017,7 +1017,7 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
       const id = 'load_' + Date.now();
       const container = document.getElementById('messagesContainer');
       const row = document.createElement('div');
-      row.className = 'message-row ai';
+      row.className = `message-row ai`;
       row.id = id;
       row.innerHTML = `
         <div class="avatar ai"><img src="Rohamat_one.png" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir"></div>
