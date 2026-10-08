@@ -24,9 +24,20 @@
       --text-main: #1e293b;
       --text-muted: #64748b;
       --border-color: #e2e8f0;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
       --radius: 12px;
       --transition: all 0.25s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0b1120;
+      --bg-surface: #131c31;
+      --bg-sidebar: #070c18;
+      --brand-blue: #1a365d;
+      --brand-gold: #f59e0b;
+      --brand-gold-light: #2c2512;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #27354f;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -363,44 +374,28 @@ Language Mode: ${language}.
 Rule: If answering in Bengali, write primarily in Bengali and put important technical geography terms in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure).
 Question: ${message}`;
 
-      const candidateModels = [
-        'gemini-2.5-flash',
-        'gemini-2.0-flash',
-        'gemini-2.0-flash-lite'
-      ];
+      // Officially requested active model
+      const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
 
-      let lastError = null;
-      let reply = null;
+      try {
+        const response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: promptText }] }]
+          })
+        });
 
-      for (let modelName of candidateModels) {
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: promptText }] }]
-            })
-          });
+        const data = await response.json();
+        removeBubble(loadingId);
 
-          const data = await response.json();
-          if (response.ok && data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
-            reply = data.candidates[0].content.parts[0].text;
-            break;
-          } else if (data.error) {
-            lastError = data.error.message;
-          }
-        } catch (e) {
-          lastError = e.message;
-        }
-      }
+        if (data.error) throw new Error(data.error.message);
 
-      removeBubble(loadingId);
-
-      if (reply) {
+        const reply = data.candidates[0].content.parts[0].text;
         appendMessage('ai', reply);
-      } else {
-        appendMessage('ai', `⚠️ Error: ${lastError || 'Could not connect to Gemini service. Please check your API key.'}`);
+      } catch (err) {
+        removeBubble(loadingId);
+        appendMessage('ai', `⚠️ Error: ${err.message}`);
       }
     }
 
