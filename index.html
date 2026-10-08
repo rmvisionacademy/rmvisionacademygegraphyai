@@ -688,42 +688,64 @@ Mandatory Academic Guidelines:
 User Request: ${message}
 ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 7000)}` : ''}`;
 
-      try {
-        let payloadContents = [];
-        if (attachedImageBase64) {
-          const base64Data = attachedImageBase64.split(',')[1];
-          const mimeType = attachedImageBase64.split(';')[0].split(':')[1];
-          payloadContents.push({
-            parts: [
-              { text: promptText },
-              { inline_data: { mime_type: mimeType, data: base64Data } }
-            ]
-          });
-        } else {
-          payloadContents.push({
-            parts: [{ text: promptText }]
-          });
-        }
-
-        // Updated directly to Google's official recommended model
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: payloadContents })
+      let payloadContents = [];
+      if (attachedImageBase64) {
+        const base64Data = attachedImageBase64.split(',')[1];
+        const mimeType = attachedImageBase64.split(';')[0].split(':')[1];
+        payloadContents.push({
+          parts: [
+            { text: promptText },
+            { inline_data: { mime_type: mimeType, data: base64Data } }
+          ]
         });
+      } else {
+        payloadContents.push({
+          parts: [{ text: promptText }]
+        });
+      }
 
-        const data = await response.json();
-        removeBubble(loadingId);
+      // অটো-ফলব্যাক মডেল লিস্ট: হাই-ডিমান্ড বা সার্ভার ব্যস্ত থাকলে অটোমেটিক অন্য মডেল উত্তর দেবে
+      const targetModels = [
+        'gemini-3.8-flash',
+        'gemini-2.5-flash',
+        'gemini-2.0-flash',
+        'gemini-2.0-flash-lite'
+      ];
 
-        if (data.error) throw new Error(data.error.message);
+      let reply = null;
+      let lastErrorMessage = '';
 
-        const reply = data.candidates[0].content.parts[0].text;
+      for (let model of targetModels) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: payloadContents })
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
+            reply = data.candidates[0].content.parts[0].text;
+            break; // সফল হলে লুপ শেষ
+          } else if (data.error) {
+            lastErrorMessage = data.error.message;
+            // যদি হাই ডিমান্ড বা সাময়িক সমস্যা হয়, পরবর্তী মডেলে চেষ্টা করবে
+            continue;
+          }
+        } catch (err) {
+          lastErrorMessage = err.message;
+        }
+      }
+
+      removeBubble(loadingId);
+
+      if (reply) {
         appendMessage('ai', reply, message);
         clearAttachments();
-      } catch (err) {
-        removeBubble(loadingId);
-        appendMessage('ai', `⚠️ Error: ${err.message}`);
+      } else {
+        appendMessage('ai', `⚠️ Notice: ${lastErrorMessage || 'All models are temporarily busy. Please wait a few seconds and try again.'}`);
       }
     }
 
@@ -751,7 +773,7 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
         const visualKeywords = ['monsoon', 'meander', 'plate tectonic', 'davis', 'volcano', 'map', 'cyclone', 'soil profile', 'delta', 'drainage'];
         const matched = visualKeywords.find(k => queryLower.includes(k));
 
-        if (matched && !text.includes('Error:')) {
+        if (matched && !text.includes('Notice:')) {
           const visualBox = document.createElement('div');
           visualBox.className = 'generated-visual-box';
           const visualPrompt = encodeURIComponent(`educational academic textbook diagram of ${matched} in geography, labeled clear cross section, high contrast white background`);
