@@ -478,6 +478,7 @@
       .welcome-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     }
   </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -727,7 +728,7 @@
         { term: "Georeferencing", bn: "ভূ-স্থানাঙ্কায়ন", desc: "কাঁচা মানচিত্রকে বাস্তব ভৌগোলিক স্থানাঙ্কে (Lat/Long) স্থাপন।" }
       ],
       "Computer Applications and Coding in Geography": [
-        { term: "DEM", bn: "ডিজিタル উচ্চতা মডেল", desc: "ভূ-পৃষ্ঠের উচ্চতার কম্পিউটার-ভিত্তিক রাস্টার রূপায়ণ।" },
+        { term: "DEM", bn: "ডিজিটাল উচ্চতা মডেল", desc: "ভূ-পৃষ্ঠের উচ্চতার কম্পিউটার-ভিত্তিক রাস্টার রূপায়ণ।" },
         { term: "Spatial Query", bn: "স্থানিক কোয়েরি", desc: "GIS ডেটাবেসে অবস্থানভিত্তিক বিশ্লেষণ অনুসন্ধান।" }
       ],
       "Statistical Techniques in Geography": [
@@ -825,10 +826,11 @@
       container.innerHTML = '';
       const list = geographyGlossaryData[subject] || [];
       list.forEach(k => {
+        const safeTerm = k.term.replace(/\/g, '\\').replace(/'/g, "\'");
         const card = document.createElement('div');
         card.className = 'kw-card';
         card.innerHTML = `
-          <div class="kw-title"><span>${k.term}</span> <button class="btn-action" onclick="askAboutTerm('${k.term}')"><i class="fas fa-search"></i> Learn</button></div>
+          <div class="kw-title"><span>${k.term}</span> <button class="btn-action" onclick="askAboutTerm('${safeTerm}')"><i class="fas fa-search"></i> Learn</button></div>
           <div class="kw-bengali">বাংলা: ${k.bn}</div>
           <div class="kw-desc">${k.desc}</div>
         `;
@@ -900,7 +902,8 @@
           for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
             const page = await pdf.getPage(i);
             const content = await page.getTextContent();
-            text += content.items.map(s => s.str).join(' ') + '\n';
+            text += content.items.map(s => s.str).join(' ') + '
+';
           }
           attachedDocText = text;
           showAttachmentChip(file.name, 'file-pdf');
@@ -910,7 +913,9 @@
           let spreadsheetData = '';
           workbook.SheetNames.forEach(sheetName => {
             const csv = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
-            spreadsheetData += `[Sheet: ${sheetName}]\n` + csv + '\n';
+            spreadsheetData += `[Sheet: ${sheetName}]
+` + csv + '
+';
           });
           attachedDocText = spreadsheetData;
           showAttachmentChip(file.name, 'file-excel');
@@ -935,50 +940,135 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // CLAUDE OR HIGH-PRECISION FALLBACK ENGINE DISPATCHER
+    // ==== NETWORK HELPERS ====
+    async function fetchWithTimeout(url, options = {}, ms = 45000) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), ms);
+      try {
+        return await fetch(url, { ...options, signal: ctrl.signal });
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    // Build a proper messages array (image included) instead of concatenating strings
+    function buildMessages(userQuery) {
+      const text = userQuery || 'Please analyse the attached image.';
+      if (attachedImageBase64) {
+        return [{
+          role: 'user',
+          content: [
+            { type: 'image_url', image_url: { url: attachedImageBase64 } },
+            { type: 'text', text: text }
+          ]
+        }];
+      }
+      return [{ role: 'user', content: text }];
+    }
+
+    // Convert OpenAI-style content blocks to Anthropic-style blocks
+    function toAnthropicMessages(messages) {
+      return messages.map(m => {
+        if (typeof m.content === 'string') return m;
+        return {
+          role: m.role,
+          content: m.content.map(block => {
+            if (block.type === 'image_url') {
+              const dataUrl = block.image_url.url;
+              const mediaType = dataUrl.slice(5, dataUrl.indexOf(';'));
+              const data = dataUrl.slice(dataUrl.indexOf(',') + 1);
+              return { type: 'image', source: { type: 'base64', media_type: mediaType, data: data } };
+            }
+            return { type: 'text', text: block.text };
+          })
+        };
+      });
+    }
+
+    // CLAUDE DISPATCHER: direct API -> proxy -> fallback engine
     async function executeClaudeQuery(systemPrompt, userQuery) {
       const customEndpoint = localStorage.getItem('CLAUDE_ENDPOINT');
       const apiKey = localStorage.getItem('ANTHROPIC_API_KEY');
+      const messages = buildMessages(userQuery);
+      const MODEL = 'claude-sonnet-4-20250514';
 
-      // Method 1: If a custom backend proxy or Anthropic-compatible server is configured
-      if (customEndpoint) {
+      // Method 1: Direct Anthropic API (API key set, no proxy endpoint)
+      if (apiKey && !customEndpoint) {
         try {
-          const headers = { "Content-Type": "application/json" };
-          if (apiKey) {
-            headers["x-api-key"] = apiKey;
-            headers["anthropic-version"] = "2023-06-01";
-          }
-          const res = await fetch(customEndpoint, {
-            method: "POST",
-            headers: headers,
+          const res = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-key': apiKey,
+              'anthropic-version': '2023-06-01',
+              'anthropic-dangerous-direct-browser-access': 'true'
+            },
             body: JSON.stringify({
-              model: "claude-3-5-sonnet-20241022",
+              model: MODEL,
               max_tokens: 2048,
               system: systemPrompt,
-              messages: [{ role: "user", content: userQuery }]
+              messages: toAnthropicMessages(messages)
             })
-          });
+          }, 60000);
           const data = await res.json();
-          if (data.content && data.content[0] && data.content[0].text) {
-            return data.content[0].text;
-          }
-          if (data.reply) return data.reply;
+          if (!res.ok) throw new Error(data.error?.message || ('Anthropic HTTP ' + res.status));
+          if (data.content && data.content[0] && data.content[0].text) return data.content[0].text;
         } catch (e) {
-          console.warn("Custom Claude proxy call failed, falling back to direct academic router:", e);
+          console.warn('Direct Anthropic call failed, trying fallback engine:', e);
         }
       }
 
-      // Method 2: High-accuracy AI academic router with Claude-grade persona
-      const promptPayload = systemPrompt + "\n\nStudent Query:\n" + userQuery;
-      const fallbackUrl = `https://text.pollinations.ai/${encodeURIComponent(promptPayload)}?model=openai&seed=42`;
-      
-      const fallbackRes = await fetch(fallbackUrl);
-      if (fallbackRes.ok) {
-        const text = await fallbackRes.text();
-        if (text && text.trim().length > 0) return text;
+      // Method 2: Custom backend proxy (Anthropic-compatible endpoint)
+      if (customEndpoint) {
+        try {
+          const headers = { 'Content-Type': 'application/json' };
+          if (apiKey) {
+            headers['x-api-key'] = apiKey;
+            headers['anthropic-version'] = '2023-06-01';
+          }
+          const res = await fetchWithTimeout(customEndpoint, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+              model: MODEL,
+              max_tokens: 2048,
+              system: systemPrompt,
+              messages: messages
+            })
+          }, 60000);
+          const data = await res.json();
+          if (data.content && data.content[0] && data.content[0].text) return data.content[0].text;
+          if (data.reply) return data.reply;
+        } catch (e) {
+          console.warn('Custom Claude proxy call failed, trying fallback engine:', e);
+        }
       }
 
-      throw new Error("Unable to contact academic engine. Please check your network and settings.");
+      // Method 3: Fallback academic engine — POST (GET on text.pollinations.ai is no longer supported)
+      const payload = {
+        model: 'openai',
+        messages: [{ role: 'system', content: systemPrompt }, ...messages],
+        private: true
+      };
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          const res = await fetchWithTimeout('https://text.pollinations.ai/openai', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          }, 60000);
+          if (!res.ok) throw new Error('Engine HTTP ' + res.status);
+          const data = await res.json();
+          const text = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+          if (text && text.trim().length > 0) return text;
+          throw new Error('Engine returned an empty reply');
+        } catch (e) {
+          console.warn('Fallback attempt ' + attempt + ' failed:', e);
+          if (attempt === 2) {
+            throw new Error('Unable to reach the academic engine. Open Settings and add an Anthropic API key or a Claude proxy endpoint.');
+          }
+        }
+      }
     }
 
     async function sendMessage() {
@@ -1029,7 +1119,10 @@ CRITICAL FORMATTING & CONTENT RULES:
 3. STRUCTURE: Use clear Markdown headings (###), bold key terms, numbered steps, and bullet points.
 4. TABLES: Present classifications and comparative data cleanly using Markdown tables.`;
 
-      const userQuery = `${message}${attachedDocText ? `\n\n[Attached Data/Document]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
+      const userQuery = `${message}${attachedDocText ? `
+
+[Attached Data/Document]:
+${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
         const reply = await executeClaudeQuery(systemPrompt, userQuery);
@@ -1060,7 +1153,14 @@ CRITICAL FORMATTING & CONTENT RULES:
 
       if (role === 'ai') {
         const textDiv = document.createElement('div');
-        textDiv.innerHTML = marked.parse(text);
+        let html = '';
+        try {
+          html = marked.parse(text);
+        } catch (e) {
+          html = '<p>' + String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/
+/g, '<br>') + '</p>';
+        }
+        textDiv.innerHTML = html;
         bubble.appendChild(textDiv);
 
         if (window.renderMathInElement) {
@@ -1068,8 +1168,7 @@ CRITICAL FORMATTING & CONTENT RULES:
             delimiters: [
               { left: '$$', right: '$$', display: true },
               { left: '$', right: '$', display: false },
-              { left: '[', right: ']', display: true },
-              { left: '\\(', right: '\\)', display: false }
+              { left: '\(', right: '\)', display: false }
             ],
             throwOnError: false
           });
