@@ -349,7 +349,6 @@
     .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 8px 12px; text-align: left; }
     .bubble th { background: #f1f5f9; font-weight: 700; color: var(--brand-blue); }
 
-    /* KaTeX Math Styling */
     .katex-display {
       margin: 1rem 0 !important;
       overflow-x: auto;
@@ -632,10 +631,14 @@
   </div>
 
   <script>
+    // Groq API Key
+    const GROQ_API_KEY = "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";
+
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
+    let cachedActiveModels = null;
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -893,53 +896,67 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // High Reliability Multi-Provider Engine with Detailed Formatting
-    async function fetchComprehensiveAnswer(systemPrompt, userQuery) {
-      // 1. DuckDuckGo / OpenAI Gateway Proxy
+    // Dynamic Discovery of currently active Groq text models
+    async function getAvailableGroqModels() {
+      if (cachedActiveModels && cachedActiveModels.length > 0) return cachedActiveModels;
       try {
-        const payload = {
-          model: "gpt-4o-mini",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userQuery }
-          ]
-        };
-
-        const res = await fetch("https://open-ai-chat-proxy.vercel.app/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+        const res = await fetch("https://api.groq.com/openai/v1/models", {
+          headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
         });
-
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.choices && data.choices[0] && data.choices[0].message) {
-            return data.choices[0].message.content;
+        const json = await res.json();
+        if (json.data && Array.isArray(json.data)) {
+          // Filter out whisper (audio), safeguard, and specialized models
+          const textModels = json.data
+            .map(m => m.id)
+            .filter(id => !id.includes("whisper") && !id.includes("guard") && !id.includes("distil") && !id.includes("canopylabs"));
+          
+          if (textModels.length > 0) {
+            cachedActiveModels = textModels;
+            return cachedActiveModels;
           }
         }
-      } catch (err) {
-        console.warn("Primary API routing failed, using secondary router:", err);
+      } catch (e) {
+        console.warn("Could not dynamically query models:", e);
       }
+      return ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
+    }
 
-      // 2. Pollinations Universal Backup with structured formatting
-      const resFallback = await fetch("https://text.pollinations.ai/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userQuery }
-          ],
-          model: "openai",
-          temperature: 0.6
-        })
-      });
+    async function requestGroqChat(systemPrompt, userQuery) {
+      const models = await getAvailableGroqModels();
+      const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
 
-      if (!resFallback.ok) {
-        throw new Error("Server not responding. Please retry.");
+      let lastError = null;
+      for (const model of models) {
+        try {
+          const res = await fetch(targetUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${GROQ_API_KEY}`
+            },
+            body: JSON.stringify({
+              model: model,
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userQuery }
+              ],
+              temperature: 0.5,
+              max_tokens: 1200
+            })
+          });
+
+          const data = await res.json();
+          if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+            return data.choices[0].message.content;
+          }
+          if (data.error) {
+            lastError = data.error.message;
+          }
+        } catch (e) {
+          lastError = e.message;
+        }
       }
-
-      return await resFallback.text();
+      throw new Error(lastError || "Chat request failed.");
     }
 
     async function sendMessage() {
@@ -958,11 +975,11 @@
       if (activeLevel === 'Research / Thesis (APA)') {
         levelPromptInstruction = `Target Level: Advanced Empirical Research & Academic Thesis.
 RULES:
-1. Deliver exhaustive, scholarly paragraphs with seamless academic transitions.
-2. Provide in-text citations like (Strahler, 1952), (Chorley & Haggett, 1967), (Harvey, 1969), (Singh, 2020).
+1. Deliver exhaustive, scholarly paragraphs with clear academic transitions.
+2. Provide in-text citations like (Strahler, 1952), (Singh, 2020), (Harvey, 1969).
 3. Conclude with an APA 7th Edition formatted References list.`;
       } else if (activeLevel === 'School Level') {
-        levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Examination). Keep notes point-wise, crystal clear, concise, and high-scoring.";
+        levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Exam). Keep notes point-wise, crystal clear, concise, and high-scoring.";
       } else if (activeLevel === 'CUET UG/PG') {
         levelPromptInstruction = "Target Level: CUET UG/PG Entrance. Deliver high-yield concise points, seminal theorists, dates, formulas, and shortcut revision pointers.";
       } else if (activeLevel === 'UGC NET/JRF') {
@@ -987,13 +1004,13 @@ CRITICAL FORMATTING & CONTENT RULES:
       const userQuery = `${message}${attachedDocText ? `\n\n[Attached Data/Document]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
-        const reply = await fetchComprehensiveAnswer(systemPrompt, userQuery);
+        const reply = await requestGroqChat(systemPrompt, userQuery);
         removeBubble(loadingId);
         appendMessage('ai', reply);
         clearAttachments();
       } catch (err) {
         removeBubble(loadingId);
-        appendMessage('ai', `⚠️ Notice: Connection issue. Please check your network and ask your question once more.`);
+        appendMessage('ai', `⚠️ Notice: ${err.message}`);
       }
     }
 
