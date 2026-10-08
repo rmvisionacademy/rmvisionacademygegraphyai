@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>R.M. Vision Academy — ROHAMAT AI (Claude Powered)</title>
+  <title>R.M. Vision Academy — ROHAMAT AI</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -322,42 +322,27 @@
     .avatar.user { background: var(--brand-gold); color: #0b2545; font-size: 0.95rem; }
 
     .bubble {
-      background: var(--bg-surface); padding: 1.1rem 1.3rem; border-radius: var(--radius);
-      border: 1px solid var(--border-color); line-height: 1.85; font-size: 1rem; max-width: 90%;
+      background: var(--bg-surface); padding: 0.9rem 1.1rem; border-radius: var(--radius);
+      border: 1px solid var(--border-color); line-height: 1.7; font-size: 0.98rem; max-width: 88%;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04); word-wrap: break-word; overflow-wrap: break-word;
     }
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
-    .bubble p { margin-bottom: 0.85rem; text-align: justify; }
+    .bubble p { margin-bottom: 0.7rem; text-align: justify; }
     .bubble h1, .bubble h2, .bubble h3, .bubble h4 {
-      margin-top: 1.1rem; margin-bottom: 0.5rem; color: var(--brand-blue); font-weight: 700;
+      margin-top: 0.9rem; margin-bottom: 0.4rem; color: var(--brand-blue); font-weight: 700;
     }
     .message-row.user .bubble h1, .message-row.user .bubble h2, .message-row.user .bubble h3 { color: #fff; }
     
-    .bubble ul, .bubble ol {
-      margin-left: 1.4rem;
-      margin-bottom: 0.9rem;
-    }
-    .bubble li {
-      margin-bottom: 0.4rem;
-    }
-
     .bubble table {
-      width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92rem; font-family: 'Times New Roman', serif;
+      width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; font-family: 'Times New Roman', serif;
       display: block; overflow-x: auto;
     }
-    .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 8px 12px; text-align: left; }
-    .bubble th { background: #f1f5f9; font-weight: 700; color: var(--brand-blue); }
-
-    .katex-display {
-      margin: 1rem 0 !important;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 6px 0;
-    }
+    .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 6px 9px; text-align: left; }
+    .bubble th { background: #f1f5f9; font-weight: 700; }
 
     .bubble-actions {
-      display: flex; gap: 8px; margin-top: 0.8rem; padding-top: 0.5rem;
+      display: flex; gap: 8px; margin-top: 0.7rem; padding-top: 0.4rem;
       border-top: 1px solid var(--border-color); font-size: 0.75rem; font-family: Arial, sans-serif;
     }
     .btn-action {
@@ -472,13 +457,12 @@
       .sidebar-backdrop.active { display: block; }
 
       .chat-controls-bar { padding: 0.25rem 0.5rem; }
-      .bubble { max-width: 95%; padding: 0.85rem 0.95rem; font-size: 0.95rem; }
+      .bubble { max-width: 95%; padding: 0.75rem 0.85rem; font-size: 0.95rem; }
       .glossary-layout { flex-direction: column; }
       .subject-nav-list { width: 100%; max-height: 140px; border-right: none; border-bottom: 1px solid var(--border-color); }
       .welcome-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     }
   </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -494,20 +478,17 @@
         <div class="brand-text-block">
           <div class="brand-title">R.M. VISION ACADEMY</div>
           <div class="brand-name-highlight">ROHAMAT AI</div>
-          <div class="brand-subtitle">POWERED BY CLAUDE</div>
+          <div class="brand-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
         </div>
       </div>
     </div>
 
     <div class="header-right">
-      <button class="header-btn" onclick="openConfigModal()" title="Claude API Settings">
-        <i class="fas fa-sliders-h"></i> <span>Settings</span>
-      </button>
       <button class="header-btn" onclick="openGlossaryModal()">
         <i class="fas fa-book-atlas"></i> <span>Keywords</span>
       </button>
 
-      <!-- Profile Badge -->
+      <!-- Rohamat Sir Profile Badge -->
       <div class="sir-highlight-badge">
         <img src="Rohamat_one.png" class="sir-menu-photo" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir">
         <div>
@@ -540,7 +521,7 @@
         <div class="tool-item" onclick="insertPrompt('Explain Koppen Climate Classification with scheme letters and major groups.')">
           <i class="fas fa-temperature-high"></i> Koppen Scheme
         </div>
-        <div class="tool-item" onclick="insertPrompt('Explain False Color Composite (FCC) and NDVI index in Remote Sensing with formula.')">
+        <div class="tool-item" onclick="insertPrompt('Explain False Color Composite (FCC) and NDVI index in Remote Sensing.')">
           <i class="fas fa-satellite"></i> Remote Sensing & NDVI
         </div>
         <div class="tool-item" onclick="openGlossaryModal()">
@@ -576,11 +557,11 @@
 
       <div class="messages-container" id="messagesContainer">
         <div class="welcome-screen" id="welcomeScreen">
-          <div class="welcome-badge"><i class="fas fa-bolt"></i> Claude Architecture Active</div>
+          <div class="welcome-badge">Rohamat AI Classroom</div>
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <p class="welcome-desc">
-            Academic notes, formulas, calculations, and research evaluations powered by Claude. Ask questions or upload files below.
+            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files (Excel, CSV, PDF, Word, Image) below.
           </p>
 
           <div class="quick-tiles-grid">
@@ -617,35 +598,6 @@
     </main>
   </div>
 
-  <!-- CONFIG MODAL FOR BACKEND / ANTHROPIC CLAUDE API -->
-  <div class="modal-overlay" id="configModal">
-    <div class="glossary-modal" style="max-width: 520px; height: auto;">
-      <div class="glossary-header">
-        <h3><i class="fas fa-cog"></i> Claude AI Settings</h3>
-        <button style="background:none;border:none;color:white;cursor:pointer;font-size:1.1rem;" onclick="closeModal('configModal')"><i class="fas fa-times"></i></button>
-      </div>
-      <div style="padding: 1.2rem; font-family: Arial, sans-serif;">
-        <label style="font-size: 0.82rem; font-weight: 700; color: var(--brand-blue); display: block; margin-bottom: 4px;">Claude Proxy or API Endpoint URL:</label>
-        <input type="text" id="claudeEndpointInput" placeholder="https://your-domain.netlify.app/api/chat or proxy URL" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 12px;">
-
-        <label style="font-size: 0.82rem; font-weight: 700; color: var(--brand-blue); display: block; margin-bottom: 4px;">Anthropic API Key (or leave empty if using backend proxy):</label>
-        <input type="password" id="anthropicApiKeyInput" placeholder="sk-ant-api03-..." style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 12px;">
-
-        <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 12px;">
-          Note: If both fields are empty, the app defaults to the integrated intelligent academic engine automatically.
-        </p>
-
-        <button onclick="saveClaudeSettings()" style="background: var(--brand-blue); color: var(--brand-gold); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 8px;">
-          Save Configuration
-        </button>
-        <button onclick="testConnections()" style="background: #1d4ed8; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 8px;">
-          <i class="fas fa-plug"></i> Test Connection
-        </button>
-        <div id="connTestResult" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; display: none;"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- GEOGRAPHY SUBJECT KEYWORDS MODAL -->
   <div class="modal-overlay" id="glossaryModal">
     <div class="glossary-modal">
@@ -664,25 +616,13 @@
   </div>
 
   <script>
+    // Stable Free Production Model on Groq
+    const GROQ_API_KEY = "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";
+
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
-
-    function openConfigModal() {
-      document.getElementById('claudeEndpointInput').value = localStorage.getItem('CLAUDE_ENDPOINT') || '';
-      document.getElementById('anthropicApiKeyInput').value = localStorage.getItem('ANTHROPIC_API_KEY') || '';
-      openModal('configModal');
-    }
-
-    function saveClaudeSettings() {
-      const ep = document.getElementById('claudeEndpointInput').value.trim();
-      const key = document.getElementById('anthropicApiKeyInput').value.trim();
-      localStorage.setItem('CLAUDE_ENDPOINT', ep);
-      localStorage.setItem('ANTHROPIC_API_KEY', key);
-      closeModal('configModal');
-      alert('Claude settings saved.');
-    }
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -830,11 +770,10 @@
       container.innerHTML = '';
       const list = geographyGlossaryData[subject] || [];
       list.forEach(k => {
-        const safeTerm = k.term.replace(/\/g, '\\').replace(/'/g, "\'");
         const card = document.createElement('div');
         card.className = 'kw-card';
         card.innerHTML = `
-          <div class="kw-title"><span>${k.term}</span> <button class="btn-action" onclick="askAboutTerm('${safeTerm}')"><i class="fas fa-search"></i> Learn</button></div>
+          <div class="kw-title"><span>${k.term}</span> <button class="btn-action" onclick="askAboutTerm('${k.term}')"><i class="fas fa-search"></i> Learn</button></div>
           <div class="kw-bengali">বাংলা: ${k.bn}</div>
           <div class="kw-desc">${k.desc}</div>
         `;
@@ -844,7 +783,7 @@
 
     function askAboutTerm(term) {
       closeModal('glossaryModal');
-      insertPrompt(`Explain ${term} in Geography with key concepts, definitions, mathematical formulas (if applicable), and real geographical examples.`);
+      insertPrompt(`Explain ${term} in Geography with key concepts, definitions, and real examples.`);
       sendMessage();
     }
 
@@ -906,8 +845,7 @@
           for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
             const page = await pdf.getPage(i);
             const content = await page.getTextContent();
-            text += content.items.map(s => s.str).join(' ') + '
-';
+            text += content.items.map(s => s.str).join(' ') + '\n';
           }
           attachedDocText = text;
           showAttachmentChip(file.name, 'file-pdf');
@@ -917,9 +855,7 @@
           let spreadsheetData = '';
           workbook.SheetNames.forEach(sheetName => {
             const csv = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
-            spreadsheetData += `[Sheet: ${sheetName}]
-` + csv + '
-';
+            spreadsheetData += `[Sheet: ${sheetName}]\n` + csv + '\n';
           });
           attachedDocText = spreadsheetData;
           showAttachmentChip(file.name, 'file-excel');
@@ -944,194 +880,43 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // ==== CONNECTION DIAGNOSTICS ====
-    async function testConnections() {
-      const box = document.getElementById('connTestResult');
-      box.style.display = 'block';
-      const ep = (document.getElementById('claudeEndpointInput').value || '').trim();
-      const key = (document.getElementById('anthropicApiKeyInput').value || '').trim();
-      const lines = [];
-      const add = (ok, name, extra) => lines.push((ok ? '✅' : '❌') + ' ' + name + (extra ? ' — ' + extra : ''));
+    // Call Groq production models with fallback
+    async function requestGroqChat(systemPrompt, userQuery) {
+      const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
+      const models = ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
 
-      if (!navigator.onLine) add(false, 'Browser internet', 'device appears offline');
-
-      // 1. Direct Anthropic
-      if (key && !ep) {
+      let lastError = null;
+      for (const model of models) {
         try {
-          const r = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-            body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 10, messages: [{ role: 'user', content: 'hi' }] })
-          }, 20000);
-          add(r.ok || r.status === 400 || r.status === 401, 'Anthropic API direct', 'HTTP ' + r.status);
-        } catch (e) { add(false, 'Anthropic API direct', e.message); }
-      } else { add(false, 'Anthropic API direct', 'no API key entered'); }
-
-      // 2. Custom proxy
-      if (ep) {
-        try {
-          const r = await fetchWithTimeout(ep, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 10, messages: [{ role: 'user', content: 'hi' }] }) }, 20000);
-          add(r.ok, 'Your proxy endpoint', 'HTTP ' + r.status);
-        } catch (e) { add(false, 'Your proxy endpoint', e.message); }
-      } else { add(false, 'Your proxy endpoint', 'no endpoint URL entered'); }
-
-      // 3. Pollinations POST
-      try {
-        const r = await fetchWithTimeout('https://text.pollinations.ai/openai', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model: 'openai', messages: [{ role: 'user', content: 'Say OK' }] })
-        }, 25000);
-        add(r.ok, 'Free engine (POST)', 'HTTP ' + r.status);
-      } catch (e) { add(false, 'Free engine (POST)', e.message); }
-
-      // 4. Pollinations GET
-      try {
-        const r = await fetchWithTimeout('https://text.pollinations.ai/' + encodeURIComponent('Say OK') + '?model=openai', {}, 25000);
-        add(r.ok, 'Free engine (GET)', 'HTTP ' + r.status);
-      } catch (e) { add(false, 'Free engine (GET)', e.message); }
-
-      box.innerHTML = '<b>Connection test:</b><br>' + lines.join('<br>');
-    }
-
-    // ==== NETWORK HELPERS ====
-    async function fetchWithTimeout(url, options = {}, ms = 45000) {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), ms);
-      try {
-        return await fetch(url, { ...options, signal: ctrl.signal });
-      } finally {
-        clearTimeout(timer);
-      }
-    }
-
-    // Build a proper messages array (image included) instead of concatenating strings
-    function buildMessages(userQuery) {
-      const text = userQuery || 'Please analyse the attached image.';
-      if (attachedImageBase64) {
-        return [{
-          role: 'user',
-          content: [
-            { type: 'image_url', image_url: { url: attachedImageBase64 } },
-            { type: 'text', text: text }
-          ]
-        }];
-      }
-      return [{ role: 'user', content: text }];
-    }
-
-    // Convert OpenAI-style content blocks to Anthropic-style blocks
-    function toAnthropicMessages(messages) {
-      return messages.map(m => {
-        if (typeof m.content === 'string') return m;
-        return {
-          role: m.role,
-          content: m.content.map(block => {
-            if (block.type === 'image_url') {
-              const dataUrl = block.image_url.url;
-              const mediaType = dataUrl.slice(5, dataUrl.indexOf(';'));
-              const data = dataUrl.slice(dataUrl.indexOf(',') + 1);
-              return { type: 'image', source: { type: 'base64', media_type: mediaType, data: data } };
-            }
-            return { type: 'text', text: block.text };
-          })
-        };
-      });
-    }
-
-    // CLAUDE DISPATCHER: direct API -> proxy -> fallback engine
-    async function executeClaudeQuery(systemPrompt, userQuery) {
-      const customEndpoint = localStorage.getItem('CLAUDE_ENDPOINT');
-      const apiKey = localStorage.getItem('ANTHROPIC_API_KEY');
-      const messages = buildMessages(userQuery);
-      const MODEL = 'claude-sonnet-4-20250514';
-
-      // Method 1: Direct Anthropic API (API key set, no proxy endpoint)
-      if (apiKey && !customEndpoint) {
-        try {
-          const res = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
+          const res = await fetch(targetUrl, {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': apiKey,
-              'anthropic-version': '2023-06-01',
-              'anthropic-dangerous-direct-browser-access': 'true'
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${GROQ_API_KEY}`
             },
             body: JSON.stringify({
-              model: MODEL,
-              max_tokens: 2048,
-              system: systemPrompt,
-              messages: toAnthropicMessages(messages)
+              model: model,
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userQuery }
+              ],
+              temperature: 0.6,
+              max_tokens: 1500
             })
-          }, 60000);
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error?.message || ('Anthropic HTTP ' + res.status));
-          if (data.content && data.content[0] && data.content[0].text) return data.content[0].text;
-        } catch (e) {
-          console.warn('Direct Anthropic call failed, trying fallback engine:', e);
-        }
-      }
+          });
 
-      // Method 2: Custom backend proxy (Anthropic-compatible endpoint)
-      if (customEndpoint) {
-        try {
-          const headers = { 'Content-Type': 'application/json' };
-          if (apiKey) {
-            headers['x-api-key'] = apiKey;
-            headers['anthropic-version'] = '2023-06-01';
+          const data = await res.json();
+          if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+            return data.choices[0].message.content;
           }
-          const res = await fetchWithTimeout(customEndpoint, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-              model: MODEL,
-              max_tokens: 2048,
-              system: systemPrompt,
-              messages: messages
-            })
-          }, 60000);
-          const data = await res.json();
-          if (data.content && data.content[0] && data.content[0].text) return data.content[0].text;
-          if (data.reply) return data.reply;
+          if (data.error) {
+            lastError = data.error.message;
+          }
         } catch (e) {
-          console.warn('Custom Claude proxy call failed, trying fallback engine:', e);
+          lastError = e.message;
         }
       }
-
-      // Method 3: Fallback academic engine (POST first, then legacy GET as last resort)
-      const fullTextQuery = systemPrompt + "\n\nStudent Query:\n" + (typeof messages[0].content === 'string' ? messages[0].content : '[image attached]');
-      const payload = {
-        model: 'openai',
-        messages: [{ role: 'system', content: systemPrompt }, ...messages],
-        private: true
-      };
-      // 3a. POST to the OpenAI-compatible endpoint, 2 attempts
-      for (let attempt = 1; attempt <= 2; attempt++) {
-        try {
-          const res = await fetchWithTimeout('https://text.pollinations.ai/openai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          }, 60000);
-          if (!res.ok) throw new Error('Engine HTTP ' + res.status);
-          const data = await res.json();
-          const text = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
-          if (text && text.trim().length > 0) return text;
-          throw new Error('Engine returned an empty reply');
-        } catch (e) {
-          console.warn('Fallback POST attempt ' + attempt + ' failed:', e);
-        }
-      }
-      // 3b. Legacy GET endpoint (works in some regions where POST is blocked)
-      try {
-        const res = await fetchWithTimeout('https://text.pollinations.ai/' + encodeURIComponent(fullTextQuery) + '?model=openai', {}, 60000);
-        if (res.ok) {
-          const text = await res.text();
-          if (text && text.trim().length > 0 && !text.toLowerCase().includes('error')) return text;
-        }
-      } catch (e) {
-        console.warn('Fallback GET failed:', e);
-      }
-      throw new Error('All engines unreachable. Open Settings and add an Anthropic API key or a Claude proxy endpoint.');
+      throw new Error(lastError || "Chat request failed.");
     }
 
     async function sendMessage() {
@@ -1148,53 +933,35 @@
 
       let levelPromptInstruction = "";
       if (activeLevel === 'Research / Thesis (APA)') {
-        levelPromptInstruction = `Target Level: Advanced Empirical Research & Academic Thesis.
-RULES:
-1. Deliver exhaustive, scholarly paragraphs with seamless academic transitions.
-2. Provide authoritative in-text citations like (Strahler, 1952), (Singh, 2020), (Harvey, 1969).
-3. Conclude with an APA 7th Edition formatted References list.`;
+        levelPromptInstruction = `Target Level: Advanced Empirical Research, Spatial Data Evaluation & Academic Thesis. Deliver structured scholarly paragraphs with academic citations and an APA 7th Edition References section.`;
       } else if (activeLevel === 'School Level') {
-        levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Examination). Keep notes point-wise, crystal clear, concise, and high-scoring.";
+        levelPromptInstruction = "Target Level: School Level (Class 9-12). Keep notes strictly point-wise, concise, and high-scoring.";
       } else if (activeLevel === 'CUET UG/PG') {
-        levelPromptInstruction = "Target Level: CUET UG/PG Entrance. Deliver high-yield concise points, seminal theorists, dates, formulas, and shortcut revision pointers.";
+        levelPromptInstruction = "Target Level: CUET UG/PG Entrance. Deliver concise definitions, seminal theorists, publication years, and core points.";
       } else if (activeLevel === 'UGC NET/JRF') {
-        levelPromptInstruction = "Target Level: UGC NET / JRF. Provide rigorous academic depth, assertions, reasons, theorists, publication years, and core concepts.";
+        levelPromptInstruction = "Target Level: UGC NET / JRF. Provide rigorous academic points, seminal geographers/works, assertion-reason concepts.";
       } else {
-        levelPromptInstruction = "Target Level: Undergraduate & Postgraduate (UG/PG) Degree. Deliver comprehensive academic notes: Core Definition → Key Characteristics → Scientific/Geographic Mechanics → Regional Examples → Significance.";
+        levelPromptInstruction = "Target Level: Undergraduate & Postgraduate (UG/PG) Degree. Deliver comprehensive academic notes: Core Definition → Key Characteristics → Scientific/Geographic Mechanics → Regional Examples → Geographical Significance.";
       }
 
-      const systemPrompt = `You are Rohamat Sir, Geography Academic Specialist and Academic Director of R.M. Vision Academy.
-
-CRITICAL OPENING RULE:
-Always start your very first sentence with:
-"আসসালামু আলাইকুম, R.M. Vision Academy-তে স্বাগতম।"
-(Then immediately present the complete, standard answer).
-
+      const systemPrompt = `Role: Rohamat Sir (Geography Academic Specialist and Director at R.M. Vision Academy).
 ${levelPromptInstruction}
-Language: ${language} (Write in high standard academic tone. If Bengali mode, write natural, fluent, grammatical Bengali with technical geography terms in English inside parentheses).
+Language: ${language} (Write in clear academic style. In Bengali mode, keep technical geography terms in English within parentheses).
 
-CRITICAL FORMATTING & CONTENT RULES:
-1. STRICT TEXT QUALITY: Write complete, textbook-grade academic notes. Never loop or repeat broken phrases.
-2. FORMULAS IN BEAUTIFUL LATEX: If any mathematical, statistical, or geographical formula/index is involved (e.g., NDVI, Nearest Neighbour Rn, Albedo, Crop Diversification, Lorenz Curve, Water Balance, etc.), ALWAYS format them using proper LaTeX:
-   - Standalone equations: $$Formula$$
-   - Inline variables: $x$
-   - Clearly explain each term and geographic application.
-3. STRUCTURE: Use clear Markdown headings (###), bold key terms, numbered steps, and bullet points.
-4. TABLES: Present classifications and comparative data cleanly using Markdown tables.`;
+STRICT GUIDELINES:
+1. Explain geographic concepts clearly, rigorously, and comprehensively.
+2. Provide complete educational notes without truncation.`;
 
-      const userQuery = `${message}${attachedDocText ? `
-
-[Attached Data/Document]:
-${attachedDocText.slice(0, 10000)}` : ''}`;
+      const userQuery = `${message}${attachedDocText ? `\n\n[Attached File / Data]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
-        const reply = await executeClaudeQuery(systemPrompt, userQuery);
+        const reply = await requestGroqChat(systemPrompt, userQuery);
         removeBubble(loadingId);
         appendMessage('ai', reply);
         clearAttachments();
       } catch (err) {
         removeBubble(loadingId);
-        appendMessage('ai', `⚠️ Notice: ${err.message}\n\n👉 Open **Settings → Test Connection** to see exactly which engine is failing.`);
+        appendMessage('ai', `⚠️ Notice: ${err.message}`);
       }
     }
 
@@ -1216,22 +983,14 @@ ${attachedDocText.slice(0, 10000)}` : ''}`;
 
       if (role === 'ai') {
         const textDiv = document.createElement('div');
-        let html = '';
-        try {
-          html = marked.parse(text);
-        } catch (e) {
-          html = '<p>' + String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/
-/g, '<br>') + '</p>';
-        }
-        textDiv.innerHTML = html;
+        textDiv.innerHTML = marked.parse(text);
         bubble.appendChild(textDiv);
 
         if (window.renderMathInElement) {
           renderMathInElement(bubble, {
             delimiters: [
               { left: '$$', right: '$$', display: true },
-              { left: '$', right: '$', display: false },
-              { left: '\(', right: '\)', display: false }
+              { left: '$', right: '$', display: false }
             ],
             throwOnError: false
           });
@@ -1263,7 +1022,7 @@ ${attachedDocText.slice(0, 10000)}` : ''}`;
       row.innerHTML = `
         <div class="avatar ai"><img src="Rohamat_one.png" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir"></div>
         <div class="bubble" style="display:flex;gap:8px;align-items:center;">
-          <div class="spinner"></div><span>Rohamat Sir is preparing detailed study notes...</span>
+          <div class="spinner"></div><span>Rohamat Sir is analyzing your query...</span>
         </div>
       `;
       container.appendChild(row);
