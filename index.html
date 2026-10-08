@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>R.M. Vision Academy — ROHAMAT AI</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
-  <!-- Document & Spreadsheet Parsers (PDF, DOCX, XLSX/CSV) -->
+  <!-- Document & Spreadsheet Parsers -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -34,19 +34,7 @@
       --text-muted: #4b5563;
       --border-color: #cbd5e1;
       --radius: 8px;
-      --transition: all 0.2s ease;
-    }
-
-    [data-theme="dark"] {
-      --bg-primary: #0b1120;
-      --bg-surface: #131c31;
-      --bg-sidebar: #070c18;
-      --brand-blue: #1a365d;
-      --brand-gold: #f59e0b;
-      --brand-gold-light: #2c2512;
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --border-color: #334155;
+      --transition: all 0.25s ease;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,54 +50,76 @@
       font-size: 16px;
     }
 
+    /* Academy Top Header */
     .academy-header {
       background: var(--brand-blue);
       color: white;
-      height: 76px;
+      min-height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.25rem;
+      padding: 0.5rem 1rem;
       border-bottom: 2px solid var(--brand-gold);
       flex-shrink: 0;
       z-index: 50;
+      gap: 8px;
     }
 
-    .brand-wrap { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-toggle-btn {
+      display: none;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--brand-gold);
+      font-size: 1.25rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .brand-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
     .brand-logo-img {
-      width: 48px; height: 48px; border-radius: 50%;
-      object-fit: cover; border: 2px solid var(--brand-gold); background: white;
+      width: 44px; height: 44px; border-radius: 50%;
+      object-fit: cover; border: 2px solid var(--brand-gold); background: white; flex-shrink: 0;
     }
     .brand-text-block { display: flex; flex-direction: column; }
-    .brand-title { font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 700; color: #fff; line-height: 1.1; }
-    .brand-name-highlight { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 800; color: var(--brand-gold); }
-    .brand-subtitle { font-size: 0.68rem; color: #e2e8f0; font-weight: 600; text-transform: uppercase; font-family: Arial, sans-serif; }
+    .brand-title { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 700; color: #fff; line-height: 1.1; }
+    .brand-name-highlight { font-family: 'Cinzel', serif; font-size: 0.88rem; font-weight: 800; color: var(--brand-gold); }
+    .brand-subtitle { font-size: 0.62rem; color: #e2e8f0; font-weight: 600; text-transform: uppercase; font-family: Arial, sans-serif; }
 
-    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    
     .sir-highlight-badge {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 6px;
       background: rgba(218, 165, 32, 0.15); border: 1.5px solid var(--brand-gold);
-      padding: 4px 12px 4px 5px; border-radius: 30px;
+      padding: 3px 8px 3px 4px; border-radius: 30px;
     }
-    .sir-menu-photo { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; }
-    .sir-name-text { font-size: 0.85rem; font-weight: 700; color: #fff; font-family: 'Cinzel', serif; }
-    .sir-sub-text { font-size: 0.65rem; color: var(--brand-gold); font-weight: 600; font-family: Arial, sans-serif; }
+    .sir-menu-photo { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; }
+    .sir-name-text { font-size: 0.78rem; font-weight: 700; color: #fff; font-family: 'Cinzel', serif; }
+    .sir-sub-text { font-size: 0.6rem; color: var(--brand-gold); font-weight: 600; font-family: Arial, sans-serif; }
 
     .header-btn {
       background: rgba(255,255,255,0.08); color: white;
-      border: 1px solid rgba(255,255,255,0.18); padding: 0.45rem 0.85rem;
-      border-radius: 6px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px;
+      border: 1px solid rgba(255,255,255,0.18); padding: 0.4rem 0.7rem;
+      border-radius: 6px; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 5px;
       font-family: Arial, sans-serif;
     }
     .header-btn:hover { background: rgba(218, 165, 32, 0.25); border-color: var(--brand-gold); }
 
-    .app-container { display: flex; flex: 1; height: calc(100vh - 76px); overflow: hidden; }
+    .app-container { display: flex; flex: 1; height: calc(100vh - 70px); overflow: hidden; position: relative; }
+    
+    /* Sidebar */
     .sidebar {
-      width: 290px; background: var(--bg-sidebar); color: #cbd5e1;
+      width: 280px; background: var(--bg-sidebar); color: #cbd5e1;
       display: flex; flex-direction: column; border-right: 1px solid var(--border-color); flex-shrink: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, sans-serif; transition: var(--transition); z-index: 40;
     }
-    .sidebar-header { padding: 0.8rem; display: flex; gap: 6px; }
+    .sidebar-header { padding: 0.75rem; display: flex; gap: 6px; }
     .tool-list { display: flex; flex-direction: column; gap: 3px; padding: 0.5rem; overflow-y: auto; }
     .tool-item {
       display: flex; align-items: center; gap: 9px; padding: 0.6rem 0.75rem;
@@ -118,16 +128,23 @@
     .tool-item:hover { background: rgba(255,255,255,0.08); color: white; }
     .tool-item i { color: var(--brand-gold); width: 16px; text-align: center; }
 
-    .chat-view { flex: 1; display: flex; flex-direction: column; background: var(--bg-primary); }
+    .sidebar-backdrop {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 35;
+    }
+
+    .chat-view { flex: 1; display: flex; flex-direction: column; background: var(--bg-primary); overflow: hidden; }
+    
     .chat-controls-bar {
       min-height: 48px; background: var(--bg-surface); border-bottom: 1px solid var(--border-color);
-      display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 1.25rem; flex-wrap: wrap; gap: 8px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 1rem; flex-wrap: wrap; gap: 8px;
       font-family: Arial, sans-serif;
     }
-    .level-pills { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .level-pills { display: flex; gap: 6px; align-items: center; overflow-x: auto; max-width: 100%; padding-bottom: 2px; }
+    .level-pills::-webkit-scrollbar { display: none; }
     .level-btn {
       border: 1px solid var(--border-color); background: var(--bg-primary);
-      padding: 4px 10px; font-size: 0.76rem; border-radius: 14px; cursor: pointer; font-weight: 600; color: var(--text-muted);
+      padding: 4px 10px; font-size: 0.75rem; border-radius: 14px; cursor: pointer; font-weight: 600; color: var(--text-muted);
+      white-space: nowrap; flex-shrink: 0;
     }
     .level-btn.active { background: var(--brand-blue); color: var(--brand-gold); border-color: var(--brand-gold); }
     .level-btn.research-mode { border: 1.5px solid #2563eb; color: #1d4ed8; }
@@ -135,98 +152,96 @@
 
     .badge-select {
       background: var(--bg-primary); border: 1px solid var(--border-color);
-      color: var(--text-main); font-size: 0.82rem; padding: 0.3rem 0.6rem; border-radius: 6px; font-family: inherit;
+      color: var(--text-main); font-size: 0.78rem; padding: 0.25rem 0.5rem; border-radius: 6px; font-family: inherit;
     }
 
-    .messages-container { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
-    .welcome-screen { max-width: 840px; margin: auto; text-align: center; padding: 1.5rem 1rem; }
+    .messages-container { flex: 1; overflow-y: auto; padding: 1.25rem 1rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .welcome-screen { max-width: 840px; margin: auto; text-align: center; padding: 1.5rem 0.5rem; }
     .welcome-badge {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--brand-gold-light); color: #925f00; padding: 0.3rem 0.9rem;
       border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.6rem; font-family: Arial, sans-serif;
     }
-    .welcome-title { font-family: 'Cinzel', serif; font-size: 2.1rem; color: var(--brand-blue); }
-    .welcome-highlight-name { font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 800; color: var(--brand-gold); margin-bottom: 0.2rem; }
-    .welcome-subtitle { font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.8rem; text-transform: uppercase; font-family: Arial, sans-serif; }
-    .welcome-desc { color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .welcome-title { font-family: 'Cinzel', serif; font-size: 1.7rem; color: var(--brand-blue); }
+    .welcome-highlight-name { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 800; color: var(--brand-gold); margin-bottom: 0.2rem; }
+    .welcome-subtitle { font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.8rem; text-transform: uppercase; font-family: Arial, sans-serif; }
+    .welcome-desc { color: var(--text-muted); font-size: 0.98rem; line-height: 1.6; margin-bottom: 1.5rem; }
 
-    .quick-tiles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; font-family: Arial, sans-serif; }
+    .quick-tiles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; font-family: Arial, sans-serif; }
     .quick-tile {
       background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius);
-      padding: 0.9rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 0.85rem; font-weight: 600;
+      padding: 0.8rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600;
     }
     .quick-tile:hover { border-color: var(--brand-gold); transform: translateY(-2px); }
-    .quick-tile i { font-size: 1.3rem; color: var(--brand-gold); }
+    .quick-tile i { font-size: 1.2rem; color: var(--brand-gold); }
 
-    .message-row { display: flex; gap: 12px; max-width: 950px; width: 100%; margin: 0 auto; }
+    .message-row { display: flex; gap: 10px; max-width: 950px; width: 100%; margin: 0 auto; }
     .message-row.user { flex-direction: row-reverse; }
     .avatar {
-      width: 44px; height: 44px; border-radius: 50%; display: flex;
+      width: 40px; height: 40px; border-radius: 50%; display: flex;
       align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;
       border: 2px solid var(--brand-gold); background: #fff;
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .avatar.user { background: var(--brand-gold); color: #0b2545; font-size: 1.1rem; }
+    .avatar.user { background: var(--brand-gold); color: #0b2545; font-size: 1rem; }
 
     .bubble {
-      background: var(--bg-surface); padding: 1.25rem 1.5rem; border-radius: var(--radius);
-      border: 1px solid var(--border-color); line-height: 1.85; font-size: 1.06rem; max-width: 88%;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      background: var(--bg-surface); padding: 1.1rem 1.25rem; border-radius: var(--radius);
+      border: 1px solid var(--border-color); line-height: 1.8; font-size: 1.02rem; max-width: 88%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04); word-wrap: break-word; overflow-wrap: break-word;
     }
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
-    .bubble p { margin-bottom: 1rem; text-align: justify; text-justify: inter-word; }
+    .bubble p { margin-bottom: 0.8rem; text-align: justify; }
     .bubble h1, .bubble h2, .bubble h3, .bubble h4 {
-      margin-top: 1.2rem; margin-bottom: 0.6rem; color: var(--brand-blue); font-weight: 700;
+      margin-top: 1rem; margin-bottom: 0.5rem; color: var(--brand-blue); font-weight: 700;
     }
     .message-row.user .bubble h1, .message-row.user .bubble h2, .message-row.user .bubble h3 { color: #fff; }
     
     .bubble table {
-      width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.96rem; font-family: 'Times New Roman', serif;
+      width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.92rem; font-family: 'Times New Roman', serif;
+      display: block; overflow-x: auto;
     }
-    .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 9px 12px; text-align: left; }
+    .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 7px 10px; text-align: left; }
     .bubble th { background: #f1f5f9; font-weight: 700; }
-    .bubble blockquote {
-      border-left: 4px solid var(--brand-gold); padding-left: 14px; margin: 14px 0; color: var(--text-muted); font-style: italic;
-    }
 
     .bubble-actions {
-      display: flex; gap: 8px; margin-top: 0.9rem; padding-top: 0.5rem;
-      border-top: 1px solid var(--border-color); font-size: 0.8rem; font-family: Arial, sans-serif;
+      display: flex; gap: 8px; margin-top: 0.8rem; padding-top: 0.5rem;
+      border-top: 1px solid var(--border-color); font-size: 0.78rem; font-family: Arial, sans-serif;
     }
     .btn-action {
       background: none; border: none; color: var(--text-muted); cursor: pointer;
-      display: flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px;
+      display: flex; align-items: center; gap: 4px; padding: 3px 6px; border-radius: 4px;
     }
-    .btn-action:hover { background: var(--bg-primary); color: var(--brand-blue); font-weight: 600; }
+    .btn-action:hover { background: var(--bg-primary); color: var(--brand-blue); }
 
-    .input-dock { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 0.75rem 1.25rem; font-family: Arial, sans-serif; }
+    .input-dock { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 0.65rem 1rem; font-family: Arial, sans-serif; }
     .dock-container { max-width: 950px; margin: 0 auto; }
     
     .file-attachment-chip {
       display: inline-flex; align-items: center; gap: 6px;
       background: var(--brand-gold-light); color: #855300; border: 1px solid var(--brand-gold);
-      padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; margin-bottom: 6px; font-weight: 600;
+      padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; margin-bottom: 6px; font-weight: 600;
     }
     .file-attachment-chip i.fa-times { cursor: pointer; }
 
     .input-box-wrapper {
       display: flex; background: var(--bg-primary); border: 1.5px solid var(--border-color);
-      border-radius: 28px; padding: 5px 14px; align-items: center; gap: 6px;
+      border-radius: 28px; padding: 4px 12px; align-items: center; gap: 6px;
     }
     .input-box-wrapper:focus-within { border-color: var(--brand-gold); }
     #chatInput {
-      flex: 1; border: none; background: transparent; font-size: 1rem; outline: none; resize: none;
+      flex: 1; border: none; background: transparent; font-size: 0.96rem; outline: none; resize: none;
       font-family: 'Times New Roman', serif;
     }
     .dock-btn {
-      width: 34px; height: 34px; border-radius: 50%; border: none;
+      width: 32px; height: 32px; border-radius: 50%; border: none;
       background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center;
     }
     .dock-btn:hover { color: var(--brand-gold); }
     .btn-send { background: var(--brand-blue); color: var(--brand-gold); }
 
-    /* Glossary Modal */
+    /* Modals */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(11, 23, 44, 0.65);
       backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 1rem;
@@ -237,54 +252,114 @@
       height: 85vh; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden;
     }
     .glossary-header {
-      background: var(--brand-blue); color: white; padding: 0.9rem 1.25rem;
+      background: var(--brand-blue); color: white; padding: 0.8rem 1rem;
       display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--brand-gold);
       font-family: Arial, sans-serif;
     }
     .glossary-layout { display: flex; flex: 1; overflow: hidden; }
     .subject-nav-list {
-      width: 320px; background: var(--bg-primary); border-right: 1px solid var(--border-color);
+      width: 300px; background: var(--bg-primary); border-right: 1px solid var(--border-color);
       overflow-y: auto; padding: 0.5rem; display: flex; flex-direction: column; gap: 3px; font-family: Arial, sans-serif;
     }
     .subject-nav-item {
-      padding: 0.55rem 0.75rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600;
-      cursor: pointer; color: var(--text-main); transition: var(--transition);
+      padding: 0.55rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; color: var(--text-main);
     }
     .subject-nav-item:hover, .subject-nav-item.active {
       background: var(--brand-blue); color: var(--brand-gold);
     }
-    .keyword-display-panel { flex: 1; padding: 1.25rem; overflow-y: auto; background: var(--bg-surface); }
+    .keyword-display-panel { flex: 1; padding: 1rem; overflow-y: auto; background: var(--bg-surface); }
     .kw-card {
       background: var(--bg-primary); border-left: 4px solid var(--brand-gold);
-      padding: 0.75rem 0.95rem; border-radius: 6px; margin-bottom: 0.65rem;
+      padding: 0.7rem 0.85rem; border-radius: 6px; margin-bottom: 0.6rem;
     }
-    .kw-title { font-weight: 700; color: var(--brand-blue); font-size: 0.95rem; display: flex; justify-content: space-between; font-family: Arial, sans-serif; }
-    .kw-bengali { font-size: 0.88rem; color: #7c2d12; font-weight: 600; margin-top: 2px; }
-    .kw-desc { font-size: 0.92rem; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+    .kw-title { font-weight: 700; color: var(--brand-blue); font-size: 0.9rem; display: flex; justify-content: space-between; font-family: Arial, sans-serif; }
+    .kw-bengali { font-size: 0.84rem; color: #7c2d12; font-weight: 600; margin-top: 2px; }
+    .kw-desc { font-size: 0.88rem; color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
 
     .spinner {
       width: 18px; height: 18px; border: 3px solid rgba(218, 165, 32, 0.3);
       border-radius: 50%; border-top-color: var(--brand-gold); animation: spin 1s infinite linear;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ==========================================================
+       MOBILE RESPONSIVE MEDIA QUERIES (Fix for Screen Overlap)
+       ========================================================== */
+    @media (max-width: 768px) {
+      .menu-toggle-btn { display: block; }
+      
+      .brand-title { font-size: 0.8rem; }
+      .brand-name-highlight { font-size: 0.75rem; }
+      .brand-subtitle { font-size: 0.55rem; }
+      .brand-logo-img { width: 36px; height: 36px; }
+
+      .header-right .header-btn span { display: none; }
+      .header-right .header-btn { padding: 0.4rem 0.5rem; }
+      
+      .sir-name-text { font-size: 0.7rem; }
+      .sir-sub-text { font-size: 0.55rem; }
+      .sir-menu-photo { width: 28px; height: 28px; }
+
+      /* Mobile Drawer Sidebar */
+      .sidebar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 16px rgba(0,0,0,0.4);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar-backdrop.active {
+        display: block;
+      }
+
+      .chat-controls-bar {
+        padding: 0.3rem 0.6rem;
+      }
+      .bubble {
+        max-width: 94%;
+        padding: 0.9rem 1rem;
+        font-size: 0.98rem;
+      }
+
+      .glossary-layout {
+        flex-direction: column;
+      }
+      .subject-nav-list {
+        width: 100%;
+        max-height: 180px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
   <header class="academy-header">
-    <div class="brand-wrap" onclick="resetToWelcome()">
-      <img src="logo.jpg" class="brand-logo-img" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/2784/2784403.png';" alt="Logo">
-      <div class="brand-text-block">
-        <div class="brand-title">R.M. VISION ACADEMY</div>
-        <div class="brand-name-highlight">ROHAMAT AI</div>
-        <div class="brand-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
+    <div class="header-left">
+      <button class="menu-toggle-btn" onclick="toggleMobileSidebar()" title="Toggle Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="brand-wrap" onclick="resetToWelcome()">
+        <img src="logo.jpg" class="brand-logo-img" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/2784/2784403.png';" alt="Logo">
+        <div class="brand-text-block">
+          <div class="brand-title">R.M. VISION ACADEMY</div>
+          <div class="brand-name-highlight">ROHAMAT AI</div>
+          <div class="brand-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
+        </div>
       </div>
     </div>
 
     <div class="header-right">
       <button class="header-btn" onclick="openGlossaryModal()">
-        <i class="fas fa-book-atlas"></i> <span>Subject Keywords</span>
+        <i class="fas fa-book-atlas"></i> <span>Keywords</span>
       </button>
 
       <!-- Rohamat Sir Profile Badge -->
@@ -292,15 +367,17 @@
         <img src="Rohamat_one.png" class="sir-menu-photo" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir">
         <div>
           <div class="sir-name-text">Rohamat Sir</div>
-          <div class="sir-sub-text">Academic Director</div>
+          <div class="sir-sub-text">Director</div>
         </div>
       </div>
     </div>
   </header>
 
   <div class="app-container">
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
+
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="appSidebar">
       <div class="sidebar-header">
         <button class="header-btn" style="flex:1;" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
         <button class="header-btn" onclick="openGlossaryModal()" title="Keyword Meanings"><i class="fas fa-book"></i></button>
@@ -333,8 +410,8 @@
     <!-- CHAT VIEW -->
     <main class="chat-view">
       <div class="chat-controls-bar">
-        <div style="display:flex;align-items:center;gap:6px;">
-          <label style="font-weight:700;font-size:0.8rem;"><i class="fas fa-graduation-cap"></i> Academic Level:</label>
+        <div style="display:flex;align-items:center;gap:6px;max-width:100%;overflow-x:auto;">
+          <label style="font-weight:700;font-size:0.75rem;white-space:nowrap;"><i class="fas fa-graduation-cap"></i> Level:</label>
           <div class="level-pills">
             <button class="level-btn" onclick="setLevel('School Level', this)">School (9-12)</button>
             <button class="level-btn" onclick="setLevel('CUET UG/PG', this)">CUET UG/PG</button>
@@ -347,9 +424,8 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:6px;">
-          <label style="font-weight:700;font-size:0.8rem;"><i class="fas fa-language"></i> Language:</label>
           <select class="badge-select" id="languageMode">
-            <option value="Bilingual">Bilingual (Bengali + English Terms)</option>
+            <option value="Bilingual">Bilingual (বাংলা + English)</option>
             <option value="Bengali">Pure Bengali (বাংলা)</option>
             <option value="English">Academic English</option>
           </select>
@@ -358,7 +434,7 @@
 
       <div class="messages-container" id="messagesContainer">
         <div class="welcome-screen" id="welcomeScreen">
-          <div class="welcome-badge">Times New Roman Academic Edition</div>
+          <div class="welcome-badge">Mobile Responsive Edition</div>
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <div class="welcome-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
@@ -388,8 +464,8 @@
           <div id="fileAttachmentArea" style="display:none;"></div>
           <div class="input-box-wrapper">
             <button class="dock-btn" title="Upload Image" onclick="document.getElementById('imageFileInput').click()"><i class="fas fa-camera"></i></button>
-            <button class="dock-btn" title="Upload Document / Spreadsheet (PDF, DOCX, XLSX, CSV, TXT)" onclick="document.getElementById('docFileInput').click()"><i class="fas fa-paperclip"></i></button>
-            <textarea id="chatInput" rows="1" placeholder="Ask your question or upload dataset/notes for empirical analysis..." onkeydown="handleKeyDown(event)"></textarea>
+            <button class="dock-btn" title="Upload Document / Spreadsheet" onclick="document.getElementById('docFileInput').click()"><i class="fas fa-paperclip"></i></button>
+            <textarea id="chatInput" rows="1" placeholder="Ask your question or upload dataset..." onkeydown="handleKeyDown(event)"></textarea>
             <button class="dock-btn btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
           </div>
           <input type="file" id="imageFileInput" accept="image/*" style="display:none;" onchange="handleImageAttach(event)">
@@ -403,20 +479,20 @@
   <div class="modal-overlay" id="glossaryModal">
     <div class="glossary-modal">
       <div class="glossary-header">
-        <h3><i class="fas fa-book-atlas"></i> Geography Subject-wise Keywords & Bengali Meanings</h3>
+        <h3><i class="fas fa-book-atlas"></i> Subject Keywords & Bengali Meanings</h3>
         <button style="background:none;border:none;color:white;cursor:pointer;font-size:1.1rem;" onclick="closeModal('glossaryModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="glossary-layout">
         <div class="subject-nav-list" id="subjectNavList"></div>
         <div class="keyword-display-panel" id="keywordDisplayPanel">
-          <h3 id="selectedSubjectTitle" style="color:var(--brand-blue);margin-bottom:0.75rem;font-family:Arial,sans-serif;">Select a subject from the left</h3>
+          <h3 id="selectedSubjectTitle" style="color:var(--brand-blue);margin-bottom:0.75rem;font-family:Arial,sans-serif;">Select a subject</h3>
           <div id="keywordItemsContainer"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- API KEY MODAL (Configurable via sidebar) -->
+  <!-- API KEY MODAL -->
   <div class="modal-overlay" id="keyModal">
     <div style="background:var(--bg-surface);border-radius:var(--radius);width:100%;max-width:480px;border:1px solid var(--border-color);overflow:hidden;font-family:Arial,sans-serif;">
       <div style="background:var(--brand-blue);color:white;padding:1rem;display:flex;justify-content:space-between;border-bottom:2px solid var(--brand-gold);">
@@ -439,6 +515,19 @@
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
+
+    // Mobile Sidebar Drawer Control
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      sidebar.classList.toggle('open');
+      backdrop.classList.toggle('active');
+    }
+
+    function closeMobileSidebar() {
+      document.getElementById('appSidebar').classList.remove('open');
+      document.getElementById('sidebarBackdrop').classList.remove('active');
+    }
 
     const geographyGlossaryData = {
       "Geotectonics and Geomorphology": [
@@ -547,7 +636,7 @@
       btn.classList.add('active');
     }
 
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function openModal(id) { document.getElementById(id).classList.add('active'); closeMobileSidebar(); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
     function openGlossaryModal() {
@@ -581,8 +670,8 @@
         const card = document.createElement('div');
         card.className = 'kw-card';
         card.innerHTML = `
-          <div class="kw-title"><span>${k.term}</span> <button class="btn-action" onclick="askAboutTerm('${k.term}')"><i class="fas fa-search"></i> Learn in AI</button></div>
-          <div class="kw-bengali">বাংলা অর্থ: ${k.bn}</div>
+          <div class="kw-title"><span>${k.term}</span> <button class="btn-action" onclick="askAboutTerm('${k.term}')"><i class="fas fa-search"></i> Learn</button></div>
+          <div class="kw-bengali">বাংলা: ${k.bn}</div>
           <div class="kw-desc">${k.desc}</div>
         `;
         container.appendChild(card);
@@ -598,11 +687,13 @@
     function insertPrompt(text) {
       document.getElementById('chatInput').value = text;
       document.getElementById('chatInput').focus();
+      closeMobileSidebar();
     }
 
     function resetToWelcome() {
       document.getElementById('welcomeScreen').style.display = 'block';
       document.querySelectorAll('.message-row').forEach(r => r.remove());
+      closeMobileSidebar();
     }
 
     function startNewChat() {
@@ -712,7 +803,6 @@
       const loadingId = appendLoadingBubble();
       const language = document.getElementById('languageMode').value;
 
-      // Specialized Level Instructions
       let levelPromptInstruction = "";
       if (activeLevel === 'Research / Thesis (APA)') {
         levelPromptInstruction = `Target Level: Advanced Empirical Research, Spatial Data Evaluation & Academic Thesis.
@@ -837,7 +927,7 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
       row.innerHTML = `
         <div class="avatar ai"><img src="Rohamat_one.png" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir"></div>
         <div class="bubble" style="display:flex;gap:10px;align-items:center;">
-          <div class="spinner"></div><span>Rohamat Sir is executing in-depth empirical research analysis...</span>
+          <div class="spinner"></div><span>Rohamat Sir is analyzing and preparing scholarly response...</span>
         </div>
       `;
       container.appendChild(row);
