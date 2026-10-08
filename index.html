@@ -89,14 +89,14 @@
       display: flex; 
       align-items: center; 
       gap: 8px; 
-      cursor: pointer;
+      cursor: pointer; 
       overflow: hidden;
     }
 
-    .brand-logo-img {
+    .brand-logo-img { 
       width: 40px; 
       height: 40px; 
-      border-radius: 50%;
+      border-radius: 50%; 
       object-fit: cover; 
       border: 1.5px solid var(--brand-gold); 
       background: white; 
@@ -106,8 +106,8 @@
     .brand-text-block { 
       display: flex; 
       flex-direction: column; 
-      line-height: 1.15;
-      overflow: hidden;
+      line-height: 1.15; 
+      overflow: hidden; 
       white-space: nowrap;
     }
 
@@ -142,12 +142,12 @@
       flex-shrink: 0; 
     }
     
-    .sir-highlight-badge {
+    .sir-highlight-badge { 
       display: flex; 
       align-items: center; 
-      gap: 6px;
+      gap: 6px; 
       background: rgba(218, 165, 32, 0.15); 
-      border: 1px solid var(--brand-gold);
+      border: 1px solid var(--brand-gold); 
       padding: 3px 8px 3px 3px; 
       border-radius: 24px;
     }
@@ -176,15 +176,15 @@
 
     .header-btn {
       background: rgba(255,255,255,0.08); 
-      color: white;
+      color: white; 
       border: 1px solid rgba(255,255,255,0.18); 
-      padding: 0.35rem 0.6rem;
+      padding: 0.35rem 0.6rem; 
       border-radius: 6px; 
       font-size: 0.75rem; 
       cursor: pointer; 
       display: flex; 
       align-items: center; 
-      gap: 4px;
+      gap: 4px; 
       font-family: Arial, sans-serif;
     }
     .header-btn:hover { background: rgba(218, 165, 32, 0.25); border-color: var(--brand-gold); }
@@ -193,7 +193,7 @@
     .app-container { 
       display: flex; 
       flex: 1; 
-      min-height: 0;
+      min-height: 0; 
       position: relative; 
       overflow: hidden; 
     }
@@ -202,11 +202,11 @@
     .sidebar {
       width: 270px; 
       background: var(--bg-sidebar); 
-      color: #cbd5e1;
+      color: #cbd5e1; 
       display: flex; 
       flex-direction: column; 
       border-right: 1px solid var(--border-color); 
-      flex-shrink: 0;
+      flex-shrink: 0; 
       font-family: Arial, sans-serif; 
       transition: var(--transition); 
       z-index: 40;
@@ -236,14 +236,14 @@
     
     .chat-controls-bar {
       background: var(--bg-surface); 
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color); 
       display: flex; 
       align-items: center; 
       justify-content: space-between; 
       padding: 0.35rem 0.8rem; 
       flex-wrap: nowrap; 
-      gap: 6px;
-      font-family: Arial, sans-serif;
+      gap: 6px; 
+      font-family: Arial, sans-serif; 
       flex-shrink: 0;
     }
 
@@ -279,7 +279,7 @@
       display: flex; 
       flex-direction: column; 
       gap: 1rem; 
-      min-height: 0;
+      min-height: 0; 
     }
 
     .welcome-screen { 
@@ -356,9 +356,9 @@
       background: var(--bg-surface); 
       border-top: 1px solid var(--border-color); 
       padding: 0.5rem 0.8rem; 
-      font-family: Arial, sans-serif;
-      flex-shrink: 0;
-      z-index: 30;
+      font-family: Arial, sans-serif; 
+      flex-shrink: 0; 
+      z-index: 30; 
       box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
     }
     .dock-container { max-width: 950px; margin: 0 auto; }
@@ -373,7 +373,7 @@
     .input-box-wrapper {
       display: flex; 
       background: var(--bg-primary); 
-      border: 1.5px solid var(--border-color);
+      border: 1.5px solid var(--border-color); 
       border-radius: 24px; 
       padding: 4px 10px; 
       align-items: center; 
@@ -616,13 +616,8 @@
   </div>
 
   <script>
-    // GitHub Secret Scanner Bypass (Encoded Key: AQ.Ab8RN6Kf-nzEVQehL99kdjaKQ3EG0XPTdCxzKUvuNjBsYYvA0g)
-    const DEFAULT_API_KEY = atob("QVEuQWI4Uk42S2YtbnpFVlFlaEw5OWtkamFLUTNFRzBYUFRkQ3h6S1V2dU5qQnNZZXZBMGc=");
-
-    try {
-      localStorage.removeItem('rm_gemini_key');
-      localStorage.removeItem('gemini_api_key');
-    } catch(e) {}
+    // Exact API Key from your Google AI Studio Dashboard
+    const DEFAULT_API_KEY = "AQ.Ab8RN6L8mg_55-aRo0ALXaPyhO9hgxl47604gsDQ0v7lIK7Uzg";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
@@ -724,7 +719,7 @@
         { term: "Western Disturbance", bn: "পশ্চিমী ঝঞ্ঝা", desc: "ভূমধ্যসাগর থেকে আগত শীতকালীন বৃষ্টিপাত সৃষ্টিকারী ঘূর্ণবাত।" }
       ],
       "Regional Planning and Development": [
-        { term: "Core-Periphery Model", bn: "কেন্দ্র-প্রান্তীয় মডেল", desc: "কেন্দ্রে সম্পদের সঞ্চয় এবং প্রান্তীয় অঞ্চলের শোষণ ও বঞ্চনার তাত্ত্বিক রূপ।" }
+        { term: "Core-Periphery Model", bn: "কেন্দ্র-প্রান্তীয় মডেল", desc: "কেন্দ্রে সম্পদের সঞ্চয় এবং প্রান্তীয় অঞ্চলের শোষণ ও বঞ্চনার তাত্ত্বিক রূপ।" }
       ],
       "Field Work Techniques in Geography": [
         { term: "Transect Walk", bn: "প্রস্থচ্ছেদভিত্তিক সমীক্ষা পদযাত্রা", desc: "এলাকার ভূমি ব্যবহার পর্যবেক্ষণে নির্দিষ্ট সরলরেখা বরাবর হাঁটা।" }
@@ -943,16 +938,15 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
         payloadContents.push({ parts: [{ text: promptText }] });
       }
 
-      // Supports both Authorization Header & parameter based Auth Keys
-      const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+      // Standard Gemini 1.5 Flash endpoint with query parameter
+      const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
       try {
         const response = await fetch(targetUrl, {
           method: 'POST',
           headers: { 
-            'Content-Type': 'application/json',
-            'x-goog-api-key': apiKey,
-            'Authorization': `Bearer ${apiKey}`
+            'Content-Type': 'application/json'
+            // 'Authorization: Bearer' shoriye fela hoyechhe jate OAuth error na ase
           },
           body: JSON.stringify({ contents: payloadContents })
         });
