@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>R.M. Vision Academy — 🌍 Rohamat AI Geography Tutor</title>
+  <title>R.M. Vision Academy — ROHAMAT AI</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <!-- Markdown Parser -->
@@ -65,7 +65,7 @@
     .academy-header {
       background: var(--brand-blue);
       color: white;
-      height: 70px;
+      height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -83,8 +83,8 @@
     }
 
     .brand-logo-img {
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--brand-gold);
@@ -92,19 +92,35 @@
       box-shadow: 0 0 10px rgba(218, 165, 32, 0.4);
     }
 
+    .brand-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+
     .brand-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #fff;
       letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+
+    .brand-name-highlight {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--brand-gold);
+      letter-spacing: 0.8px;
+      margin-top: 1px;
     }
 
     .brand-subtitle {
-      font-size: 0.78rem;
-      color: var(--brand-gold);
+      font-size: 0.68rem;
+      color: #e2e8f0;
       font-weight: 600;
-      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
     }
 
     .header-right {
@@ -113,29 +129,29 @@
       gap: 14px;
     }
 
-    /* Rohamat Sir Profile In Menu Bar */
+    /* Rohamat Sir Profile Badge In Menu Bar */
     .sir-highlight-badge {
       display: flex;
       align-items: center;
       gap: 8px;
       background: rgba(218, 165, 32, 0.15);
       border: 1.5px solid var(--brand-gold);
-      padding: 4px 10px 4px 4px;
+      padding: 4px 12px 4px 5px;
       border-radius: 30px;
       box-shadow: 0 0 14px rgba(218, 165, 32, 0.4);
       animation: pulseGlow 2.5s infinite;
     }
 
     .sir-menu-photo {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       object-fit: cover;
       border: 1.5px solid #fff;
     }
 
     .sir-name-text {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       color: #fff;
       line-height: 1.2;
@@ -169,7 +185,7 @@
     .sidebar-btn:hover { background: rgba(218, 165, 32, 0.25); border-color: var(--brand-gold); }
 
     /* Layout */
-    .app-container { display: flex; flex: 1; height: calc(100vh - 70px); overflow: hidden; }
+    .app-container { display: flex; flex: 1; height: calc(100vh - 76px); overflow: hidden; }
 
     .sidebar {
       width: 280px;
@@ -208,7 +224,6 @@
       cursor: pointer; font-weight: 500;
     }
 
-    /* Level Selection Buttons */
     .level-pills { display: flex; gap: 6px; align-items: center; }
     .level-btn {
       border: 1px solid var(--border-color);
@@ -238,8 +253,9 @@
       background: var(--brand-gold-light); color: #925f00;
       padding: 0.35rem 1rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.8rem;
     }
-    .welcome-title { font-family: 'Cinzel', serif; font-size: 2.1rem; color: var(--brand-blue); margin-bottom: 0.4rem; }
-    .welcome-subtitle { font-size: 1.15rem; font-weight: 700; color: var(--brand-gold); margin-bottom: 0.8rem; }
+    .welcome-title { font-family: 'Cinzel', serif; font-size: 2.1rem; color: var(--brand-blue); margin-bottom: 0.2rem; }
+    .welcome-highlight-name { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 800; color: var(--brand-gold); margin-bottom: 0.3rem; }
+    .welcome-subtitle { font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
     .welcome-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem; }
 
     .quick-tiles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
@@ -252,12 +268,11 @@
     .quick-tile:hover { border-color: var(--brand-gold); transform: translateY(-2px); box-shadow: var(--shadow-md); }
     .quick-tile i { font-size: 1.4rem; color: var(--brand-gold); }
 
-    /* Message Bubbles & Rohamat Sir Avatar */
     .message-row { display: flex; gap: 12px; max-width: 920px; width: 100%; margin: 0 auto; }
     .message-row.user { flex-direction: row-reverse; }
 
     .avatar {
-      width: 42px; height: 42px; border-radius: 50%;
+      width: 44px; height: 44px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; overflow: hidden;
       border: 2px solid var(--brand-gold);
@@ -274,7 +289,6 @@
     }
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
-    /* Tables, KaTeX and Visual Embeds in Answers */
     .bubble table {
       width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem;
     }
@@ -368,9 +382,10 @@
   <header class="academy-header">
     <div class="brand-wrap" onclick="resetToWelcome()">
       <img src="logo.jpg" class="brand-logo-img" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/2784/2784403.png';" alt="Logo">
-      <div>
+      <div class="brand-text-block">
         <div class="brand-title">R.M. VISION ACADEMY</div>
-        <div class="brand-subtitle">Rohamat ai geography tuitor</div>
+        <div class="brand-name-highlight">ROHAMAT AI</div>
+        <div class="brand-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
       </div>
     </div>
 
@@ -385,7 +400,7 @@
       </div>
 
       <button class="sidebar-btn" onclick="openModal('keyModal')">
-        <i class="fas fa-key"></i> <span id="keyBtnLabel">Free API Key</span>
+        <i class="fas fa-key"></i> <span id="keyBtnLabel">API Key</span>
       </button>
     </div>
   </header>
@@ -445,11 +460,12 @@
       <!-- MESSAGES VIEW -->
       <div class="messages-container" id="messagesContainer">
         <div class="welcome-screen" id="welcomeScreen">
-          <div class="welcome-badge">Rohamat AI Geography Classroom</div>
-          <h1 class="welcome-title">🌍 Welcome to R.M. Vision Academy</h1>
-          <div class="welcome-subtitle">Rohamat AI Geography Tutor & Research Assistant</div>
+          <div class="welcome-badge">R.M. Vision Academy Academic AI</div>
+          <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
+          <div class="welcome-highlight-name">ROHAMAT AI</div>
+          <div class="welcome-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
           <p class="welcome-desc">
-            Physical, Human, Regional Geography, Cartography, GIS o Statistics er shob proshner step-by-step points-wise notes, visual diagrams, mathematical tables o formulas ebong competitive exam orientation paowar platform.
+            Physical, Human, Regional Geography, Cartography, GIS ebong Statistics-er shob topics points-wise, visual diagrams, mathematical tables o formulas shoho shikhar complete digital platform.
           </p>
 
           <div class="quick-tiles-grid">
@@ -472,11 +488,9 @@
       <!-- BOTTOM INPUT DOCK -->
       <div class="input-dock">
         <div class="dock-container">
-          <!-- Attachment Chip -->
           <div id="fileAttachmentArea" style="display:none;"></div>
 
           <div class="input-box-wrapper">
-            <!-- Multi-file Upload (Image, PDF, Word, PPT) -->
             <button class="dock-btn" title="Upload Image/Diagram" onclick="document.getElementById('imageFileInput').click()">
               <i class="fas fa-camera"></i>
             </button>
@@ -489,7 +503,6 @@
             <button class="dock-btn btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
           </div>
 
-          <!-- Hidden Upload Elements -->
           <input type="file" id="imageFileInput" accept="image/*" style="display:none;" onchange="handleImageAttach(event)">
           <input type="file" id="docFileInput" accept=".pdf,.docx,.txt" style="display:none;" onchange="handleDocAttach(event)">
         </div>
@@ -501,13 +514,13 @@
   <div class="modal-overlay" id="keyModal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3><i class="fas fa-key"></i> Free Google Gemini API Key</h3>
+        <h3><i class="fas fa-key"></i> Google Gemini API Key</h3>
         <button style="background:none;border:none;color:white;cursor:pointer;" onclick="closeModal('keyModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <p style="font-size:0.85rem; color:var(--text-muted);">
           1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--brand-gold); font-weight:700;">Google AI Studio</a>.<br>
-          2. Click <b>"Create API key"</b> (100% Free without card).<br>
+          2. Click <b>"Create API key"</b> (Free without card).<br>
           3. Paste your key below:
         </p>
         <input type="password" class="form-control" id="geminiApiKey" placeholder="AIzaSy...">
@@ -566,14 +579,13 @@
 
     function saveGeminiKey() {
       const key = document.getElementById('geminiApiKey').value.trim();
-      if (!key) return alert('Please enter your free Gemini API key.');
+      if (!key) return alert('Please enter your Gemini API key.');
       localStorage.setItem('rm_gemini_key', key);
       document.getElementById('keyBtnLabel').textContent = 'Key Active ✓';
       closeModal('keyModal');
       alert('Key saved successfully!');
     }
 
-    // ---------------- Document & Image Handlers ----------------
     function handleImageAttach(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -635,7 +647,6 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // ---------------- Send Message Engine ----------------
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
@@ -654,26 +665,25 @@
       const loadingId = appendLoadingBubble();
       const language = document.getElementById('languageMode').value;
 
-      // Academic level guidance
       let levelPromptInstruction = "";
       if (activeLevel === 'School Level') {
-        levelPromptInstruction = "Target: School Level (Class 9-12 / Board Exam). Keep notes point-wise, very structured, easy to remember, sufficient for standard board questions.";
+        levelPromptInstruction = "Target: School Level (Class 9-12 / Board Exam). Keep notes strictly point-wise, clear, high-scoring, and easy to memorize for exams.";
       } else if (activeLevel === 'CUET UG/PG') {
-        levelPromptInstruction = "Target: CUET UG/PG Entrance. Provide concise, high-yield shortcut notes, direct definitions, key theorists, and objective concepts.";
+        levelPromptInstruction = "Target: CUET UG/PG. Deliver high-yield concise points, fundamental definitions, key theorists, dates, and syllabus-oriented shortcuts.";
       } else if (activeLevel === 'UGC NET/JRF') {
-        levelPromptInstruction = "Target: UGC NET / JRF. Provide advanced analytical points, seminal books/thinkers, dates, spatial theories, model MCQs, and assertion-reason logic.";
+        levelPromptInstruction = "Target: UGC NET / JRF. Provide rigorous academic points, seminal geographers/works, publication years, assertion-reason concepts, and model MCQs.";
       } else {
-        levelPromptInstruction = "Target: Advanced UG / PG Level. Deliver in-depth academic notes: Concept → Detailed Characteristics → Theoretical/Physical Mechanics → Mathematical Formulation & Statistical Tables → Real Geographical Examples → Spatial Interpretation.";
+        levelPromptInstruction = "Target: Advanced UG / PG Level. Deliver full comprehensive academic notes: Definition → Key Characteristics → Physical/Theoretical Mechanics → Mathematical Formulation & Statistical Tables → Real Geographical Examples → Spatial Interpretation.";
       }
 
-      const promptText = `You are Rohamat Sir, dedicated Senior Geography Teacher and Academic Tutor at R.M. Vision Academy ("Rohamat ai geography tuitor").
+      const promptText = `You are Rohamat Sir, dedicated Senior Geography Teacher and Academic Tutor at R.M. Vision Academy ("ROHAMAT AI - YOUR PERSONAL GEOGRAPHY TEACHER").
 ${levelPromptInstruction}
 Language Mode: ${language}.
-Mandatory Rules:
-1. All notes must be strictly point-wise, well structured, with clear headings, subheadings, and bold keywords.
-2. If mathematical/statistical calculation or formulas (Mean, Median, Standard Deviation, Chi-Square, Correlation) are involved, present them using standard LaTeX ($ for inline math, $$ for display math equations) and generate clear markdown tables with steps and geographic interpretations.
-3. If Bengali is chosen, write primarily in Bengali and keep important technical geography terms in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure), পাতের চলন (Plate Tectonics).
-4. Provide genuine, authentic academic facts.
+Mandatory Academic Guidelines:
+1. All notes must be strictly point-wise with bold key terms and neat structural subheadings.
+2. For all statistical problems or formulas (Mean, Median, Standard Deviation, Chi-square, Correlation), provide complete step-by-step calculations, clean Markdown tables, and standard LaTeX formulas ($ for inline and $$ for display blocks).
+3. If answering in Bengali, write primarily in natural Bengali and mandatorily provide technical geography terminology in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure).
+4. Maintain authentic, highly standard geographic facts without hallucination.
 
 User Request: ${message}
 ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 7000)}` : ''}`;
@@ -695,7 +705,8 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
           });
         }
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        // Updated directly to Google's official recommended model
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -716,7 +727,6 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
       }
     }
 
-    // ---------------- Message Rendering with KaTeX & Visuals ----------------
     function appendMessage(role, text, originalQuery = '') {
       const container = document.getElementById('messagesContainer');
       const row = document.createElement('div');
@@ -736,7 +746,7 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
       if (role === 'ai') {
         bubble.innerHTML = marked.parse(text);
 
-        // Auto Diagram / Map Embed for visual topics
+        // Auto Diagram / Map Visual Generator
         const queryLower = (originalQuery + ' ' + text.slice(0, 150)).toLowerCase();
         const visualKeywords = ['monsoon', 'meander', 'plate tectonic', 'davis', 'volcano', 'map', 'cyclone', 'soil profile', 'delta', 'drainage'];
         const matched = visualKeywords.find(k => queryLower.includes(k));
@@ -752,7 +762,7 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
           bubble.appendChild(visualBox);
         }
 
-        // Render KaTeX Math
+        // Render KaTeX Formulas
         if (window.renderMathInElement) {
           renderMathInElement(bubble, {
             delimiters: [
@@ -765,7 +775,6 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
           });
         }
 
-        // Action Buttons: Copy, Print, Download Note
         const actions = document.createElement('div');
         actions.className = 'bubble-actions';
         actions.innerHTML = `
@@ -826,6 +835,7 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
               body { font-family: 'Helvetica', Arial, sans-serif; padding: 40px; color: #1e293b; line-height: 1.6; }
               .header { border-bottom: 2px solid #daa520; padding-bottom: 12px; margin-bottom: 20px; }
               .header h2 { margin: 0; color: #0b2545; }
+              .header h3 { margin: 2px 0 0; color: #daa520; }
               .header p { margin: 4px 0 0; color: #64748b; font-size: 13px; }
               .bubble-actions, .btn-action { display: none !important; }
               table { width: 100%; border-collapse: collapse; margin: 15px 0; }
@@ -837,7 +847,8 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
           <body>
             <div class="header">
               <h2>R.M. VISION ACADEMY</h2>
-              <p>Rohamat AI Geography Tutor • Date: ${new Date().toLocaleDateString('en-GB')}</p>
+              <h3>ROHAMAT AI - YOUR PERSONAL GEOGRAPHY TEACHER</h3>
+              <p>Academic Geography Study Module • Date: ${new Date().toLocaleDateString('en-GB')}</p>
             </div>
             ${htmlContent}
           </body>
