@@ -1044,12 +1044,14 @@
         }
       }
 
-      // Method 3: Fallback academic engine — POST (GET on text.pollinations.ai is no longer supported)
+      // Method 3: Fallback academic engine (POST first, then legacy GET as last resort)
+      const fullTextQuery = systemPrompt + "\n\nStudent Query:\n" + (typeof messages[0].content === 'string' ? messages[0].content : '[image attached]');
       const payload = {
         model: 'openai',
         messages: [{ role: 'system', content: systemPrompt }, ...messages],
         private: true
       };
+      // 3a. POST to the OpenAI-compatible endpoint, 2 attempts
       for (let attempt = 1; attempt <= 2; attempt++) {
         try {
           const res = await fetchWithTimeout('https://text.pollinations.ai/openai', {
@@ -1063,12 +1065,20 @@
           if (text && text.trim().length > 0) return text;
           throw new Error('Engine returned an empty reply');
         } catch (e) {
-          console.warn('Fallback attempt ' + attempt + ' failed:', e);
-          if (attempt === 2) {
-            throw new Error('Unable to reach the academic engine. Open Settings and add an Anthropic API key or a Claude proxy endpoint.');
-          }
+          console.warn('Fallback POST attempt ' + attempt + ' failed:', e);
         }
       }
+      // 3b. Legacy GET endpoint (works in some regions where POST is blocked)
+      try {
+        const res = await fetchWithTimeout('https://text.pollinations.ai/' + encodeURIComponent(fullTextQuery) + '?model=openai', {}, 60000);
+        if (res.ok) {
+          const text = await res.text();
+          if (text && text.trim().length > 0 && !text.toLowerCase().includes('error')) return text;
+        }
+      } catch (e) {
+        console.warn('Fallback GET failed:', e);
+      }
+      throw new Error('All engines unreachable. Open Settings and add an Anthropic API key or a Claude proxy endpoint.');
     }
 
     async function sendMessage() {
