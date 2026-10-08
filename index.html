@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>R.M. Vision Academy — 🌍 Ask Me Geography (Free AI)</title>
+  <title>R.M. Vision Academy — 🌍 Ask Me Geography</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
@@ -25,7 +25,6 @@
       --text-muted: #64748b;
       --border-color: #e2e8f0;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 12px rgba(11, 37, 69, 0.08);
       --radius: 12px;
       --transition: all 0.25s ease;
     }
@@ -216,7 +215,7 @@
         <button class="sidebar-btn" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
       </div>
       <div class="tool-list">
-        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ and Jet Streams.')"><i class="fas fa-wind"></i> Indian Monsoon</div>
+        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ, Jet Streams and Tibetan Plateau heating.')"><i class="fas fa-wind"></i> Indian Monsoon</div>
         <div class="tool-item" onclick="insertPrompt('Explain Davis vs Penck Cycle of Erosion.')"><i class="fas fa-mountain"></i> Davis vs Penck</div>
         <div class="tool-item" onclick="insertPrompt('What is Remote Sensing and NDVI?')"><i class="fas fa-satellite"></i> Remote Sensing</div>
         <div class="tool-item" onclick="openModal('keyModal')"><i class="fas fa-cog"></i> Free API Key Settings</div>
@@ -364,12 +363,10 @@ Language Mode: ${language}.
 Rule: If answering in Bengali, write primarily in Bengali and put important technical geography terms in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure).
 Question: ${message}`;
 
-      // Gemini 2.0 / 1.5 current active universal model list
       const candidateModels = [
+        'gemini-2.5-flash',
         'gemini-2.0-flash',
-        'gemini-2.0-flash-lite',
-        'gemini-1.5-flash-8b',
-        'gemini-1.5-flash'
+        'gemini-2.0-flash-lite'
       ];
 
       let lastError = null;
