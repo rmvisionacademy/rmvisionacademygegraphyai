@@ -10,7 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
+  <!-- Markdown & KaTeX Math Rendering Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
   <style>
     :root {
@@ -162,6 +166,14 @@
     }
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
+    /* KaTeX equation display adjustments */
+    .bubble .katex-display {
+      margin: 0.8em 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 4px 0;
+    }
+
     .input-dock { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 1rem 1.5rem; }
     .dock-container { max-width: 900px; margin: 0 auto; }
     .input-box-wrapper {
@@ -226,6 +238,7 @@
         <button class="sidebar-btn" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
       </div>
       <div class="tool-list">
+        <div class="tool-item" onclick="insertPrompt('Explain the calculation and geographical applications of Arithmetic Mean, Median, and Mode with formulas.')"><i class="fas fa-calculator"></i> Geographic Stats & Mean</div>
         <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ, Jet Streams and Tibetan Plateau heating.')"><i class="fas fa-wind"></i> Indian Monsoon</div>
         <div class="tool-item" onclick="insertPrompt('Explain Davis vs Penck Cycle of Erosion.')"><i class="fas fa-mountain"></i> Davis vs Penck</div>
         <div class="tool-item" onclick="insertPrompt('What is Remote Sensing and NDVI?')"><i class="fas fa-satellite"></i> Remote Sensing</div>
@@ -258,17 +271,17 @@
           <div class="welcome-badge">100% Free AI Geography Engine</div>
           <h1 class="welcome-title">🌍 Welcome to R.M. Vision Academy</h1>
           <div class="welcome-subtitle">Your AI Geography Teacher & Academic Assistant</div>
-          <p class="welcome-desc">Ask anything about Physical, Human, or Regional Geography.</p>
+          <p class="welcome-desc">Ask anything about Physical, Human, Statistical, or Regional Geography.</p>
 
           <div class="quick-tiles-grid">
+            <div class="quick-tile" onclick="insertPrompt('How do you calculate Mean and Standard Deviation in Geography? Show mathematical formulations.')">
+              <i class="fas fa-calculator"></i><span>Formulas & Mean</span>
+            </div>
             <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ and Jet Streams.')">
               <i class="fas fa-wind"></i><span>Indian Monsoon</span>
             </div>
             <div class="quick-tile" onclick="insertPrompt('Explain Plate Tectonics theory and plate boundaries.')">
               <i class="fas fa-layer-group"></i><span>Plate Tectonics</span>
-            </div>
-            <div class="quick-tile" onclick="insertPrompt('What is Remote Sensing and how is NDVI calculated?')">
-              <i class="fas fa-satellite"></i><span>Remote Sensing</span>
             </div>
           </div>
         </div>
@@ -277,7 +290,7 @@
       <div class="input-dock">
         <div class="dock-container">
           <div class="input-box-wrapper">
-            <textarea id="chatInput" rows="1" placeholder="Ask your Geography question..." onkeydown="handleKeyDown(event)"></textarea>
+            <textarea id="chatInput" rows="1" placeholder="Ask your Geography question (e.g. formula of mean, monsoon, topomap)..." onkeydown="handleKeyDown(event)"></textarea>
             <button class="btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
@@ -372,9 +385,9 @@ Answer academic geography questions thoroughly.
 Academic Mode: ${answerMode}.
 Language Mode: ${language}.
 Rule: If answering in Bengali, write primarily in Bengali and put important technical geography terms in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure).
+For mathematical/statistical formulas (like Mean, SD, Chi-Square), write clear standard LaTeX formulas using $...$ for inline math and $$...$$ for display equations.
 Question: ${message}`;
 
-      // Officially requested active model
       const targetUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
 
       try {
@@ -403,10 +416,35 @@ Question: ${message}`;
       const container = document.getElementById('messagesContainer');
       const row = document.createElement('div');
       row.className = `message-row ${role}`;
-      row.innerHTML = `
-        <div class="avatar ${role}">${role === 'ai' ? '🌍' : '<i class="fas fa-user-graduate"></i>'}</div>
-        <div class="bubble">${role === 'ai' ? marked.parse(text) : text}</div>
-      `;
+
+      const avatar = document.createElement('div');
+      avatar.className = `avatar ${role}`;
+      avatar.innerHTML = role === 'ai' ? '🌍' : '<i class="fas fa-user-graduate"></i>';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+
+      if (role === 'ai') {
+        bubble.innerHTML = marked.parse(text);
+
+        // Render standard mathematical equations using KaTeX
+        if (window.renderMathInElement) {
+          renderMathInElement(bubble, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\(', right: '\\)', display: false },
+              { left: '[', right: ']', display: true }
+            ],
+            throwOnError: false
+          });
+        }
+      } else {
+        bubble.textContent = text;
+      }
+
+      row.appendChild(avatar);
+      row.appendChild(bubble);
       container.appendChild(row);
       container.scrollTop = container.scrollHeight;
     }
