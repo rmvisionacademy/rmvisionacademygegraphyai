@@ -170,23 +170,24 @@
 
     .bubble {
       background: var(--bg-surface); padding: 1.25rem 1.5rem; border-radius: var(--radius);
-      border: 1px solid var(--border-color); line-height: 1.75; font-size: 1.05rem; max-width: 88%;
+      border: 1px solid var(--border-color); line-height: 1.85; font-size: 1.06rem; max-width: 88%;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     }
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
+    .bubble p { margin-bottom: 1rem; text-align: justify; text-justify: inter-word; }
     .bubble h1, .bubble h2, .bubble h3, .bubble h4 {
-      margin-top: 1.1rem; margin-bottom: 0.5rem; color: var(--brand-blue); font-weight: 700;
+      margin-top: 1.2rem; margin-bottom: 0.6rem; color: var(--brand-blue); font-weight: 700;
     }
     .message-row.user .bubble h1, .message-row.user .bubble h2, .message-row.user .bubble h3 { color: #fff; }
     
     .bubble table {
-      width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95rem; font-family: 'Times New Roman', serif;
+      width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.96rem; font-family: 'Times New Roman', serif;
     }
-    .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 8px 12px; text-align: left; }
+    .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 9px 12px; text-align: left; }
     .bubble th { background: #f1f5f9; font-weight: 700; }
     .bubble blockquote {
-      border-left: 4px solid var(--brand-gold); padding-left: 12px; margin: 12px 0; color: var(--text-muted); font-style: italic;
+      border-left: 4px solid var(--brand-gold); padding-left: 14px; margin: 14px 0; color: var(--text-muted); font-style: italic;
     }
 
     .bubble-actions {
@@ -362,7 +363,7 @@
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <div class="welcome-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
           <p class="welcome-desc">
-            Direct, authentic points-wise notes, data analysis, and advanced research evaluations. Upload files (PDF, Word, Excel, CSV, or Images) to extract deep insights with in-text citations and APA 7th edition references.
+            Direct, authentic academic notes, data interpretation, and empirical research evaluation. Upload datasets (Excel, CSV, PDF, Word, or Images) to receive detailed paragraph-by-paragraph scientific result analysis, in-text citations, and APA 7th edition references.
           </p>
 
           <div class="quick-tiles-grid">
@@ -388,7 +389,7 @@
           <div class="input-box-wrapper">
             <button class="dock-btn" title="Upload Image" onclick="document.getElementById('imageFileInput').click()"><i class="fas fa-camera"></i></button>
             <button class="dock-btn" title="Upload Document / Spreadsheet (PDF, DOCX, XLSX, CSV, TXT)" onclick="document.getElementById('docFileInput').click()"><i class="fas fa-paperclip"></i></button>
-            <textarea id="chatInput" rows="1" placeholder="Ask your question or upload dataset/notes for research evaluation..." onkeydown="handleKeyDown(event)"></textarea>
+            <textarea id="chatInput" rows="1" placeholder="Ask your question or upload dataset/notes for empirical analysis..." onkeydown="handleKeyDown(event)"></textarea>
             <button class="dock-btn btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
           </div>
           <input type="file" id="imageFileInput" accept="image/*" style="display:none;" onchange="handleImageAttach(event)">
@@ -663,7 +664,6 @@
           attachedDocText = text;
           showAttachmentChip(file.name, 'file-pdf');
         } else if (ext === 'xlsx' || ext === 'xls' || ext === 'csv') {
-          // Read Excel / CSV data into structured text/CSV
           const arrayBuffer = await file.arrayBuffer();
           const workbook = XLSX.read(arrayBuffer, { type: 'array' });
           let spreadsheetData = '';
@@ -712,15 +712,18 @@
       const loadingId = appendLoadingBubble();
       const language = document.getElementById('languageMode').value;
 
-      // Specialized Academic Instruction based on Level
+      // Specialized Level Instructions
       let levelPromptInstruction = "";
       if (activeLevel === 'Research / Thesis (APA)') {
-        levelPromptInstruction = `Target Level: Advanced Research & Thesis / Academic Paper.
-Evaluation Requirements:
-1. Conduct deep empirical, quantitative, or qualitative geographic evaluation of the question/data.
-2. If data/spreadsheet is provided: describe methodological framework, tabular breakdown, spatial patterns, statistical findings, and geographical implications.
-3. IN-TEXT CITATIONS: Mandatorily incorporate academic in-text citations in standard format e.g., (Strahler, 1952), (Chorley & Haggett, 1967), (Harvey, 1969), (Singh, 2020).
-4. REFERENCES SECTION: Conclude the response with a formal "References" section formatted strictly in APA 7th Edition style.`;
+        levelPromptInstruction = `Target Level: Advanced Empirical Research, Spatial Data Evaluation & Academic Thesis.
+PARAGRAPH-BY-PARAGRAPH DETAILED ANALYSIS RULES:
+1. STRUCTURE AS COHESIVE, DETAILED PARAGRAPHS: Do NOT deliver fragmented superficial bullet points. Deliver comprehensive, deeply argued paragraphs with clear academic transitions.
+2. EMPIRICAL RESULT & DATA ANALYSIS (PRIMARY FOCUS): Scrutinize the provided dataset, numerical values, spatial observations, or field parameters in rigorous detail:
+   - Identify variable distributions, anomalies, central tendencies, and spatial variations across the data points.
+   - Explain what the empirical figures reveal theoretically and geographically (e.g., correlation, physical mechanics, socioeconomic implications).
+   - Elaborate on methodological parameters, limitations, and empirical significance.
+3. IN-TEXT CITATIONS: Every substantive claim, conceptual framework, or methodological foundation must include authoritative academic in-text citations, e.g., (Strahler, 1952), (Chorley & Haggett, 1967), (Harvey, 1969), (Singh, 2020), (Gould, 1970).
+4. REFERENCES: Conclude with a rigorous, alphabetically ordered "References" section strictly formatted in APA 7th Edition style.`;
       } else if (activeLevel === 'School Level') {
         levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Examination). Keep notes strictly point-wise, concise, clear, and high-scoring.";
       } else if (activeLevel === 'CUET UG/PG') {
@@ -735,11 +738,10 @@ Evaluation Requirements:
 ${levelPromptInstruction}
 Language: ${language} (Write in clear academic style. In Bengali mode, keep technical geography terms in English within parentheses).
 
-STRICT RULES:
+STRICT GENERAL GUIDELINES:
 1. FOCUS STRICTLY ON WHAT IS ASKED: If asked "types of climate", explain only climate types and classification.
-2. NO UNSOLICITED STATISTICS: Do not provide formulas like Mean, Median, SD, or Chi-Square unless the user specifically asks for statistics or provides numerical dataset.
-3. Structure answers point-wise with bold key terms and crisp academic subheadings.
-4. Rely exclusively on authentic standard geographical literature.
+2. NO UNSOLICITED STATISTICS FOR GENERAL QUESTIONS: If the user asks a theoretical concept (like "What is climate"), do NOT inject irrelevant formulas. Only analyze data when data/tables/numbers are provided or requested.
+3. For Research/Thesis mode, deliver scholarly prose structured paragraph-by-paragraph with intensive empirical result interpretation, in-text citations, and APA references.
 
 User Request: ${message}
 ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
@@ -799,7 +801,6 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
         textDiv.innerHTML = marked.parse(text);
         bubble.appendChild(textDiv);
 
-        // KaTeX Math Rendering (if math formulas exist)
         if (window.renderMathInElement) {
           renderMathInElement(bubble, {
             delimiters: [
@@ -810,7 +811,6 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
           });
         }
 
-        // Action Buttons: Copy & Print Note
         const actions = document.createElement('div');
         actions.className = 'bubble-actions';
         actions.innerHTML = `
@@ -837,7 +837,7 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
       row.innerHTML = `
         <div class="avatar ai"><img src="Rohamat_one.png" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir"></div>
         <div class="bubble" style="display:flex;gap:10px;align-items:center;">
-          <div class="spinner"></div><span>Rohamat Sir is analyzing and preparing scholarly response...</span>
+          <div class="spinner"></div><span>Rohamat Sir is executing in-depth empirical research analysis...</span>
         </div>
       `;
       container.appendChild(row);
@@ -868,7 +868,8 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
             <title>R.M. Vision Academy Study Notes</title>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
             <style>
-              body { font-family: 'Times New Roman', Times, serif; padding: 40px; color: #111827; line-height: 1.8; font-size: 15px; }
+              body { font-family: 'Times New Roman', Times, serif; padding: 40px; color: #111827; line-height: 1.85; font-size: 15px; }
+              p { text-align: justify; text-justify: inter-word; margin-bottom: 12px; }
               .header { border-bottom: 2px solid #daa520; padding-bottom: 12px; margin-bottom: 20px; font-family: Arial, sans-serif; }
               .header h2 { margin: 0; color: #0b2545; }
               .header h3 { margin: 2px 0 0; color: #daa520; }
