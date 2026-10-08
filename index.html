@@ -623,6 +623,7 @@
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
+    let validatedTextModel = null;
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -880,6 +881,37 @@
       document.getElementById('docFileInput').value = '';
     }
 
+    // Auto-detect and cache real active TEXT CHAT model on this Groq account
+    async function getActiveTextModel(apiKey) {
+      if (validatedTextModel) return validatedTextModel;
+
+      try {
+        const res = await fetch("https://api.groq.com/openai/v1/models", {
+          headers: { 'Authorization': `Bearer ${apiKey}` }
+        });
+        const json = await res.json();
+
+        if (json.data && Array.isArray(json.data)) {
+          // Filter out audio (whisper), guard, and moderation models
+          const textModels = json.data
+            .map(m => m.id)
+            .filter(id => !id.includes("whisper") && !id.includes("guard") && !id.includes("safeguard") && !id.includes("distil"));
+
+          if (textModels.length > 0) {
+            // Priority: llama-3, qwen, mixtral, gemma
+            const preferred = textModels.find(id => id.includes("llama-3") || id.includes("llama3")) || textModels[0];
+            validatedTextModel = preferred;
+            return validatedTextModel;
+          }
+        }
+      } catch (e) {
+        console.warn("Could not fetch models dynamically:", e);
+      }
+
+      // Safe static fallback
+      return "llama3-8b-8192";
+    }
+
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
@@ -927,11 +959,10 @@ STRICT GENERAL GUIDELINES:
 User Request: ${message}
 ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
-      // Shobcheye reliable standard chat model
-      const modelName = "llama-3.1-8b-instant";
-      const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
-
       try {
+        const selectedModel = await getActiveTextModel(apiKey);
+        const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
+
         const response = await fetch(targetUrl, {
           method: 'POST',
           headers: { 
@@ -939,7 +970,7 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
             'Authorization': `Bearer ${apiKey}`
           },
           body: JSON.stringify({
-            model: modelName,
+            model: selectedModel,
             messages: [
               { role: "user", content: promptText }
             ],
@@ -952,10 +983,9 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
 
         if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
 
-        // Sothik text uttor parse kora
         const reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
           ? data.choices[0].message.content
-          : "Kono text uttor pawa jayni.";
+          : "No text response returned.";
 
         appendMessage('ai', reply);
         clearAttachments();
