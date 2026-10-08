@@ -927,18 +927,8 @@ STRICT GENERAL GUIDELINES:
 User Request: ${message}
 ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
-      // Standard and accessible model on Groq Free Tier
-      const modelName = attachedImageBase64 ? "llama-3.2-11b-vision-preview" : "llama-3.1-8b-instant";
-
-      let userMessageContent;
-      if (attachedImageBase64) {
-        userMessageContent = [
-          { type: "text", text: promptText },
-          { type: "image_url", image_url: { url: attachedImageBase64 } }
-        ];
-      } else {
-        userMessageContent = promptText;
-      }
+      // Gemma 2 9B is globally active and free on all Groq tiers
+      const modelName = "gemma2-9b-it";
 
       const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
 
@@ -952,7 +942,7 @@ ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.sli
           body: JSON.stringify({
             model: modelName,
             messages: [
-              { role: "user", content: userMessageContent }
+              { role: "user", content: promptText }
             ],
             temperature: 0.6
           })
