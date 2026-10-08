@@ -616,7 +616,7 @@
   </div>
 
   <script>
-    // Groq High-Speed API Key
+    // Groq API Key
     const DEFAULT_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
@@ -880,47 +880,6 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // Try reliable chat models in sequence
-    async function requestChatCompletion(apiKey, promptText) {
-      const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
-      const candidateModels = [
-        "llama-3.3-70b-versatile",
-        "llama3-70b-8192",
-        "llama3-8b-8192",
-        "mixtral-8x7b-32768"
-      ];
-
-      let lastError = null;
-      for (const model of candidateModels) {
-        try {
-          const response = await fetch(targetUrl, {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-              model: model,
-              messages: [{ role: "user", content: promptText }],
-              temperature: 0.6,
-              max_tokens: 1024
-            })
-          });
-
-          const data = await response.json();
-          if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
-            return data.choices[0].message.content;
-          }
-          if (data.error) {
-            lastError = data.error.message;
-          }
-        } catch (e) {
-          lastError = e.message;
-        }
-      }
-      throw new Error(lastError || "All models failed");
-    }
-
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
@@ -961,8 +920,31 @@ User Request: ${message}
 ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
-        const reply = await requestChatCompletion(apiKey, promptText);
+        const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
+
+        const response = await fetch(targetUrl, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: "qwen/qwen3.8-27b",
+            messages: [{ role: "user", content: promptText }],
+            temperature: 0.6,
+            max_tokens: 500
+          })
+        });
+
+        const data = await response.json();
         removeBubble(loadingId);
+
+        if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+
+        const reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
+          ? data.choices[0].message.content
+          : "No text response returned.";
+
         appendMessage('ai', reply);
         clearAttachments();
       } catch (err) {
