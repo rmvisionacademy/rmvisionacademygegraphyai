@@ -616,8 +616,8 @@
   </div>
 
   <script>
-    // Apnar New Free OpenRouter API Key
-    const DEFAULT_API_KEY = "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";
+    // Groq High-Speed Free API Key
+    const DEFAULT_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
@@ -927,33 +927,34 @@ STRICT GENERAL GUIDELINES:
 User Request: ${message}
 ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
-      // OpenRouter messages format (supports text & base64 images)
-      let userContent;
+      // Choose vision model if image is attached, else standard high capability model
+      const modelName = attachedImageBase64 ? "llama-3.2-11b-vision-preview" : "llama-3.3-70b-versatile";
+
+      let userMessageContent;
       if (attachedImageBase64) {
-        userContent = [
+        userMessageContent = [
           { type: "text", text: promptText },
           { type: "image_url", image_url: { url: attachedImageBase64 } }
         ];
       } else {
-        userContent = promptText;
+        userMessageContent = promptText;
       }
 
-      const targetUrl = "https://openrouter.ai/api/v1/chat/completions";
+      const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
 
       try {
         const response = await fetch(targetUrl, {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
-            'HTTP-Referer': window.location.origin || 'http://localhost',
-            'X-Title': 'RM Vision Academy'
+            'Authorization': `Bearer ${apiKey}`
           },
           body: JSON.stringify({
-            model: "google/gemini-2.5-flash",
+            model: modelName,
             messages: [
-              { role: "user", content: userContent }
-            ]
+              { role: "user", content: userMessageContent }
+            ],
+            temperature: 0.6
           })
         });
 
