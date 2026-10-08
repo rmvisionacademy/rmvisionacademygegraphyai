@@ -184,7 +184,6 @@
     }
     .sidebar-btn:hover { background: rgba(218, 165, 32, 0.25); border-color: var(--brand-gold); }
 
-    /* Layout */
     .app-container { display: flex; flex: 1; height: calc(100vh - 76px); overflow: hidden; }
 
     .sidebar {
@@ -378,7 +377,6 @@
 </head>
 <body>
 
-  <!-- ACADEMY MAIN HEADER -->
   <header class="academy-header">
     <div class="brand-wrap" onclick="resetToWelcome()">
       <img src="logo.jpg" class="brand-logo-img" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/2784/2784403.png';" alt="Logo">
@@ -390,7 +388,6 @@
     </div>
 
     <div class="header-right">
-      <!-- Rohamat Sir Highlight Photo Badge -->
       <div class="sir-highlight-badge">
         <img src="Rohamat_one.png" class="sir-menu-photo" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir">
         <div>
@@ -406,7 +403,6 @@
   </header>
 
   <div class="app-container">
-    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <button class="sidebar-btn" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
@@ -433,9 +429,7 @@
       </div>
     </aside>
 
-    <!-- RIGHT CHAT VIEW -->
     <main class="chat-view">
-      <!-- CONTROLS BAR -->
       <div class="chat-controls-bar">
         <div class="control-group">
           <label style="font-weight:700; font-size:0.8rem;"><i class="fas fa-graduation-cap"></i> Syllabus Level:</label>
@@ -457,7 +451,6 @@
         </div>
       </div>
 
-      <!-- MESSAGES VIEW -->
       <div class="messages-container" id="messagesContainer">
         <div class="welcome-screen" id="welcomeScreen">
           <div class="welcome-badge">R.M. Vision Academy Academic AI</div>
@@ -485,7 +478,6 @@
         </div>
       </div>
 
-      <!-- BOTTOM INPUT DOCK -->
       <div class="input-dock">
         <div class="dock-container">
           <div id="fileAttachmentArea" style="display:none;"></div>
@@ -510,7 +502,6 @@
     </main>
   </div>
 
-  <!-- API KEY MODAL -->
   <div class="modal-overlay" id="keyModal">
     <div class="modal-box">
       <div class="modal-header">
@@ -683,7 +674,7 @@ Mandatory Academic Guidelines:
 1. All notes must be strictly point-wise with bold key terms and neat structural subheadings.
 2. For all statistical problems or formulas (Mean, Median, Standard Deviation, Chi-square, Correlation), provide complete step-by-step calculations, clean Markdown tables, and standard LaTeX formulas ($ for inline and $$ for display blocks).
 3. If answering in Bengali, write primarily in natural Bengali and mandatorily provide technical geography terminology in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure).
-4. Maintain authentic, highly standard geographic facts without hallucination.
+4. Maintain authentic, highly standard geographic facts.
 
 User Request: ${message}
 ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 7000)}` : ''}`;
@@ -704,48 +695,27 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
         });
       }
 
-      // অটো-ফলব্যাক মডেল লিস্ট: হাই-ডিমান্ড বা সার্ভার ব্যস্ত থাকলে অটোমেটিক অন্য মডেল উত্তর দেবে
-      const targetModels = [
-        'gemini-3.8-flash',
-        'gemini-2.5-flash',
-        'gemini-2.0-flash',
-        'gemini-2.0-flash-lite'
-      ];
+      // Fastest Google official model without fallback loops
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
 
-      let reply = null;
-      let lastErrorMessage = '';
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: payloadContents })
+        });
 
-      for (let model of targetModels) {
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: payloadContents })
-          });
+        const data = await response.json();
+        removeBubble(loadingId);
 
-          const data = await response.json();
+        if (data.error) throw new Error(data.error.message);
 
-          if (response.ok && data.candidates && data.candidates[0].content && data.candidates[0].content.parts) {
-            reply = data.candidates[0].content.parts[0].text;
-            break; // সফল হলে লুপ শেষ
-          } else if (data.error) {
-            lastErrorMessage = data.error.message;
-            // যদি হাই ডিমান্ড বা সাময়িক সমস্যা হয়, পরবর্তী মডেলে চেষ্টা করবে
-            continue;
-          }
-        } catch (err) {
-          lastErrorMessage = err.message;
-        }
-      }
-
-      removeBubble(loadingId);
-
-      if (reply) {
+        const reply = data.candidates[0].content.parts[0].text;
         appendMessage('ai', reply, message);
         clearAttachments();
-      } else {
-        appendMessage('ai', `⚠️ Notice: ${lastErrorMessage || 'All models are temporarily busy. Please wait a few seconds and try again.'}`);
+      } catch (err) {
+        removeBubble(loadingId);
+        appendMessage('ai', `⚠️ Notice: ${err.message}`);
       }
     }
 
@@ -768,7 +738,6 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
       if (role === 'ai') {
         bubble.innerHTML = marked.parse(text);
 
-        // Auto Diagram / Map Visual Generator
         const queryLower = (originalQuery + ' ' + text.slice(0, 150)).toLowerCase();
         const visualKeywords = ['monsoon', 'meander', 'plate tectonic', 'davis', 'volcano', 'map', 'cyclone', 'soil profile', 'delta', 'drainage'];
         const matched = visualKeywords.find(k => queryLower.includes(k));
@@ -784,7 +753,6 @@ ${attachedDocText ? `\n[Attached Document Context]:\n${attachedDocText.slice(0, 
           bubble.appendChild(visualBox);
         }
 
-        // Render KaTeX Formulas
         if (window.renderMathInElement) {
           renderMathInElement(bubble, {
             delimiters: [
