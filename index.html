@@ -323,7 +323,7 @@
 
     .bubble {
       background: var(--bg-surface); padding: 1.1rem 1.3rem; border-radius: var(--radius);
-      border: 1px solid var(--border-color); line-height: 1.8; font-size: 1rem; max-width: 90%;
+      border: 1px solid var(--border-color); line-height: 1.85; font-size: 1rem; max-width: 90%;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04); word-wrap: break-word; overflow-wrap: break-word;
     }
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
@@ -631,14 +631,13 @@
   </div>
 
   <script>
-    // Groq API Key
+    // Groq High-Speed API Key
     const GROQ_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
-    let cachedActiveModels = null;
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -896,37 +895,18 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // Dynamic Discovery of currently active Groq text models
-    async function getAvailableGroqModels() {
-      if (cachedActiveModels && cachedActiveModels.length > 0) return cachedActiveModels;
-      try {
-        const res = await fetch("https://api.groq.com/openai/v1/models", {
-          headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
-        });
-        const json = await res.json();
-        if (json.data && Array.isArray(json.data)) {
-          // Filter out whisper (audio), safeguard, and specialized models
-          const textModels = json.data
-            .map(m => m.id)
-            .filter(id => !id.includes("whisper") && !id.includes("guard") && !id.includes("distil") && !id.includes("canopylabs"));
-          
-          if (textModels.length > 0) {
-            cachedActiveModels = textModels;
-            return cachedActiveModels;
-          }
-        }
-      } catch (e) {
-        console.warn("Could not dynamically query models:", e);
-      }
-      return ["openai/gpt-oss-120b", "openai/gpt-oss-20b"];
-    }
-
-    async function requestGroqChat(systemPrompt, userQuery) {
-      const models = await getAvailableGroqModels();
+    // Direct High-Capacity Groq Query with Fallback
+    async function executeGroqQuery(systemPrompt, userQuery) {
       const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
+      
+      // Standard models prioritized for high accuracy
+      const candidateModels = [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant"
+      ];
 
       let lastError = null;
-      for (const model of models) {
+      for (const model of candidateModels) {
         try {
           const res = await fetch(targetUrl, {
             method: "POST",
@@ -941,7 +921,7 @@
                 { role: "user", content: userQuery }
               ],
               temperature: 0.5,
-              max_tokens: 1200
+              max_tokens: 1500
             })
           });
 
@@ -956,7 +936,8 @@
           lastError = e.message;
         }
       }
-      throw new Error(lastError || "Chat request failed.");
+
+      throw new Error(lastError || "Could not complete request. Please try again.");
     }
 
     async function sendMessage() {
@@ -975,11 +956,11 @@
       if (activeLevel === 'Research / Thesis (APA)') {
         levelPromptInstruction = `Target Level: Advanced Empirical Research & Academic Thesis.
 RULES:
-1. Deliver exhaustive, scholarly paragraphs with clear academic transitions.
-2. Provide in-text citations like (Strahler, 1952), (Singh, 2020), (Harvey, 1969).
+1. Deliver exhaustive, scholarly paragraphs with seamless academic transitions.
+2. Provide authoritative in-text citations like (Strahler, 1952), (Singh, 2020), (Harvey, 1969).
 3. Conclude with an APA 7th Edition formatted References list.`;
       } else if (activeLevel === 'School Level') {
-        levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Exam). Keep notes point-wise, crystal clear, concise, and high-scoring.";
+        levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Examination). Keep notes point-wise, crystal clear, concise, and high-scoring.";
       } else if (activeLevel === 'CUET UG/PG') {
         levelPromptInstruction = "Target Level: CUET UG/PG Entrance. Deliver high-yield concise points, seminal theorists, dates, formulas, and shortcut revision pointers.";
       } else if (activeLevel === 'UGC NET/JRF') {
@@ -989,22 +970,29 @@ RULES:
       }
 
       const systemPrompt = `You are Rohamat Sir, Geography Academic Specialist and Academic Director of R.M. Vision Academy.
+
+CRITICAL OPENING RULE:
+Always start your very first sentence with:
+"আসসালামু আলাইকুম, R.M. Vision Academy-তে স্বাগতম।"
+(Then immediately continue with the answer).
+
 ${levelPromptInstruction}
 Language: ${language} (Write in high standard academic tone. If Bengali mode, write comprehensive Bengali with technical terms in English inside parentheses).
 
 CRITICAL FORMATTING & CONTENT RULES:
-1. EXHAUSTIVE AND DETAILED: Do NOT summarize in 2-3 brief lines. Provide complete, comprehensive, textbook-grade study notes.
-2. FORMULAS IN BEAUTIFUL LATEX: If any mathematical, statistical, or geographical formula/index is involved (e.g., NDVI, Nearest Neighbour Rn, Albedo, Hypsometric Integral, Crop Diversification, Lorenz Curve, Water Balance, etc.), ALWAYS format them using proper LaTeX:
+1. STRICT TEXT QUALITY: Write natural, fluent, highly academic text. Never repeat broken words or nonsensical loops.
+2. EXHAUSTIVE AND DETAILED: Do NOT summarize in 2-3 brief lines. Provide complete, textbook-grade study notes.
+3. FORMULAS IN BEAUTIFUL LATEX: If any mathematical, statistical, or geographical formula/index is involved (e.g., NDVI, Nearest Neighbour Rn, Albedo, Crop Diversification, Lorenz Curve, Water Balance, etc.), ALWAYS format them using proper LaTeX:
    - For standalone equations, use display math: $$Formula$$
    - For inline variables, use inline math: $x$
    - Clearly define each term, variable, and its geographic interpretation.
-3. STRUCTURED WITH HEADINGS & BULLETS: Use clear Markdown headings (###), bold key terms, numbered steps, and bullet points.
-4. TABLES: If comparisons, classifications, or datasets are involved, format them cleanly using Markdown tables.`;
+4. STRUCTURED WITH HEADINGS & BULLETS: Use clear Markdown headings (###), bold key terms, numbered steps, and bullet points.
+5. TABLES: If comparisons, classifications, or datasets are involved, format them cleanly using Markdown tables.`;
 
       const userQuery = `${message}${attachedDocText ? `\n\n[Attached Data/Document]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
-        const reply = await requestGroqChat(systemPrompt, userQuery);
+        const reply = await executeGroqQuery(systemPrompt, userQuery);
         removeBubble(loadingId);
         appendMessage('ai', reply);
         clearAttachments();
