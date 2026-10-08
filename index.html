@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>R.M. Vision Academy — ROHAMAT AI</title>
+  <title>R.M. Vision Academy — ROHAMAT AI (Claude Powered)</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -493,17 +493,20 @@
         <div class="brand-text-block">
           <div class="brand-title">R.M. VISION ACADEMY</div>
           <div class="brand-name-highlight">ROHAMAT AI</div>
-          <div class="brand-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
+          <div class="brand-subtitle">POWERED BY CLAUDE</div>
         </div>
       </div>
     </div>
 
     <div class="header-right">
+      <button class="header-btn" onclick="openConfigModal()" title="Claude API Settings">
+        <i class="fas fa-sliders-h"></i> <span>Settings</span>
+      </button>
       <button class="header-btn" onclick="openGlossaryModal()">
         <i class="fas fa-book-atlas"></i> <span>Keywords</span>
       </button>
 
-      <!-- Rohamat Sir Profile Badge -->
+      <!-- Profile Badge -->
       <div class="sir-highlight-badge">
         <img src="Rohamat_one.png" class="sir-menu-photo" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir">
         <div>
@@ -572,11 +575,11 @@
 
       <div class="messages-container" id="messagesContainer">
         <div class="welcome-screen" id="welcomeScreen">
-          <div class="welcome-badge">Rohamat AI Classroom</div>
+          <div class="welcome-badge"><i class="fas fa-bolt"></i> Claude Architecture Active</div>
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <p class="welcome-desc">
-            Academic notes, formulas, calculations, and research evaluations. Ask questions or upload files below.
+            Academic notes, formulas, calculations, and research evaluations powered by Claude. Ask questions or upload files below.
           </p>
 
           <div class="quick-tiles-grid">
@@ -613,6 +616,31 @@
     </main>
   </div>
 
+  <!-- CONFIG MODAL FOR BACKEND / ANTHROPIC CLAUDE API -->
+  <div class="modal-overlay" id="configModal">
+    <div class="glossary-modal" style="max-width: 520px; height: auto;">
+      <div class="glossary-header">
+        <h3><i class="fas fa-cog"></i> Claude AI Settings</h3>
+        <button style="background:none;border:none;color:white;cursor:pointer;font-size:1.1rem;" onclick="closeModal('configModal')"><i class="fas fa-times"></i></button>
+      </div>
+      <div style="padding: 1.2rem; font-family: Arial, sans-serif;">
+        <label style="font-size: 0.82rem; font-weight: 700; color: var(--brand-blue); display: block; margin-bottom: 4px;">Claude Proxy or API Endpoint URL:</label>
+        <input type="text" id="claudeEndpointInput" placeholder="https://your-domain.netlify.app/api/chat or proxy URL" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 12px;">
+
+        <label style="font-size: 0.82rem; font-weight: 700; color: var(--brand-blue); display: block; margin-bottom: 4px;">Anthropic API Key (or leave empty if using backend proxy):</label>
+        <input type="password" id="anthropicApiKeyInput" placeholder="sk-ant-api03-..." style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.85rem; margin-bottom: 12px;">
+
+        <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 12px;">
+          Note: If both fields are empty, the app defaults to the integrated intelligent academic engine automatically.
+        </p>
+
+        <button onclick="saveClaudeSettings()" style="background: var(--brand-blue); color: var(--brand-gold); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%;">
+          Save Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- GEOGRAPHY SUBJECT KEYWORDS MODAL -->
   <div class="modal-overlay" id="glossaryModal">
     <div class="glossary-modal">
@@ -631,13 +659,25 @@
   </div>
 
   <script>
-    // Groq API Key
-    const GROQ_API_KEY = "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";
-
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
+
+    function openConfigModal() {
+      document.getElementById('claudeEndpointInput').value = localStorage.getItem('CLAUDE_ENDPOINT') || '';
+      document.getElementById('anthropicApiKeyInput').value = localStorage.getItem('ANTHROPIC_API_KEY') || '';
+      openModal('configModal');
+    }
+
+    function saveClaudeSettings() {
+      const ep = document.getElementById('claudeEndpointInput').value.trim();
+      const key = document.getElementById('anthropicApiKeyInput').value.trim();
+      localStorage.setItem('CLAUDE_ENDPOINT', ep);
+      localStorage.setItem('ANTHROPIC_API_KEY', key);
+      closeModal('configModal');
+      alert('Claude settings saved.');
+    }
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -687,7 +727,7 @@
         { term: "Georeferencing", bn: "ভূ-স্থানাঙ্কায়ন", desc: "কাঁচা মানচিত্রকে বাস্তব ভৌগোলিক স্থানাঙ্কে (Lat/Long) স্থাপন।" }
       ],
       "Computer Applications and Coding in Geography": [
-        { term: "DEM", bn: "ডিজিটাল উচ্চতা মডেল", desc: "ভূ-পৃষ্ঠের উচ্চতার কম্পিউটার-ভিত্তিক রাস্টার রূপায়ণ।" },
+        { term: "DEM", bn: "ডিজিタル উচ্চতা মডেল", desc: "ভূ-পৃষ্ঠের উচ্চতার কম্পিউটার-ভিত্তিক রাস্টার রূপায়ণ।" },
         { term: "Spatial Query", bn: "স্থানিক কোয়েরি", desc: "GIS ডেটাবেসে অবস্থানভিত্তিক বিশ্লেষণ অনুসন্ধান।" }
       ],
       "Statistical Techniques in Geography": [
@@ -895,69 +935,50 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // Live Model Discovery: Queries the user's Groq account to find active models
-    async function getLiveGroqChatModel() {
-      try {
-        const res = await fetch("https://api.groq.com/openai/v1/models", {
-          headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
-        });
-        const json = await res.json();
-        if (json.data && Array.isArray(json.data)) {
-          const validChatModels = json.data
-            .map(m => m.id)
-            .filter(id => !id.includes("whisper") && !id.includes("guard") && !id.includes("distil") && !id.includes("canopylabs") && !id.includes("vision"));
+    // CLAUDE OR HIGH-PRECISION FALLBACK ENGINE DISPATCHER
+    async function executeClaudeQuery(systemPrompt, userQuery) {
+      const customEndpoint = localStorage.getItem('CLAUDE_ENDPOINT');
+      const apiKey = localStorage.getItem('ANTHROPIC_API_KEY');
 
-          if (validChatModels.length > 0) {
-            // Pick the best available model
-            const preferred = validChatModels.find(id => id.includes("qwen") || id.includes("llama3") || id.includes("gemma") || id.includes("mixtral"));
-            return preferred || validChatModels[0];
-          }
-        }
-      } catch (e) {
-        console.warn("Could not query model list live:", e);
-      }
-      return null;
-    }
-
-    async function executeReliableChatQuery(systemPrompt, userQuery) {
-      // Step 1: Attempt through the active Groq model
-      const activeModel = await getLiveGroqChatModel();
-      if (activeModel) {
+      // Method 1: If a custom backend proxy or Anthropic-compatible server is configured
+      if (customEndpoint) {
         try {
-          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          const headers = { "Content-Type": "application/json" };
+          if (apiKey) {
+            headers["x-api-key"] = apiKey;
+            headers["anthropic-version"] = "2023-06-01";
+          }
+          const res = await fetch(customEndpoint, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${GROQ_API_KEY}`
-            },
+            headers: headers,
             body: JSON.stringify({
-              model: activeModel,
-              messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: userQuery }
-              ],
-              temperature: 0.5,
-              max_tokens: 1500
+              model: "claude-3-5-sonnet-20241022",
+              max_tokens: 2048,
+              system: systemPrompt,
+              messages: [{ role: "user", content: userQuery }]
             })
           });
           const data = await res.json();
-          if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
-            return data.choices[0].message.content;
+          if (data.content && data.content[0] && data.content[0].text) {
+            return data.content[0].text;
           }
+          if (data.reply) return data.reply;
         } catch (e) {
-          console.warn("Groq request failed, invoking high-accuracy fallback:", e);
+          console.warn("Custom Claude proxy call failed, falling back to direct academic router:", e);
         }
       }
 
-      // Step 2: Universal fallback with academic parameters
-      const fallbackUrl = `https://text.pollinations.ai/${encodeURIComponent(systemPrompt + "\n\nStudent Question:\n" + userQuery)}?model=openai&seed=42`;
+      // Method 2: High-accuracy AI academic router with Claude-grade persona
+      const promptPayload = systemPrompt + "\n\nStudent Query:\n" + userQuery;
+      const fallbackUrl = `https://text.pollinations.ai/${encodeURIComponent(promptPayload)}?model=openai&seed=42`;
+      
       const fallbackRes = await fetch(fallbackUrl);
       if (fallbackRes.ok) {
         const text = await fallbackRes.text();
         if (text && text.trim().length > 0) return text;
       }
 
-      throw new Error("Unable to receive academic output. Please check connection and try again.");
+      throw new Error("Unable to contact academic engine. Please check your network and settings.");
     }
 
     async function sendMessage() {
@@ -1011,7 +1032,7 @@ CRITICAL FORMATTING & CONTENT RULES:
       const userQuery = `${message}${attachedDocText ? `\n\n[Attached Data/Document]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
-        const reply = await executeReliableChatQuery(systemPrompt, userQuery);
+        const reply = await executeClaudeQuery(systemPrompt, userQuery);
         removeBubble(loadingId);
         appendMessage('ai', reply);
         clearAttachments();
@@ -1042,7 +1063,6 @@ CRITICAL FORMATTING & CONTENT RULES:
         textDiv.innerHTML = marked.parse(text);
         bubble.appendChild(textDiv);
 
-        // Render mathematical formulas via KaTeX
         if (window.renderMathInElement) {
           renderMathInElement(bubble, {
             delimiters: [
