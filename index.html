@@ -631,7 +631,7 @@
   </div>
 
   <script>
-    // Groq High-Speed API Key
+    // Groq API Key
     const GROQ_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
@@ -895,27 +895,43 @@
       document.getElementById('docFileInput').value = '';
     }
 
-    // Direct High-Capacity Groq Query with Fallback
-    async function executeGroqQuery(systemPrompt, userQuery) {
-      const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
-      
-      // Standard models prioritized for high accuracy
-      const candidateModels = [
-        "llama-3.3-70b-versatile",
-        "llama-3.1-8b-instant"
-      ];
+    // Live Model Discovery: Queries the user's Groq account to find active models
+    async function getLiveGroqChatModel() {
+      try {
+        const res = await fetch("https://api.groq.com/openai/v1/models", {
+          headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
+        });
+        const json = await res.json();
+        if (json.data && Array.isArray(json.data)) {
+          const validChatModels = json.data
+            .map(m => m.id)
+            .filter(id => !id.includes("whisper") && !id.includes("guard") && !id.includes("distil") && !id.includes("canopylabs") && !id.includes("vision"));
 
-      let lastError = null;
-      for (const model of candidateModels) {
+          if (validChatModels.length > 0) {
+            // Pick the best available model
+            const preferred = validChatModels.find(id => id.includes("qwen") || id.includes("llama3") || id.includes("gemma") || id.includes("mixtral"));
+            return preferred || validChatModels[0];
+          }
+        }
+      } catch (e) {
+        console.warn("Could not query model list live:", e);
+      }
+      return null;
+    }
+
+    async function executeReliableChatQuery(systemPrompt, userQuery) {
+      // Step 1: Attempt through the active Groq model
+      const activeModel = await getLiveGroqChatModel();
+      if (activeModel) {
         try {
-          const res = await fetch(targetUrl, {
+          const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${GROQ_API_KEY}`
             },
             body: JSON.stringify({
-              model: model,
+              model: activeModel,
               messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userQuery }
@@ -924,20 +940,24 @@
               max_tokens: 1500
             })
           });
-
           const data = await res.json();
           if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
             return data.choices[0].message.content;
           }
-          if (data.error) {
-            lastError = data.error.message;
-          }
         } catch (e) {
-          lastError = e.message;
+          console.warn("Groq request failed, invoking high-accuracy fallback:", e);
         }
       }
 
-      throw new Error(lastError || "Could not complete request. Please try again.");
+      // Step 2: Universal fallback with academic parameters
+      const fallbackUrl = `https://text.pollinations.ai/${encodeURIComponent(systemPrompt + "\n\nStudent Question:\n" + userQuery)}?model=openai&seed=42`;
+      const fallbackRes = await fetch(fallbackUrl);
+      if (fallbackRes.ok) {
+        const text = await fallbackRes.text();
+        if (text && text.trim().length > 0) return text;
+      }
+
+      throw new Error("Unable to receive academic output. Please check connection and try again.");
     }
 
     async function sendMessage() {
@@ -974,25 +994,24 @@ RULES:
 CRITICAL OPENING RULE:
 Always start your very first sentence with:
 "আসসালামু আলাইকুম, R.M. Vision Academy-তে স্বাগতম।"
-(Then immediately continue with the answer).
+(Then immediately present the complete, standard answer).
 
 ${levelPromptInstruction}
-Language: ${language} (Write in high standard academic tone. If Bengali mode, write comprehensive Bengali with technical terms in English inside parentheses).
+Language: ${language} (Write in high standard academic tone. If Bengali mode, write natural, fluent, grammatical Bengali with technical geography terms in English inside parentheses).
 
 CRITICAL FORMATTING & CONTENT RULES:
-1. STRICT TEXT QUALITY: Write natural, fluent, highly academic text. Never repeat broken words or nonsensical loops.
-2. EXHAUSTIVE AND DETAILED: Do NOT summarize in 2-3 brief lines. Provide complete, textbook-grade study notes.
-3. FORMULAS IN BEAUTIFUL LATEX: If any mathematical, statistical, or geographical formula/index is involved (e.g., NDVI, Nearest Neighbour Rn, Albedo, Crop Diversification, Lorenz Curve, Water Balance, etc.), ALWAYS format them using proper LaTeX:
-   - For standalone equations, use display math: $$Formula$$
-   - For inline variables, use inline math: $x$
-   - Clearly define each term, variable, and its geographic interpretation.
-4. STRUCTURED WITH HEADINGS & BULLETS: Use clear Markdown headings (###), bold key terms, numbered steps, and bullet points.
-5. TABLES: If comparisons, classifications, or datasets are involved, format them cleanly using Markdown tables.`;
+1. STRICT TEXT QUALITY: Write complete, textbook-grade academic notes. Never loop or repeat broken phrases.
+2. FORMULAS IN BEAUTIFUL LATEX: If any mathematical, statistical, or geographical formula/index is involved (e.g., NDVI, Nearest Neighbour Rn, Albedo, Crop Diversification, Lorenz Curve, Water Balance, etc.), ALWAYS format them using proper LaTeX:
+   - Standalone equations: $$Formula$$
+   - Inline variables: $x$
+   - Clearly explain each term and geographic application.
+3. STRUCTURE: Use clear Markdown headings (###), bold key terms, numbered steps, and bullet points.
+4. TABLES: Present classifications and comparative data cleanly using Markdown tables.`;
 
       const userQuery = `${message}${attachedDocText ? `\n\n[Attached Data/Document]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
-        const reply = await executeGroqQuery(systemPrompt, userQuery);
+        const reply = await executeReliableChatQuery(systemPrompt, userQuery);
         removeBubble(loadingId);
         appendMessage('ai', reply);
         clearAttachments();
