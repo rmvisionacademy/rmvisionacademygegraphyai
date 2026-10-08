@@ -635,9 +635,13 @@
           Note: If both fields are empty, the app defaults to the integrated intelligent academic engine automatically.
         </p>
 
-        <button onclick="saveClaudeSettings()" style="background: var(--brand-blue); color: var(--brand-gold); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%;">
+        <button onclick="saveClaudeSettings()" style="background: var(--brand-blue); color: var(--brand-gold); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 8px;">
           Save Configuration
         </button>
+        <button onclick="testConnections()" style="background: #1d4ed8; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 8px;">
+          <i class="fas fa-plug"></i> Test Connection
+        </button>
+        <div id="connTestResult" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; display: none;"></div>
       </div>
     </div>
   </div>
@@ -940,6 +944,55 @@
       document.getElementById('docFileInput').value = '';
     }
 
+    // ==== CONNECTION DIAGNOSTICS ====
+    async function testConnections() {
+      const box = document.getElementById('connTestResult');
+      box.style.display = 'block';
+      const ep = (document.getElementById('claudeEndpointInput').value || '').trim();
+      const key = (document.getElementById('anthropicApiKeyInput').value || '').trim();
+      const lines = [];
+      const add = (ok, name, extra) => lines.push((ok ? '✅' : '❌') + ' ' + name + (extra ? ' — ' + extra : ''));
+
+      if (!navigator.onLine) add(false, 'Browser internet', 'device appears offline');
+
+      // 1. Direct Anthropic
+      if (key && !ep) {
+        try {
+          const r = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+            body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 10, messages: [{ role: 'user', content: 'hi' }] })
+          }, 20000);
+          add(r.ok || r.status === 400 || r.status === 401, 'Anthropic API direct', 'HTTP ' + r.status);
+        } catch (e) { add(false, 'Anthropic API direct', e.message); }
+      } else { add(false, 'Anthropic API direct', 'no API key entered'); }
+
+      // 2. Custom proxy
+      if (ep) {
+        try {
+          const r = await fetchWithTimeout(ep, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 10, messages: [{ role: 'user', content: 'hi' }] }) }, 20000);
+          add(r.ok, 'Your proxy endpoint', 'HTTP ' + r.status);
+        } catch (e) { add(false, 'Your proxy endpoint', e.message); }
+      } else { add(false, 'Your proxy endpoint', 'no endpoint URL entered'); }
+
+      // 3. Pollinations POST
+      try {
+        const r = await fetchWithTimeout('https://text.pollinations.ai/openai', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: 'openai', messages: [{ role: 'user', content: 'Say OK' }] })
+        }, 25000);
+        add(r.ok, 'Free engine (POST)', 'HTTP ' + r.status);
+      } catch (e) { add(false, 'Free engine (POST)', e.message); }
+
+      // 4. Pollinations GET
+      try {
+        const r = await fetchWithTimeout('https://text.pollinations.ai/' + encodeURIComponent('Say OK') + '?model=openai', {}, 25000);
+        add(r.ok, 'Free engine (GET)', 'HTTP ' + r.status);
+      } catch (e) { add(false, 'Free engine (GET)', e.message); }
+
+      box.innerHTML = '<b>Connection test:</b><br>' + lines.join('<br>');
+    }
+
     // ==== NETWORK HELPERS ====
     async function fetchWithTimeout(url, options = {}, ms = 45000) {
       const ctrl = new AbortController();
@@ -1141,7 +1194,7 @@ ${attachedDocText.slice(0, 10000)}` : ''}`;
         clearAttachments();
       } catch (err) {
         removeBubble(loadingId);
-        appendMessage('ai', `⚠️ Notice: ${err.message}`);
+        appendMessage('ai', `⚠️ Notice: ${err.message}\n\n👉 Open **Settings → Test Connection** to see exactly which engine is failing.`);
       }
     }
 
