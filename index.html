@@ -229,9 +229,9 @@
         <button class="sidebar-btn" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
       </div>
       <div class="tool-list">
-        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ and Jet Streams.')"><i class="fas fa-wind"></i> Indian Monsoon</div>
-        <div class="tool-item" onclick="insertPrompt('Explain Davis vs Penck Cycle of Erosion.')"><i class="fas fa-mountain"></i> Davis vs Penck</div>
-        <div class="tool-item" onclick="insertPrompt('Explain False Color Composites (FCC) and NDVI in Remote Sensing.')"><i class="fas fa-satellite"></i> Remote Sensing</div>
+        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ, Jet Streams and Tibetan Plateau heating.')"><i class="fas fa-wind"></i> Indian Monsoon</div>
+        <div class="tool-item" onclick="insertPrompt('Explain the Davis vs Penck Cycle of Erosion with differences.')"><i class="fas fa-mountain"></i> Davis vs Penck</div>
+        <div class="tool-item" onclick="insertPrompt('What is Remote Sensing, False Color Composite (FCC), and how is NDVI calculated?')"><i class="fas fa-satellite"></i> Remote Sensing</div>
         <div class="tool-item" onclick="openModal('keyModal')"><i class="fas fa-cog"></i> Free API Key Settings</div>
       </div>
     </aside>
@@ -264,10 +264,10 @@
           <p class="welcome-desc">Ask anything about Physical, Human, or Regional Geography.</p>
 
           <div class="quick-tiles-grid">
-            <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon.')">
+            <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ and Jet Streams.')">
               <i class="fas fa-wind"></i><span>Indian Monsoon</span>
             </div>
-            <div class="quick-tile" onclick="insertPrompt('Explain Plate Tectonics theory.')">
+            <div class="quick-tile" onclick="insertPrompt('Explain Plate Tectonics theory and convergent plate boundaries.')">
               <i class="fas fa-layer-group"></i><span>Plate Tectonics</span>
             </div>
             <div class="quick-tile" onclick="insertPrompt('What is Remote Sensing and how is NDVI calculated?')">
@@ -298,7 +298,7 @@
       <div class="modal-body">
         <p style="font-size:0.85rem; color:var(--text-muted);">
           1. Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--brand-gold);">Google AI Studio</a>.<br>
-          2. Click <b>"Create API key"</b> (It is 100% FREE without any payment card).<br>
+          2. Click <b>"Create API key"</b> (100% Free without credit card).<br>
           3. Paste your key below:
         </p>
         <input type="password" class="form-control" id="geminiApiKey" placeholder="AIzaSy...">
@@ -374,18 +374,33 @@
       const answerMode = document.getElementById('answerMode').value;
       const language = document.getElementById('languageMode').value;
 
-      const promptText = `You are the Geography Teacher at R.M. Vision Academy. Answer academically.
-Mode: ${answerMode}. Language: ${language} (If Bengali, write primarily in Bengali and put technical terms in English brackets).
+      const promptText = `You are the specialized AI Geography Teacher and Academic Tutor for R.M. Vision Academy.
+Answer academic geography questions thoroughly.
+Academic Mode: ${answerMode}.
+Language Mode: ${language}.
+Rule: If answering in Bengali, write primarily in Bengali and put important technical geography terms in English inside parentheses, e.g., বায়ুমণ্ডলীয় চাপ (Atmospheric Pressure).
 Question: ${message}`;
 
       try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        // Fallback-ready stable Gemini endpoint call
+        let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: promptText }] }]
           })
         });
+
+        // Fallback to gemini-pro if flash-latest is not enabled for the specific key
+        if (!response.ok) {
+          response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }]
+            })
+          });
+        }
 
         const data = await response.json();
         removeBubble(loadingId);
