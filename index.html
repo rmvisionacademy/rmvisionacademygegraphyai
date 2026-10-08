@@ -36,6 +36,18 @@
       --transition: all 0.2s ease;
     }
 
+    [data-theme="dark"] {
+      --bg-primary: #0b1120;
+      --bg-surface: #131c31;
+      --bg-sidebar: #070c18;
+      --brand-blue: #1a365d;
+      --brand-gold: #f59e0b;
+      --brand-gold-light: #2c2512;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #27354f;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', 'Hind Siliguri', sans-serif;
@@ -70,11 +82,11 @@
     .brand-name-highlight { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 800; color: var(--brand-gold); }
     .brand-subtitle { font-size: 0.68rem; color: #e2e8f0; font-weight: 600; text-transform: uppercase; }
 
-    .header-right { display: flex; align-items: center; gap: 10px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
     .sir-highlight-badge {
       display: flex; align-items: center; gap: 8px;
       background: rgba(218, 165, 32, 0.15); border: 1.5px solid var(--brand-gold);
-      padding: 4px 10px 4px 4px; border-radius: 30px;
+      padding: 4px 12px 4px 5px; border-radius: 30px;
     }
     .sir-menu-photo { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1.5px solid #fff; }
     .sir-name-text { font-size: 0.8rem; font-weight: 700; color: #fff; }
@@ -82,7 +94,7 @@
 
     .header-btn {
       background: rgba(255,255,255,0.08); color: white;
-      border: 1px solid rgba(255,255,255,0.15); padding: 0.45rem 0.75rem;
+      border: 1px solid rgba(255,255,255,0.15); padding: 0.45rem 0.85rem;
       border-radius: 8px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 6px;
     }
     .header-btn:hover { background: rgba(218, 165, 32, 0.25); border-color: var(--brand-gold); }
@@ -148,23 +160,46 @@
     .avatar.user { background: var(--brand-gold); color: #0b2545; font-size: 1.1rem; }
 
     .bubble {
-      background: var(--bg-surface); padding: 1rem 1.25rem; border-radius: var(--radius);
+      background: var(--bg-surface); padding: 1.1rem 1.3rem; border-radius: var(--radius);
       border: 1px solid var(--border-color); line-height: 1.65; font-size: 0.95rem; max-width: 86%;
     }
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
-    .generated-visual-box {
-      margin: 14px 0; border: 1.5px solid var(--brand-gold); border-radius: 8px;
-      overflow: hidden; background: #fff; text-align: center;
+    /* End-of-Answer Schematic Diagram */
+    .end-diagram-container {
+      margin-top: 18px;
+      border: 1.5px solid var(--brand-gold);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(11, 37, 69, 0.08);
     }
-    .generated-visual-box img { width: 100%; max-height: 360px; object-fit: contain; display: block; }
-    .visual-caption {
-      font-size: 0.78rem; color: var(--brand-blue); font-weight: 700; padding: 6px;
-      background: var(--brand-gold-light); border-top: 1px solid var(--border-color);
+    .end-diagram-container img {
+      width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      display: block;
+      background: #fafafa;
+    }
+    .diagram-footer-bar {
+      padding: 8px 12px;
+      background: var(--brand-gold-light);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--brand-blue);
+    }
+    .diagram-footer-bar a {
+      color: var(--brand-blue);
+      text-decoration: underline;
+      font-weight: 600;
     }
 
     .bubble-actions {
-      display: flex; gap: 8px; margin-top: 0.65rem; padding-top: 0.45rem;
+      display: flex; gap: 8px; margin-top: 0.8rem; padding-top: 0.5rem;
       border-top: 1px solid var(--border-color); font-size: 0.78rem;
     }
     .btn-action {
@@ -188,7 +223,7 @@
     .dock-btn:hover { color: var(--brand-gold); }
     .btn-send { background: var(--brand-blue); color: var(--brand-gold); }
 
-    /* Glossary Modal Styling */
+    /* Glossary Modal */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(11, 23, 44, 0.65);
       backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 1rem;
@@ -248,6 +283,7 @@
         <i class="fas fa-book-atlas"></i> <span>Subject Keywords</span>
       </button>
 
+      <!-- Rohamat Sir Profile Badge -->
       <div class="sir-highlight-badge">
         <img src="Rohamat_one.png" class="sir-menu-photo" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir">
         <div>
@@ -255,10 +291,6 @@
           <div class="sir-sub-text">Academic Director</div>
         </div>
       </div>
-
-      <button class="header-btn" onclick="openModal('keyModal')">
-        <i class="fas fa-key"></i> <span id="keyBtnLabel">API Key</span>
-      </button>
     </div>
   </header>
 
@@ -267,20 +299,20 @@
     <aside class="sidebar">
       <div class="sidebar-header">
         <button class="header-btn" style="flex:1;" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
-        <button class="header-btn" onclick="openGlossaryModal()" title="Keyword Meaning"><i class="fas fa-book"></i></button>
+        <button class="header-btn" onclick="openGlossaryModal()" title="Keyword Meanings"><i class="fas fa-book"></i></button>
       </div>
       <div class="tool-list">
         <div class="tool-item" onclick="insertPrompt('Explain the Types of Climate with global classification, criteria, and characteristics.')">
           <i class="fas fa-cloud-sun-rain"></i> Types of Climate
         </div>
-        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ and Jet Streams.')">
+        <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ, Jet Streams, and Tibetan Plateau heating.')">
           <i class="fas fa-wind"></i> Indian Monsoon
         </div>
         <div class="tool-item" onclick="insertPrompt('Explain Davis vs Penck Cycle of Erosion.')">
           <i class="fas fa-mountain"></i> Davis vs Penck
         </div>
         <div class="tool-item" onclick="insertPrompt('Explain Koppen Climate Classification with scheme letters and major groups.')">
-          <i class="fas fa-temperature-high"></i> Koppen Climate Scheme
+          <i class="fas fa-temperature-high"></i> Koppen Scheme
         </div>
         <div class="tool-item" onclick="insertPrompt('Explain False Color Composite (FCC) and NDVI index in Remote Sensing.')">
           <i class="fas fa-satellite"></i> Remote Sensing & NDVI
@@ -289,7 +321,7 @@
           <i class="fas fa-list-ol"></i> 24 Subject Glossaries
         </div>
         <div class="tool-item" onclick="openModal('keyModal')">
-          <i class="fas fa-cog"></i> API Settings
+          <i class="fas fa-cog"></i> Configure Key
         </div>
       </div>
     </aside>
@@ -319,12 +351,12 @@
 
       <div class="messages-container" id="messagesContainer">
         <div class="welcome-screen" id="welcomeScreen">
-          <div class="welcome-badge">Super Fast AI Engine</div>
+          <div class="welcome-badge">Real-Time Geography AI</div>
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <div class="welcome-subtitle">YOUR PERSONAL GEOGRAPHY TEACHER</div>
           <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:1.5rem;">
-            Ask strictly what you need—get highly focused, authentic points-wise notes, educational diagrams, and maps instantly without unwanted fluff.
+            Ask questions directly—receive structured point-wise notes followed by precise schematic diagrams and geographic models at the end.
           </p>
 
           <div class="quick-tiles-grid">
@@ -377,20 +409,20 @@
     </div>
   </div>
 
-  <!-- API KEY MODAL -->
+  <!-- API KEY MODAL (Accessible via Sidebar Setting) -->
   <div class="modal-overlay" id="keyModal">
     <div style="background:var(--bg-surface);border-radius:var(--radius);width:100%;max-width:480px;border:1px solid var(--border-color);overflow:hidden;">
       <div style="background:var(--brand-blue);color:white;padding:1rem;display:flex;justify-content:space-between;border-bottom:2px solid var(--brand-gold);">
-        <h3><i class="fas fa-key"></i> Free Google Gemini API Key</h3>
+        <h3><i class="fas fa-key"></i> Google Gemini API Key</h3>
         <button style="background:none;border:none;color:white;cursor:pointer;" onclick="closeModal('keyModal')"><i class="fas fa-times"></i></button>
       </div>
       <div style="padding:1.25rem;display:flex;flex-direction:column;gap:0.8rem;">
-        <p style="font-size:0.85rem;color:var(--text-muted);">Paste your free Gemini API key below:</p>
+        <p style="font-size:0.85rem;color:var(--text-muted);">Paste your Gemini API key below:</p>
         <input type="password" id="geminiApiKey" style="width:100%;padding:0.6rem;border:1px solid var(--border-color);border-radius:8px;" placeholder="AIzaSy...">
       </div>
       <div style="padding:0.75rem 1.25rem;border-top:1px solid var(--border-color);display:flex;justify-content:flex-end;gap:8px;">
         <button onclick="closeModal('keyModal')" style="padding:0.5rem 1rem;border-radius:6px;border:1px solid var(--border-color);cursor:pointer;">Cancel</button>
-        <button onclick="saveGeminiKey()" style="padding:0.5rem 1.2rem;border-radius:6px;background:var(--brand-gold);color:#0b2545;font-weight:700;border:none;cursor:pointer;">Save Key</button>
+        <button onclick="saveGeminiKey()" style="padding:0.5rem 1.2rem;border-radius:6px;background:var(--brand-gold);color:#0b2545;font-weight:700;border:none;cursor:pointer;">Save</button>
       </div>
     </div>
   </div>
@@ -401,132 +433,105 @@
     let attachedDocText = null;
     let attachedFileName = '';
 
-    // 24 Full Subjects & Technical Keywords Database
     const geographyGlossaryData = {
       "Geotectonics and Geomorphology": [
         { term: "Plate Tectonics", bn: "পাত সংস্থান তত্ত্ব", desc: "পৃথিবীর অশ্মমণ্ডলের গতিশীল খণ্ডগুলির পারস্পরিক চলন ও সংঘাত।" },
         { term: "Isostasy", bn: "ভূ-ভারসাম্য", desc: "ভূত্বক ও গুরুমণ্ডলের মধ্যে উচ্চতা ও ঘনত্বের ভারসাম্যাবস্থা।" },
         { term: "Peneplain", bn: "সমপ্রায় ভূমি", desc: "ক্ষয়চক্রের অন্তিম পর্যায়ে সৃষ্ট তরঙ্গায়িত সমতল ভূভাগ (Davisian concept)।" },
-        { term: "Pediment", bn: "পেডিমেন্ট", desc: "মরু অঞ্চলের পর্বতের পাদদেশে ক্ষয়জাত মৃদু ঢালযুক্ত শিলাতল।" },
-        { term: "Epeirogeny", bn: "মহীভাবক আলোড়ন", desc: "উল্লম্ব ভূ-আলোড়ন যা মহাদেশ ও মালভূমি গঠন করে।" }
+        { term: "Pediment", bn: "পেডিমেন্ট", desc: "মরু অঞ্চলের পর্বতের পাদদেশে ক্ষয়জাত মৃদু ঢালযুক্ত শিলাতল।" }
       ],
       "Climatology": [
         { term: "ITCZ", bn: "আন্তঃক্রান্তীয় অভিসরণ অঞ্চল", desc: "উভয় গোলার্ধের বাণিজ্য বায়ুর মিলনস্থল নিম্নচাপ বলয়।" },
         { term: "Jet Stream", bn: "জেট বায়ুপ্রবাহ", desc: "ঊর্ধ্ব ট্রপোমণ্ডলে দ্রুতগামী সংকীর্ণ তরঙ্গায়িত পশ্চিমা বায়ুপ্রবাহ।" },
         { term: "Inversion of Temperature", bn: "উত্তাপের বিপরীত অবস্থা", desc: "উচ্চতা বৃদ্ধির সাথে সাথে বায়ুর উষ্ণতা হ্রাসের বদলে বৃদ্ধি পাওয়া।" },
-        { term: "Albedo", bn: "অ্যালবেডো", desc: "পৃষ্ঠতল কর্তৃক প্রতিফলিত সৌর বিকিরণের অনুপাত।" },
-        { term: "Walker Circulation", bn: "ওয়াকার সঞ্চালন", desc: "প্রশান্ত মহাসাগরের অনুভূমিক বায়বীয় ও চাপীয় সংবহন কোশ।" }
+        { term: "Albedo", bn: "অ্যালবেডো", desc: "পৃষ্ঠতল কর্তৃক প্রতিফলিত সৌর বিকিরণের অনুপাত।" }
       ],
       "Hydrology and Oceanography": [
         { term: "Hydrograph", bn: "জললেখচিত্র", desc: "সময়ের প্রেক্ষিতে নদীর জলপ্রবাহের হ্রাস-বৃদ্ধির লেখচিত্র।" },
         { term: "Salinity", bn: "লবণাক্ততা", desc: "১০০০ গ্রাম সমুদ্রজলে দ্রবীভূত খনিজ লবণের পরিমাণ (ppt)।" },
-        { term: "Upwelling", bn: "উর্ধ্বপ্রবাহ", desc: "গভীর সমুদ্রের শীতল ও পুষ্টিসমৃদ্ধ জলের পৃষ্ঠে আগমন।" },
-        { term: "Spring Tide", bn: "ভরা কোটাল", desc: "অমাবস্যা ও পূর্ণিমায় চাঁদ ও সূর্যের সরলরৈখিক অবস্থানে সর্বোচ্চ জোয়ার।" }
+        { term: "Upwelling", bn: "উর্ধ্বপ্রবাহ", desc: "গভীর সমুদ্রের শীতল ও পুষ্টিসমৃদ্ধ জলের পৃষ্ঠে আগমন।" }
       ],
       "Human Geography": [
         { term: "Environmental Determinism", bn: "পরিবেশীয় নিয়ন্ত্রণবাদ", desc: "মানুষের কার্যকলাপ প্রকৃতি দ্বারা চূড়ান্তভাবে নিয়ন্ত্রিত।" },
-        { term: "Possibilism", bn: "সম্ভবাবাদ", desc: "প্রকৃতি সুযোগ দেয়, মানুষ তার বুদ্ধি দ্বারা পরিবেশ বদলায় (Vidal de la Blache)।" },
-        { term: "Cultural Landscape", bn: "সাংস্কৃতিক ভূদৃশ্য", desc: "প্রাকৃতিক পরিবেশের উপর মানব সংস্কৃতির ছাপ (Carl Sauer)।" }
+        { term: "Possibilism", bn: "সম্ভবাবাদ", desc: "প্রকৃতি সুযোগ দেয়, মানুষ তার বুদ্ধি দ্বারা পরিবেশ বদলায় (Vidal de la Blache)।" }
       ],
       "Cartography and Thematic Mapping": [
         { term: "Choropleth Map", bn: "বর্ণানুক্রমিক মানচিত্র", desc: "প্রশাসনিক এককে ঘনত্বের ভিত্তিতে রঙের প্রলেপে প্রদর্শিত মানচিত্র।" },
-        { term: "RF (Representative Fraction)", bn: "ভগ্নাংশসূচক অনুপাত", desc: "মানচিত্র দূরত্ব ও ভূদূরত্বের এককহীন অনুপাতিক ভগ্নাংশ।" },
-        { term: "Isopleth", bn: "সমমান রেখা", desc: "সমান মানবিশিষ্ট স্থানগুলিকে সংযোগকারী কাল্পনিক রেখা।" }
+        { term: "RF", bn: "ভগ্নাংশসূচক অনুপাত", desc: "মানচিত্র দূরত্ব ও ভূদূরত্বের এককহীন অনুপাতিক ভগ্নাংশ।" }
       ],
       "Surveying and Levelling": [
-        { term: "Benchmark (BM)", bn: "বেঞ্চমার্ক", desc: "সমুদ্রপৃষ্ঠ থেকে নিখুঁত উচ্চতা চিহ্নিত স্থায়ী সার্ভে বিন্দু।" },
-        { term: "Prismatic Compass", bn: "প্রিজমেটিক কম্পাস", desc: "চৌম্বকীয় দিক ও কোণ (Bearing) পরিমাপক যন্ত্র।" },
-        { term: "Collimation Error", bn: "কলিমেশন ত্রুটি", desc: "সার্ভে টেলিস্কোপের অপটিক্যাল অক্ষের বিচ্যুতিজনিত ত্রুটি।" }
+        { term: "Benchmark", bn: "বেঞ্চমার্ক", desc: "সমুদ্রপৃষ্ঠ থেকে নিখুঁত উচ্চতা চিহ্নিত স্থায়ী সার্ভে বিন্দু।" },
+        { term: "Prismatic Compass", bn: "প্রিজমেটিক কম্পাস", desc: "চৌম্বকীয় দিক ও কোণ (Bearing) পরিমাপক যন্ত্র।" }
       ],
       "Remote Sensing and GIS": [
         { term: "NDVI", bn: "উদ্ভিদ সূচক", desc: "লাল ও নিকট-অবলোহিত তরঙ্গের ভিত্তিতে উদ্ভিদের সজীবতা নির্ণয়।" },
         { term: "FCC", bn: "মিথ্যা রঙ সমন্বয়", desc: "অদৃশ্য তরঙ্গদৈর্ঘ্যকে লাল, সবুজ বা নীল রঙে রূপান্তরিত প্রতিচ্ছবি।" },
-        { term: "Spatial Resolution", bn: "স্থানিক রেজোলিউশন", desc: "স্যাটেলাইট ছবির প্রতিটি পিক্সেলের ভূ-পৃষ্ঠীয় বাস্তব বিস্তার।" },
         { term: "Georeferencing", bn: "ভূ-স্থানাঙ্কায়ন", desc: "কাঁচা মানচিত্রকে বাস্তব ভৌগোলিক স্থানাঙ্কে (Lat/Long) স্থাপন।" }
       ],
       "Computer Applications and Coding in Geography": [
-        { term: "Spatial Query", bn: "স্থানিক কোয়েরি", desc: "GIS ডেটাবেসে অবস্থানভিত্তিক বিশ্লেষণ অনুসন্ধান (SQL/Python)।" },
-        { term: "DEM (Digital Elevation Model)", bn: "ডিজিটাল উচ্চতা মডেল", desc: "ভূ-পৃষ্ঠের উচ্চতার কম্পিউটার-ভিত্তিক রাস্টার রূপায়ণ।" }
+        { term: "DEM", bn: "ডিজিটাল উচ্চতা মডেল", desc: "ভূ-পৃষ্ঠের উচ্চতার কম্পিউটার-ভিত্তিক রাস্টার রূপায়ণ।" },
+        { term: "Spatial Query", bn: "স্থানিক কোয়েরি", desc: "GIS ডেটাবেসে অবস্থানভিত্তিক বিশ্লেষণ অনুসন্ধান।" }
       ],
       "Statistical Techniques in Geography": [
-        { term: "Nearest Neighbour Analysis", bn: "নিকটতম প্রতিবেশী বিশ্লেষণ", desc: "বিন্দুর বিন্যাস গুচ্ছাকার, সমসত্ত্ব না দৈব তা পরিমাপের পদ্ধতি (Rn)।" },
-        { term: "Standard Deviation", bn: "পরিমিত ব্যবধান", desc: "গড় থেকে তথ্যের বিচ্যুতির পরিমাপক।" },
+        { term: "Nearest Neighbour Analysis", bn: "নিকটতম প্রতিবেশী বিশ্লেষণ", desc: "বিন্দুর বিন্যাস গুচ্ছাকার, সমসত্ত্ব না দৈব তা পরিমাপের পদ্ধতি।" },
         { term: "Lorenz Curve", bn: "লরেঞ্জ বক্ররেখা", desc: "সম্পদ বা জনসংখ্যার অসম বন্টন পরিমাপের গ্রাফিক্যাল পদ্ধতি।" }
       ],
       "Economic and Resource Geography": [
-        { term: "Agglomeration Economies", bn: "পুঞ্জিভবন সুবিধা", desc: "একই স্থানে শিল্পসমূহ কাছাকাছি থাকায় পরিবহন ও পরিকাঠামোগত সাশ্রয়।" },
-        { term: "Ubiquitous Material", bn: "সর্বত্রপ্রাপ্য কাঁচামাল", desc: "যে কাঁচামাল সর্বত্র সমানভাবে পাওয়া যায় (Alfred Weber)।" }
+        { term: "Agglomeration Economies", bn: "পুঞ্জিভবন সুবিধা", desc: "শিল্পসমূহ কাছাকাছি থাকায় পরিবহন ও পরিকাঠামোগত সাশ্রয়।" }
       ],
       "Population Geography": [
-        { term: "Demographic Transition", bn: "জনমিতিক রূপান্তর মডেল", desc: "উচ্চ জন্ম-মৃত্যুহার থেকে নিম্ন জন্ম-মৃত্যুহারে পৌঁছানোর পর্যায়ক্রম।" },
-        { term: "Dependency Ratio", bn: "নির্ভরশীলতার অনুপাত", desc: "কর্মক্ষম জনসংখ্যার তুলনায় শিশু ও প্রবীণ জনসংখ্যার অনুপাত।" }
+        { term: "Demographic Transition", bn: "জনমিতিক রূপান্তর মডেল", desc: "উচ্চ জন্ম-মৃত্যুহার থেকে নিম্ন জন্ম-মৃত্যুহারে পৌঁছানোর পর্যায়ক্রম।" }
       ],
       "Settlement and Transport Geography": [
-        { term: "Conurbation", bn: "পৌরপুঞ্জ", desc: "একাধিক নগর বৃদ্ধি পেয়ে পরস্পর সংযুক্ত হওয়া পৌরবলয় (Patrick Geddes)।" },
-        { term: "Connectivity Index", bn: "সংযোগ সূচক", desc: "পরিবহন জালের শীর্ষবিন্দু ও সংযোগকারী রেখার ঘনত্ব (Beta/Gamma Index)।" }
+        { term: "Conurbation", bn: "পৌরপুঞ্জ", desc: "একাধিক নগর বৃদ্ধি পেয়ে পরস্পর সংযুক্ত হওয়া পৌরবলয়।" }
       ],
       "Urban Geography": [
-        { term: "Primate City", bn: "প্রধান নগর তত্ত্ব", desc: "দেশের দ্বিতীয় বৃহত্তম নগরের দ্বিগুণের বেশি জনসংখ্যাযুক্ত নগর (Mark Jefferson)।" },
-        { term: "Concentric Zone Model", bn: "এককেন্দ্রিক বলয় মডেল", desc: "নগরের অভ্যন্তরীণ কাঠামোর বলয়াকার বিস্তার (E.W. Burgess)।" }
+        { term: "Primate City", bn: "প্রধান নগর তত্ত্ব", desc: "দেশের দ্বিতীয় বৃহত্তম নগরের দ্বিগুণের বেশি জনসংখ্যাযুক্ত নগর।" }
       ],
       "Agricultural Geography": [
-        { term: "Von Thunen Model", bn: "ভন থুনেন মডেল", desc: "নগর কেন্দ্র থেকে দূরত্বের ভিত্তিতে কৃষিজ বলয় বন্টন তত্ত্ব।" },
         { term: "Crop Diversification", bn: "শস্য বহুমুখীকরণ", desc: "একই অঞ্চলে বিভিন্ন ধরণের ফসলের উৎপাদন অনুপাত।" }
       ],
       "Agriculture and Rural Development-I": [
-        { term: "Dry Farming", bn: "শুষ্ক কৃষি", desc: "স্বল্প বৃষ্টিপাতযুক্ত অঞ্চলে আর্দ্রতা সংরক্ষণ করে কৃষিকাজ।" },
-        { term: "Rural-Urban Fringe", bn: "গ্রামীণ-পৌর সীমান্ত", desc: "গ্রাম ও শহরের অন্তর্বর্তী রূপান্তরকারী মিশ্র ভূমি ব্যবহারের অঞ্চল।" }
+        { term: "Dry Farming", bn: "শুষ্ক কৃষি", desc: "স্বল্প বৃষ্টিপাতযুক্ত অঞ্চলে আর্দ্রতা সংরক্ষণ করে কৃষিকাজ।" }
       ],
       "Social, Cultural and Political Geography": [
-        { term: "Heartland Theory", bn: "হার্টল্যান্ড তত্ত্ব", desc: "ইউরেশিয়ার কেন্দ্রীয় ভূভাগ নিয়ন্ত্রণকারী বিশ্ব শাসন করবে (Mackinder)।" },
-        { term: "Shatterbelt", bn: "ভঙ্গুর বলয়", desc: "বৃহৎ শক্তির ভূরাজনৈতিক দ্বন্দ্বে জর্জরিত অস্থিতিশীল ভৌগোলিক অঞ্চল।" }
+        { term: "Heartland Theory", bn: "হার্টল্যান্ড তত্ত্ব", desc: "ইউরেশিয়ার কেন্দ্রীয় ভূভাগ নিয়ন্ত্রণকারী বিশ্ব শাসন করবে।" }
       ],
       "Environmental Geography": [
-        { term: "Biomagnification", bn: "জৈব বিবর্ধন", desc: "খাদ্যশৃঙ্খলের প্রতি পুষ্টিস্তরে বিষাক্ত পদার্থের ঘনত্ব বৃদ্ধি।" },
         { term: "Carrying Capacity", bn: "ধারণ ক্ষমতা", desc: "একটি পরিবেশের সর্বাধিক জীব ধারণ করার সামর্থ্য।" }
       ],
       "Hazard and Disaster Management": [
-        { term: "Vulnerability", bn: "ক্ষতিগ্রস্ত হওয়ার সম্ভাবনা (দুর্বলতা)", desc: "দুর্যোগের প্রভাবে মানুষের শারীরিক, অর্থনৈতিক ও পরিবেশগত ক্ষতি হবার প্রবণতা।" },
-        { term: "Mitigation", bn: "শমন / প্রশমন", desc: "দুর্যোগের তীব্রতা বা ক্ষতির প্রভাব দীর্ঘমেয়াদে কমানোর পদক্ষেপ।" }
+        { term: "Vulnerability", bn: "ক্ষতিগ্রস্ত হওয়ার সম্ভাবনা", desc: "দুর্যোগের প্রভাবে মানুষের শারীরিক ও পরিবেশগত ক্ষতি হবার প্রবণতা।" }
       ],
       "Sustainable Tourism and Regional Development": [
-        { term: "Ecotourism", bn: "পরিবেশবান্ধব পর্যটন", desc: "প্রকৃতির ক্ষতি না করে স্থানীয় সংস্কৃতির সাথে সামঞ্জস্যপূর্ণ পর্যটন।" },
-        { term: "Growth Pole", bn: "বৃদ্ধির মেরু তত্ত্ব", desc: "নির্দিষ্ট অগ্রণী শিল্পের বিকাশের মাধ্যমে সামগ্রিক অঞ্চলের সমৃদ্ধি (Perroux)।" }
+        { term: "Ecotourism", bn: "পরিবেশবান্ধব পর্যটন", desc: "প্রকৃতির ক্ষতি না করে স্থানীয় সংস্কৃতির সাথে সামঞ্জস্যপূর্ণ পর্যটন।" }
       ],
       "Pedological and Petrographical Analysis": [
-        { term: "Soil Horizon", bn: "মৃত্তিকা স্তর", desc: "মৃত্তিকা পরিলেখের অন্তর্গত সমান্তরাল রাসায়নিক ও জৈব বৈশিষ্ট্যযুক্ত স্তর।" },
-        { term: "Metamorphic Facies", bn: "রূপান্তরিত শিলা স্তর", desc: "নির্দিষ্ট চাপ ও তাপমাত্রায় খনিজের পুনর্বিন্যাসের রূপান্তর।" }
+        { term: "Soil Horizon", bn: "মৃত্তিকা স্তর", desc: "মৃত্তিকা পরিলেখের অন্তর্গত সমান্তরাল রাসায়নিক ও জৈব বৈশিষ্ট্যযুক্ত স্তর।" }
       ],
       "Geography of Pedosphere and Biosphere": [
-        { term: "Podsolization", bn: "পডসলীকরণ", desc: "শীতল সরলবর্গীয় বনে অম্লীয় মৃত্তিকা গঠনের প্রক্রিয়া।" },
         { term: "Biome", bn: "বায়োম", desc: "নির্দিষ্ট জলবায়ু অঞ্চলের অন্তর্গত সুনির্দিষ্ট উদ্ভিদ ও প্রাণী সমষ্টি।" }
       ],
       "Regional Geography of India": [
-        { term: "Western Disturbance", bn: "পশ্চিমী ঝঞ্ঝা", desc: "ভূমধ্যসাগর থেকে আগত শীতকালীন বৃষ্টিপাত সৃষ্টিকারী ঘূর্ণবাত।" },
-        { term: "Doab", bn: "দোয়াব", desc: "দুটি সমান্তরাল প্রবাহিত নদীর মধ্যবর্তী উর্বর পলল ভূমিভাগ।" }
+        { term: "Western Disturbance", bn: "পশ্চিমী ঝঞ্ঝা", desc: "ভূমধ্যসাগর থেকে আগত শীতকালীন বৃষ্টিপাত সৃষ্টিকারী ঘূর্ণবাত।" }
       ],
       "Regional Planning and Development": [
-        { term: "Core-Periphery Model", bn: "কেন্দ্র-প্রান্তীয় মডেল", desc: "কেন্দ্রে সম্পদের সঞ্চয় এবং প্রান্তীয় অঞ্চলের শোষণ ও বঞ্চনার তাত্ত্বিক রূপ (Friedmann)।" },
-        { term: "Backwash Effect", bn: "পশ্চাৎমুখী প্রভাব", desc: "অনগ্রসর অঞ্চল থেকে দক্ষ শ্রম ও মূলধন উন্নত কেন্দ্রে প্রবাহিত হওয়া (Myrdal)।" }
+        { term: "Core-Periphery Model", bn: "কেন্দ্র-প্রান্তীয় মডেল", desc: "কেন্দ্রে সম্পদের সঞ্চয় এবং প্রান্তীয় অঞ্চলের শোষণ ও বঞ্চনার তাত্ত্বিক রূপ।" }
       ],
       "Field Work Techniques in Geography": [
-        { term: "Transect Walk", bn: "প্রস্থচ্ছেদভিত্তিক সমীক্ষা পদযাত্রা", desc: "এলাকার ভূমি ব্যবহার ও ভূগোল পর্যবেক্ষণ করতে নির্দিষ্ট সরলরেখা বরাবর হাঁটা।" },
-        { term: "Stratified Sampling", bn: "স্তরবিন্যস্ত নমুনায়ন", desc: "জনসংখ্যা বা অঞ্চলকে উপগোষ্ঠীতে ভাগ করে সুষম নমুনা সংগ্রহ।" }
+        { term: "Transect Walk", bn: "প্রস্থচ্ছেদভিত্তিক সমীক্ষা পদযাত্রা", desc: "এলাকার ভূমি ব্যবহার পর্যবেক্ষণে নির্দিষ্ট সরলরেখা বরাবর হাঁটা।" }
       ],
       "Geographical Thought": [
-        { term: "Chorology", bn: "স্থানিক বিজ্ঞান (কোরোলজি)", desc: "স্থানের পার্থক্যের স্থানিক পর্যালোচনা (Hettner ও Hartshorne)।" },
-        { term: "Quantitative Revolution", bn: "সংখ্যাভিত্তিক বিপ্লব", desc: "ভূগোলে গাণিতিক সূত্র ও পরিসংখ্যানের কঠোর ব্যবহারের ঐতিহাসিক পর্যায়।" },
-        { term: "Dualism", bn: "দ্বৈতবাদ", desc: "ভূগোলের শাখাগত দ্বন্দ্ব (যেমন: প্রাকৃতিক বনাম মানবীয়, প্রণালীবদ্ধ বনাম আঞ্চলিক)।" }
+        { term: "Chorology", bn: "স্থানিক বিজ্ঞান (কোরোলজি)", desc: "স্থানের পার্থক্যের স্থানিক পর্যালোচনা (Hettner & Hartshorne)।" }
       ]
     };
 
     window.addEventListener('DOMContentLoaded', () => {
-      const key = localStorage.getItem('rm_gemini_key');
-      if (key) {
-        document.getElementById('keyBtnLabel').textContent = 'Key Active ✓';
-        document.getElementById('geminiApiKey').value = key;
-      }
       initGlossaryNav();
+      const savedKey = localStorage.getItem('rm_gemini_key');
+      if (savedKey) {
+        document.getElementById('geminiApiKey').value = savedKey;
+      }
     });
 
     function setLevel(lvl, btn) {
@@ -609,9 +614,8 @@
       const key = document.getElementById('geminiApiKey').value.trim();
       if (!key) return alert('Please enter your Gemini API key.');
       localStorage.setItem('rm_gemini_key', key);
-      document.getElementById('keyBtnLabel').textContent = 'Key Active ✓';
       closeModal('keyModal');
-      alert('Key saved successfully!');
+      alert('Key configured successfully!');
     }
 
     function handleImageAttach(e) {
@@ -686,15 +690,15 @@
       const loadingId = appendLoadingBubble();
       const language = document.getElementById('languageMode').value;
 
-      // ULTRA-FAST, DIRECT & AUTHENTIC PROMPT
       const promptText = `Role: Rohamat Sir (Geography Academic Specialist at R.M. Vision Academy).
 Target Level: ${activeLevel}.
 Language: ${language} (Write in clear academic Bengali, always placing technical geography terms in English within parentheses).
 
-STRICT MANDATORY INSTRUCTIONS:
-1. FOCUS ONLY ON WHAT IS ASKED: If asked "types of climate", provide comprehensive classification, characteristics, global distribution and criteria.
-2. ABSOLUTELY NO UNREQUESTED MATHEMATICS/STATISTICS: Never mention Mean, Median, Standard Deviation, or Chi-Square unless explicitly asked.
-3. Structure: Clear headings, bold key terms, and bullet points. Use genuine academic facts from NCERT, Savindra Singh, Majid Husain, and university syllabus.
+STRICT ACADEMIC GUIDELINES:
+1. FOCUS STRICTLY ON THE QUERY: If the user asks about "Types of Climate", describe only the climatic types, criteria, characteristics, and world distribution.
+2. NO UNSOLICITED STATISTICS: Do not provide formulas like Mean, Median, SD, or Chi-Square unless specifically requested by the user.
+3. Structure answers point-wise with bold key terms and crisp academic subheadings.
+4. Rely exclusively on standard geographical literature (NCERT, Savindra Singh, Strahler, Majid Husain).
 
 User Question: ${message}
 ${attachedDocText ? `\nDocument context: ${attachedDocText.slice(0, 5000)}` : ''}`;
@@ -750,22 +754,12 @@ ${attachedDocText ? `\nDocument context: ${attachedDocText.slice(0, 5000)}` : ''
       bubble.className = 'bubble';
 
       if (role === 'ai') {
-        if (originalQuery && !text.includes('Notice:')) {
-          const queryClean = originalQuery.replace(/explain|what is|kake bole|types of|describe|write|kivabe/gi, '').trim();
-          const visualPrompt = encodeURIComponent(`clear textbook diagram cross section of ${queryClean} in physical geography, labeled scientific, high resolution, white background`);
-          const visualBox = document.createElement('div');
-          visualBox.className = 'generated-visual-box';
-          visualBox.innerHTML = `
-            <img src="https://image.pollinations.ai/prompt/${visualPrompt}?width=800&height=380&nologo=true" loading="lazy" alt="Diagram: ${queryClean}">
-            <div class="visual-caption"><i class="fas fa-project-diagram"></i> Academic Schematic Diagram • R.M. Vision Academy</div>
-          `;
-          bubble.appendChild(visualBox);
-        }
-
+        // 1. Text Response rendered first
         const textDiv = document.createElement('div');
         textDiv.innerHTML = marked.parse(text);
         bubble.appendChild(textDiv);
 
+        // 2. KaTeX Math rendering
         if (window.renderMathInElement) {
           renderMathInElement(bubble, {
             delimiters: [
@@ -776,6 +770,28 @@ ${attachedDocText ? `\nDocument context: ${attachedDocText.slice(0, 5000)}` : ''
           });
         }
 
+        // 3. Relevant Diagram Appended At The LAST Portion
+        if (originalQuery && !text.includes('Notice:')) {
+          const queryClean = originalQuery.replace(/explain|what is|kake bole|types of|describe|write|kivabe/gi, '').trim();
+          const encodedQuery = encodeURIComponent(queryClean);
+          const diagramBox = document.createElement('div');
+          diagramBox.className = 'end-diagram-container';
+
+          const visualPrompt = encodeURIComponent(`high resolution scientific labeled textbook diagram or map of ${queryClean} in physical geography, clean white background, educational schematic`);
+          
+          diagramBox.innerHTML = `
+            <img src="https://image.pollinations.ai/prompt/${visualPrompt}?width=850&height=420&nologo=true" loading="lazy" alt="Diagram: ${queryClean}">
+            <div class="diagram-footer-bar">
+              <span><i class="fas fa-project-diagram"></i> Schematic Model: ${queryClean}</span>
+              <a href="https://www.google.com/search?tbm=isch&q=${encodedQuery}+geography+diagram" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-google"></i> View on Google Images
+              </a>
+            </div>
+          `;
+          bubble.appendChild(diagramBox);
+        }
+
+        // 4. Action Buttons
         const actions = document.createElement('div');
         actions.className = 'bubble-actions';
         actions.innerHTML = `
@@ -802,7 +818,7 @@ ${attachedDocText ? `\nDocument context: ${attachedDocText.slice(0, 5000)}` : ''
       row.innerHTML = `
         <div class="avatar ai"><img src="Rohamat_one.png" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir"></div>
         <div class="bubble" style="display:flex;gap:10px;align-items:center;">
-          <div class="spinner"></div><span>Rohamat Sir is generating notes with diagram instantly...</span>
+          <div class="spinner"></div><span>Rohamat Sir is generating your structured geography response...</span>
         </div>
       `;
       container.appendChild(row);
@@ -817,7 +833,7 @@ ${attachedDocText ? `\nDocument context: ${attachedDocText.slice(0, 5000)}` : ''
 
     function copyText(btn) {
       const bubble = btn.closest('.bubble');
-      const text = bubble.innerText.replace(/Copy Note|Print \/ Save PDF/g, '').trim();
+      const text = bubble.innerText.replace(/Copy Note|Print \/ Save PDF|View on Google Images/g, '').trim();
       navigator.clipboard.writeText(text);
       btn.innerHTML = `<i class="fas fa-check"></i> Copied`;
       setTimeout(() => btn.innerHTML = `<i class="fas fa-copy"></i> Copy Note`, 2000);
