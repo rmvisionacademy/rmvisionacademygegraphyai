@@ -616,9 +616,6 @@
   </div>
 
   <script>
-    // Groq API Key
-    const DEFAULT_API_KEY = "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";
-
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
@@ -880,12 +877,34 @@
       document.getElementById('docFileInput').value = '';
     }
 
+    // 100% Rate-Limit-Free Universal Academic Engine
+    async function fetchAcademicResponse(systemPrompt, userQuery) {
+      const response = await fetch("https://text.pollinations.ai/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userQuery }
+          ],
+          model: "openai",
+          temperature: 0.6
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.text();
+    }
+
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
       if (!message && !attachedImageBase64 && !attachedDocText) return;
-
-      const apiKey = DEFAULT_API_KEY;
 
       document.getElementById('welcomeScreen').style.display = 'none';
       appendMessage('user', message || `Attached file for analysis: ${attachedFileName}`);
@@ -898,58 +917,38 @@
       if (activeLevel === 'Research / Thesis (APA)') {
         levelPromptInstruction = `Target Level: Advanced Empirical Research, Spatial Data Evaluation & Academic Thesis.
 PARAGRAPH-BY-PARAGRAPH DETAILED ANALYSIS RULES:
-1. STRUCTURE AS COHESIVE, DETAILED PARAGRAPHS: Deliver comprehensive paragraphs with clear transitions.
-2. EMPIRICAL RESULT & DATA ANALYSIS: Scrutinize provided parameters and explain theoretical and spatial variations.
-3. IN-TEXT CITATIONS: Include academic citations like (Strahler, 1952), (Singh, 2020).
-4. REFERENCES: Conclude with an APA 7th Edition formatted References section.`;
+1. STRUCTURE AS COHESIVE, DETAILED PARAGRAPHS: Do NOT deliver fragmented superficial bullet points. Deliver comprehensive, deeply argued paragraphs with clear academic transitions.
+2. EMPIRICAL RESULT & DATA ANALYSIS (PRIMARY FOCUS): Scrutinize the provided dataset, numerical values, spatial observations, or field parameters in rigorous detail.
+3. IN-TEXT CITATIONS: Every substantive claim must include authoritative academic in-text citations, e.g., (Strahler, 1952), (Singh, 2020), (Harvey, 1969).
+4. REFERENCES: Conclude with a rigorous "References" section strictly formatted in APA 7th Edition style.`;
       } else if (activeLevel === 'School Level') {
-        levelPromptInstruction = "Target Level: School Level (Class 9-12). Keep notes strictly point-wise, concise, and clear.";
+        levelPromptInstruction = "Target Level: School Level (Class 9-12 / Board Examination). Keep notes strictly point-wise, concise, clear, and high-scoring.";
       } else if (activeLevel === 'CUET UG/PG') {
-        levelPromptInstruction = "Target Level: CUET Entrance. High-yield points, key theorists, dates, and concise definitions.";
+        levelPromptInstruction = "Target Level: CUET UG/PG Entrance. Deliver high-yield concise points, fundamental definitions, key theorists, dates, and shortcut points.";
       } else if (activeLevel === 'UGC NET/JRF') {
-        levelPromptInstruction = "Target Level: UGC NET / JRF. Rigorous academic depth, seminal geographers, assertion-reason concepts.";
+        levelPromptInstruction = "Target Level: UGC NET / JRF. Provide rigorous academic points, seminal geographers/works, publication years, assertion-reason concepts.";
       } else {
-        levelPromptInstruction = "Target Level: UG/PG Degree. Comprehensive notes: Definition → Characteristics → Geographic Mechanics → Significance.";
+        levelPromptInstruction = "Target Level: Undergraduate & Postgraduate (UG/PG) Degree. Deliver comprehensive in-depth academic notes: Core Definition → Key Characteristics → Scientific/Geographic Mechanics → Regional Examples → Geographical Significance.";
       }
 
-      const promptText = `Role: Rohamat Sir (Geography Academic Specialist and Research Director at R.M. Vision Academy).
+      const systemPrompt = `Role: Rohamat Sir (Geography Academic Specialist and Research Director at R.M. Vision Academy).
 ${levelPromptInstruction}
-Language: ${language} (Academic style; keep technical terms in English within parentheses for Bengali mode).
+Language: ${language} (Write in clear academic style. In Bengali mode, keep technical geography terms in English within parentheses).
 
-User Request: ${message}
-${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
+STRICT GENERAL GUIDELINES:
+1. FOCUS STRICTLY ON WHAT IS ASKED: If asked theoretical questions, explain theory and geographic concepts thoroughly.
+2. Provide rich, complete, high-quality educational notes without truncation.`;
+
+      const userQuery = `${message}${attachedDocText ? `\n\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
       try {
-        const targetUrl = "https://api.groq.com/openai/v1/chat/completions";
-
-        const response = await fetch(targetUrl, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-          },
-          body: JSON.stringify({
-            model: "qwen/qwen3.8-27b",
-            messages: [{ role: "user", content: promptText }],
-            temperature: 0.6,
-            max_tokens: 500
-          })
-        });
-
-        const data = await response.json();
+        const reply = await fetchAcademicResponse(systemPrompt, userQuery);
         removeBubble(loadingId);
-
-        if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-
-        const reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
-          ? data.choices[0].message.content
-          : "No text response returned.";
-
         appendMessage('ai', reply);
         clearAttachments();
       } catch (err) {
         removeBubble(loadingId);
-        appendMessage('ai', `⚠️ Notice: ${err.message}`);
+        appendMessage('ai', `⚠️ Notice: Connection issue. Please check your internet and try again.`);
       }
     }
 
