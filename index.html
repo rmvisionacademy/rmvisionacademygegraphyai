@@ -927,8 +927,8 @@ STRICT GENERAL GUIDELINES:
 User Request: ${message}
 ${attachedDocText ? `\n[Attached File / Dataset Content]:\n${attachedDocText.slice(0, 10000)}` : ''}`;
 
-      // Choose vision model if image is attached, else standard high capability model
-      const modelName = attachedImageBase64 ? "llama-3.2-11b-vision-preview" : "llama-3.3-70b-versatile";
+      // Standard and accessible model on Groq Free Tier
+      const modelName = attachedImageBase64 ? "llama-3.2-11b-vision-preview" : "llama-3.1-8b-instant";
 
       let userMessageContent;
       if (attachedImageBase64) {
