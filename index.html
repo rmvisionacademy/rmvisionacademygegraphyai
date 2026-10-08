@@ -271,7 +271,7 @@
       flex-shrink: 0;
     }
 
-    /* Messages container */
+    /* Messages scrollable area */
     .messages-container { 
       flex: 1; 
       overflow-y: auto; 
@@ -282,6 +282,7 @@
       min-height: 0;
     }
 
+    /* Minimalist, subtle welcome screen */
     .welcome-screen { 
       max-width: 650px; 
       margin: auto; 
@@ -351,7 +352,7 @@
     }
     .btn-action:hover { background: var(--bg-primary); color: var(--brand-blue); font-weight: 600; }
 
-    /* Bottom Input Dock */
+    /* Fixed, prominent Input Dock */
     .input-dock { 
       background: var(--bg-surface); 
       border-top: 1px solid var(--border-color); 
@@ -434,33 +435,72 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ==========================================================
+       MOBILE RESPONSIVENESS & CLEAN RE-ALIGNMENT
+       ========================================================== */
     @media (max-width: 768px) {
       .menu-toggle-btn { display: block; }
-      .academy-header { height: 56px; padding: 0 0.5rem; }
+      
+      .academy-header {
+        height: 56px;
+        padding: 0 0.5rem;
+      }
+
       .brand-title { font-size: 0.78rem; }
       .brand-name-highlight { font-size: 0.72rem; }
       .brand-subtitle { display: none; }
       .brand-logo-img { width: 34px; height: 34px; }
+
       .header-right .header-btn span { display: none; }
       .header-right .header-btn { padding: 0.35rem 0.45rem; }
+      
       .sir-name-text { font-size: 0.68rem; }
       .sir-sub-text { display: none; }
       .sir-menu-photo { width: 26px; height: 26px; }
 
+      /* Mobile Drawer Sidebar */
       .sidebar {
         position: fixed;
-        top: 0; bottom: 0; left: 0; width: 250px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 250px;
         transform: translateX(-100%);
         box-shadow: 4px 0 16px rgba(0,0,0,0.5);
       }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-backdrop.active { display: block; }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar-backdrop.active {
+        display: block;
+      }
 
-      .chat-controls-bar { padding: 0.25rem 0.5rem; }
-      .bubble { max-width: 95%; padding: 0.75rem 0.85rem; font-size: 0.95rem; }
-      .glossary-layout { flex-direction: column; }
-      .subject-nav-list { width: 100%; max-height: 140px; border-right: none; border-bottom: 1px solid var(--border-color); }
-      .welcome-desc { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+      .chat-controls-bar {
+        padding: 0.25rem 0.5rem;
+      }
+      
+      .bubble {
+        max-width: 95%;
+        padding: 0.75rem 0.85rem;
+        font-size: 0.95rem;
+      }
+
+      .glossary-layout {
+        flex-direction: column;
+      }
+      .subject-nav-list {
+        width: 100%;
+        max-height: 140px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      
+      .welcome-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
     }
   </style>
 </head>
@@ -528,7 +568,7 @@
           <i class="fas fa-list-ol"></i> 24 Subject Glossaries
         </div>
         <div class="tool-item" onclick="openModal('keyModal')">
-          <i class="fas fa-cog"></i> Custom Key (Optional)
+          <i class="fas fa-cog"></i> Configure Key
         </div>
       </div>
     </aside>
@@ -564,7 +604,7 @@
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <p class="welcome-desc">
-            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files (Excel, CSV, PDF, Word, Image) below.
+            Direct, authentic academic notes, data interpretation, and empirical research evaluation. Ask questions or upload files (Excel, CSV, PDF, Word, Image) below.
           </p>
 
           <div class="quick-tiles-grid">
@@ -618,15 +658,15 @@
     </div>
   </div>
 
-  <!-- OPTIONAL CUSTOM KEY MODAL -->
+  <!-- API KEY MODAL -->
   <div class="modal-overlay" id="keyModal">
     <div style="background:var(--bg-surface);border-radius:var(--radius);width:100%;max-width:440px;border:1px solid var(--border-color);overflow:hidden;font-family:Arial,sans-serif;">
       <div style="background:var(--brand-blue);color:white;padding:0.9rem 1rem;display:flex;justify-content:space-between;border-bottom:2px solid var(--brand-gold);">
-        <h3><i class="fas fa-key"></i> Custom Gemini API Key</h3>
+        <h3><i class="fas fa-key"></i> Google Gemini API Key</h3>
         <button style="background:none;border:none;color:white;cursor:pointer;" onclick="closeModal('keyModal')"><i class="fas fa-times"></i></button>
       </div>
       <div style="padding:1rem;display:flex;flex-direction:column;gap:0.7rem;">
-        <p style="font-size:0.82rem;color:var(--text-muted);">Optional: You can overwrite the academy default key here.</p>
+        <p style="font-size:0.82rem;color:var(--text-muted);">Paste your Gemini API key below:</p>
         <input type="password" id="geminiApiKey" style="width:100%;padding:0.55rem;border:1px solid var(--border-color);border-radius:6px;" placeholder="AIzaSy...">
       </div>
       <div style="padding:0.65rem 1rem;border-top:1px solid var(--border-color);display:flex;justify-content:flex-end;gap:8px;">
@@ -637,13 +677,6 @@
   </div>
 
   <script>
-    // ========================================================
-    // আপনার GEMINI API KEY টি নিচের কোটেশনের ভেতর পেস্ট করে দিন
-    // ========================================================
-    const DEFAULT_API_KEY = "YOUR_GEMINI_API_KEY_HERE"; 
-    // উদাহরণ: const DEFAULT_API_KEY = "AIzaSyDxxxxxxxxxxxxxx";
-    // ========================================================
-
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
@@ -845,7 +878,7 @@
       if (!key) return alert('Please enter your Gemini API key.');
       localStorage.setItem('rm_gemini_key', key);
       closeModal('keyModal');
-      alert('Custom key saved!');
+      alert('Key configured successfully!');
     }
 
     function handleImageAttach(e) {
@@ -922,10 +955,8 @@
       const message = input.value.trim();
       if (!message && !attachedImageBase64 && !attachedDocText) return;
 
-      const savedKey = localStorage.getItem('rm_gemini_key');
-      const apiKey = (savedKey && savedKey.trim() !== '') ? savedKey.trim() : DEFAULT_API_KEY;
-
-      if (!apiKey || apiKey === "YOUR_GEMINI_API_KEY_HERE") {
+      const apiKey = localStorage.getItem('rm_gemini_key');
+      if (!apiKey) {
         openModal('keyModal');
         return;
       }
