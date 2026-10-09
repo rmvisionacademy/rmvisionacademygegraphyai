@@ -44,7 +44,7 @@
       height: 100%;
       height: 100dvh;
       overflow: hidden;
-      font-family: 'Times New Roman', Times, 'Hind Siliguri', serif;
+      font-family: 'Hind Siliguri', 'Times New Roman', serif;
       background-color: var(--bg-primary);
       color: var(--text-main);
     }
@@ -91,7 +91,6 @@
     }
     .header-btn:hover { background: rgba(218, 165, 32, 0.25); border-color: var(--brand-gold); }
 
-    /* Layout structure */
     .app-container { display: flex; flex: 1; min-height: 0; position: relative; overflow: hidden; }
     
     .sidebar {
@@ -106,7 +105,6 @@
 
     .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 35; }
 
-    /* Main Chat View */
     .chat-view { flex: 1; display: flex; flex-direction: column; background: var(--bg-primary); min-height: 0; overflow: hidden; }
     
     .chat-controls-bar {
@@ -123,7 +121,6 @@
 
     .badge-select { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.72rem; padding: 0.25rem 0.4rem; border-radius: 6px; font-family: inherit; flex-shrink: 0; }
 
-    /* Messages container */
     .messages-container { flex: 1; overflow-y: auto; padding: 1rem 0.8rem; display: flex; flex-direction: column; gap: 1rem; min-height: 0; }
 
     .welcome-screen { max-width: 650px; margin: auto; text-align: center; padding: 0.5rem; }
@@ -158,10 +155,10 @@
     .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 6px 9px; text-align: left; }
     .bubble th { background: #f1f5f9; font-weight: 700; }
 
-    /* Action bar under response */
+    /* Bilingual Action Bar Buttons */
     .bubble-actions {
       display: flex; gap: 8px; flex-wrap: wrap; margin-top: 0.7rem; padding-top: 0.4rem;
-      border-top: 1px solid var(--border-color); font-size: 0.75rem; font-family: Arial, sans-serif;
+      border-top: 1px solid var(--border-color); font-size: 0.75rem; font-family: 'Hind Siliguri', Arial, sans-serif;
     }
     .btn-action {
       background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;
@@ -169,7 +166,7 @@
     }
     .btn-action:hover { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue); }
 
-    /* Bottom Input Dock */
+    /* Input Dock */
     .input-dock { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 0.5rem 0.8rem; font-family: Arial, sans-serif; flex-shrink: 0; z-index: 30; box-shadow: 0 -2px 10px rgba(0,0,0,0.03); }
     .dock-container { max-width: 950px; margin: 0 auto; }
     
@@ -178,7 +175,7 @@
 
     .input-box-wrapper { display: flex; background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: 24px; padding: 4px 10px; align-items: center; gap: 6px; }
     .input-box-wrapper:focus-within { border-color: var(--brand-gold); }
-    #chatInput { flex: 1; border: none; background: transparent; font-size: 0.95rem; outline: none; resize: none; font-family: 'Times New Roman', serif; max-height: 100px; }
+    #chatInput { flex: 1; border: none; background: transparent; font-size: 0.95rem; outline: none; resize: none; font-family: 'Hind Siliguri', 'Times New Roman', serif; max-height: 100px; }
     .dock-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .dock-btn:hover { color: var(--brand-gold); }
     .btn-send { background: var(--brand-blue); color: var(--brand-gold); }
@@ -188,7 +185,7 @@
     .modal-overlay.active { display: flex; }
     
     .glossary-modal { background: var(--bg-surface); border-radius: var(--radius); width: 100%; max-width: 960px; height: 85vh; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
-    .glossary-header { background: var(--brand-blue); color: white; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--brand-gold); font-family: Arial, sans-serif; }
+    .glossary-header { background: var(--brand-blue); color: white; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--brand-gold); font-family: 'Hind Siliguri', Arial, sans-serif; }
     .glossary-layout { display: flex; flex: 1; overflow: hidden; }
     .subject-nav-list { width: 280px; background: var(--bg-primary); border-right: 1px solid var(--border-color); overflow-y: auto; padding: 0.4rem; display: flex; flex-direction: column; gap: 3px; font-family: Arial, sans-serif; }
     .subject-nav-item { padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; color: var(--text-main); }
@@ -200,9 +197,9 @@
     .kw-desc { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
 
     /* PPT Form Modal Styling */
-    .ppt-modal { background: var(--bg-surface); border-radius: var(--radius); width: 100%; max-width: 500px; padding: 1.2rem; border: 1px solid var(--border-color); font-family: Arial, sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .ppt-modal { background: var(--bg-surface); border-radius: var(--radius); width: 100%; max-width: 520px; padding: 1.2rem; border: 1px solid var(--border-color); font-family: 'Hind Siliguri', Arial, sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     .ppt-form-group { margin-bottom: 0.8rem; display: flex; flex-direction: column; gap: 4px; }
-    .ppt-form-group label { font-size: 0.8rem; font-weight: 700; color: var(--brand-blue); }
+    .ppt-form-group label { font-size: 0.82rem; font-weight: 700; color: var(--brand-blue); }
     .ppt-form-group input { padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.88rem; outline: none; }
     .ppt-form-group input:focus { border-color: var(--brand-gold); }
     .ppt-submit-btn { background: var(--brand-blue); color: var(--brand-gold); border: none; padding: 0.6rem; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 0.5rem; }
@@ -260,7 +257,7 @@
     </div>
 
     <div class="header-right">
-      <button class="header-btn" onclick="openGlossaryModal()"><i class="fas fa-book-atlas"></i> <span>Keywords</span></button>
+      <button class="header-btn" onclick="openGlossaryModal()"><i class="fas fa-book-atlas"></i> <span>Keywords / কি-ওয়ার্ডস</span></button>
 
       <div class="sir-highlight-badge">
         <img src="Rohamat_one.png" class="sir-menu-photo" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir">
@@ -278,27 +275,27 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="appSidebar">
       <div class="sidebar-header">
-        <button class="header-btn" style="flex:1;" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat</button>
+        <button class="header-btn" style="flex:1;" onclick="startNewChat()"><i class="fas fa-plus"></i> New Chat / নতুন চ্যাট</button>
         <button class="header-btn" onclick="openGlossaryModal()" title="Keyword Meanings"><i class="fas fa-book"></i></button>
       </div>
       <div class="tool-list">
         <div class="tool-item" onclick="insertPrompt('Explain the Types of Climate with global classification, criteria, and characteristics.')">
-          <i class="fas fa-cloud-sun-rain"></i> Types of Climate
+          <i class="fas fa-cloud-sun-rain"></i> Types of Climate / জলবায়ুর প্রকারভেদ
         </div>
         <div class="tool-item" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ, Jet Streams, and Tibetan Plateau heating.')">
-          <i class="fas fa-wind"></i> Indian Monsoon
+          <i class="fas fa-wind"></i> Indian Monsoon / ভারতীয় মৌসুমি বায়ু
         </div>
         <div class="tool-item" onclick="insertPrompt('Explain Davis vs Penck Cycle of Erosion.')">
-          <i class="fas fa-mountain"></i> Davis vs Penck
+          <i class="fas fa-mountain"></i> Davis vs Penck / ডেভিস ও পেঙ্ক
         </div>
         <div class="tool-item" onclick="insertPrompt('Explain Koppen Climate Classification with scheme letters and major groups.')">
-          <i class="fas fa-temperature-high"></i> Koppen Scheme
+          <i class="fas fa-temperature-high"></i> Koppen Scheme / কোপেন শ্রেণিবিন্যাস
         </div>
         <div class="tool-item" onclick="insertPrompt('Explain False Color Composite (FCC) and NDVI index in Remote Sensing.')">
-          <i class="fas fa-satellite"></i> Remote Sensing & NDVI
+          <i class="fas fa-satellite"></i> Remote Sensing / রিমোট সেন্সিং ও NDVI
         </div>
         <div class="tool-item" onclick="openGlossaryModal()">
-          <i class="fas fa-list-ol"></i> 24 Subject Glossaries
+          <i class="fas fa-list-ol"></i> 24 Glossaries / ২৪টি গ্লসারি
         </div>
       </div>
     </aside>
@@ -307,22 +304,22 @@
     <main class="chat-view">
       <div class="chat-controls-bar">
         <div style="display:flex;align-items:center;gap:4px;max-width:100%;overflow-x:auto;">
-          <label style="font-weight:700;font-size:0.72rem;white-space:nowrap;"><i class="fas fa-graduation-cap"></i> Level:</label>
+          <label style="font-weight:700;font-size:0.72rem;white-space:nowrap;"><i class="fas fa-graduation-cap"></i> Level / স্তর:</label>
           <div class="level-pills">
-            <button class="level-btn" onclick="setLevel('School Level', this)">School</button>
+            <button class="level-btn" onclick="setLevel('School Level', this)">School / স্কুল</button>
             <button class="level-btn" onclick="setLevel('CUET UG/PG', this)">CUET</button>
             <button class="level-btn active" onclick="setLevel('UG/PG Level', this)">UG/PG</button>
             <button class="level-btn" onclick="setLevel('UGC NET/JRF', this)">NET/JRF</button>
             <button class="level-btn research-mode" onclick="setLevel('Research / Thesis (APA)', this)">
-              <i class="fas fa-microscope"></i> Research
+              <i class="fas fa-microscope"></i> Research / গবেষণা
             </button>
           </div>
         </div>
 
         <div style="display:flex;align-items:center;gap:4px;">
           <select class="badge-select" id="languageMode">
-            <option value="Bilingual">Bilingual</option>
-            <option value="Bengali">বাংলা</option>
+            <option value="Bilingual">Bilingual / দ্বিভাষিক</option>
+            <option value="Bengali">বাংলা (Bengali)</option>
             <option value="English">English</option>
           </select>
         </div>
@@ -330,25 +327,20 @@
 
       <div class="messages-container" id="messagesContainer">
         <div class="welcome-screen" id="welcomeScreen">
-          <div class="welcome-badge">Rohamat AI Classroom</div>
+          <div class="welcome-badge">Rohamat AI Classroom / শ্রেণিকক্ষ</div>
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <p class="welcome-desc">
-            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files (Excel, CSV, PDF, Word, Image) below.
+            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files below. <br>
+            সরাসরি একাডেমিক নোটস, ডেটা বিশ্লেষণ এবং গবেষণা সহায়তা। আপনার প্রশ্ন লিখুন বা ফাইল আপলোড করুন।
           </p>
 
           <div class="quick-tiles-grid">
             <div class="quick-tile" onclick="insertPrompt('Explain the Types of Climate with their criteria and global distribution.')">
-              <i class="fas fa-cloud-sun"></i><span>Types of Climate</span>
+              <i class="fas fa-cloud-sun"></i><span>Types of Climate / জলবায়ু</span>
             </div>
             <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ.')">
-              <i class="fas fa-wind"></i><span>Indian Monsoon</span>
-            </div>
-            <div class="quick-tile" onclick="insertPrompt('Explain Plate Tectonics theory with boundaries.')">
-              <i class="fas fa-layer-group"></i><span>Plate Tectonics</span>
-            </div>
-            <div class="quick-tile" onclick="openGlossaryModal()">
-              <i class="fas fa-book-reader"></i><span>Keywords</span>
+              <i class="fas fa-wind"></i><span>Indian Monsoon / মৌসুমি বায়ু</span>
             </div>
           </div>
         </div>
@@ -359,9 +351,9 @@
         <div class="dock-container">
           <div id="fileAttachmentArea" style="display:none;"></div>
           <div class="input-box-wrapper">
-            <button class="dock-btn" title="Upload Image" onclick="document.getElementById('imageFileInput').click()"><i class="fas fa-camera"></i></button>
-            <button class="dock-btn" title="Upload Document / Spreadsheet" onclick="document.getElementById('docFileInput').click()"><i class="fas fa-paperclip"></i></button>
-            <textarea id="chatInput" rows="1" placeholder="Ask your question here..." onkeydown="handleKeyDown(event)"></textarea>
+            <button class="dock-btn" title="Upload Image / ছবি" onclick="document.getElementById('imageFileInput').click()"><i class="fas fa-camera"></i></button>
+            <button class="dock-btn" title="Upload Document / ডকুমেন্ট" onclick="document.getElementById('docFileInput').click()"><i class="fas fa-paperclip"></i></button>
+            <textarea id="chatInput" rows="1" placeholder="Ask your question here... / আপনার প্রশ্নটি লিখুন..." onkeydown="handleKeyDown(event)"></textarea>
             <button class="dock-btn btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
           </div>
           <input type="file" id="imageFileInput" accept="image/*" style="display:none;" onchange="handleImageAttach(event)">
@@ -375,7 +367,7 @@
   <div class="modal-overlay" id="glossaryModal">
     <div class="glossary-modal">
       <div class="glossary-header">
-        <h3><i class="fas fa-book-atlas"></i> Subject Keywords & Bengali Meanings</h3>
+        <h3><i class="fas fa-book-atlas"></i> Subject Keywords & Meanings / বিষয়ের কি-ওয়ার্ডস ও অর্থ</h3>
         <button style="background:none;border:none;color:white;cursor:pointer;font-size:1.1rem;" onclick="closeModal('glossaryModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="glossary-layout">
@@ -388,34 +380,34 @@
     </div>
   </div>
 
-  <!-- PPT FRONT PAGE FORM MODAL -->
+  <!-- PPT FRONT PAGE FORM MODAL (Bilingual) -->
   <div class="modal-overlay" id="pptFormModal">
     <div class="ppt-modal">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <h3 style="color:var(--brand-blue);"><i class="fas fa-file-powerpoint" style="color:var(--brand-gold);"></i> Academic PPT Setup</h3>
+        <h3 style="color:var(--brand-blue);"><i class="fas fa-file-powerpoint" style="color:var(--brand-gold);"></i> Academic PPT Setup / প্রেজেন্টেশন সেটআপ</h3>
         <button style="background:none;border:none;cursor:pointer;font-size:1.1rem;" onclick="closeModal('pptFormModal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="ppt-form-group">
-        <label>University / Institution Name:</label>
-        <input type="text" id="pptUnivName" placeholder="e.g. University of Calcutta">
+        <label>University / Institution Name (বিশ্ববিদ্যালয় বা প্রতিষ্ঠানের নাম):</label>
+        <input type="text" id="pptUnivName" placeholder="e.g. University of Calcutta / কলকাতা বিশ্ববিদ্যালয়">
       </div>
       <div class="ppt-form-group">
-        <label>Presentation Title / Topic:</label>
-        <input type="text" id="pptTopic" placeholder="e.g. Types of Climate and Global Distribution">
+        <label>Presentation Title / Topic (প্রেজেন্টেশনের বিষয়):</label>
+        <input type="text" id="pptTopic" placeholder="e.g. Types of Climate / জলবায়ুর প্রকারভেদ">
       </div>
       <div class="ppt-form-group">
-        <label>Presented By (Student Name / Roll):</label>
-        <input type="text" id="pptStudent" placeholder="e.g. Rahul Sharma (Roll No: 12)">
+        <label>Presented By / Student Name (শিক্ষার্থীর নাম ও রোল নম্বর):</label>
+        <input type="text" id="pptStudent" placeholder="e.g. Rahul Sharma (Roll: 12)">
       </div>
       <div class="ppt-form-group">
-        <label>Under Guidance Of (Supervisor Name):</label>
+        <label>Under Guidance Of / Supervisor (গাইড/শিক্ষকের নাম):</label>
         <input type="text" id="pptGuide" placeholder="e.g. Rohamat Sir, R.M. Vision Academy">
       </div>
       <div class="ppt-form-group">
-        <label>University Logo URL (Optional):</label>
+        <label>University Logo URL (বিশ্ববিদ্যালয়ের লোগো লিঙ্ক - ঐচ্ছিক):</label>
         <input type="text" id="pptLogoUrl" placeholder="https://example.com/logo.png">
       </div>
-      <button class="ppt-submit-btn" style="width:100%;" onclick="executePptGeneration()"><i class="fas fa-download"></i> Generate PPT Now</button>
+      <button class="ppt-submit-btn" style="width:100%;" onclick="executePptGeneration()"><i class="fas fa-download"></i> Generate PPT Now / পিপিটি তৈরি করুন</button>
     </div>
   </div>
 
@@ -522,18 +514,19 @@
       const container = document.getElementById('messagesContainer');
       container.innerHTML = `
         <div class="welcome-screen" id="welcomeScreen">
-          <div class="welcome-badge">Rohamat AI Classroom</div>
+          <div class="welcome-badge">Rohamat AI Classroom / শ্রেণিকক্ষ</div>
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <p class="welcome-desc">
-            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files below.
+            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files below. <br>
+            সরাসরি একাডেমিক নোটস, ডেটা বিশ্লেষণ এবং গবেষণা সহায়তা। আপনার প্রশ্ন লিখুন বা ফাইল আপলোড করুন।
           </p>
           <div class="quick-tiles-grid">
             <div class="quick-tile" onclick="insertPrompt('Explain the Types of Climate with their criteria and global distribution.')">
-              <i class="fas fa-cloud-sun"></i><span>Types of Climate</span>
+              <i class="fas fa-cloud-sun"></i><span>Types of Climate / জলবায়ু</span>
             </div>
             <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ.')">
-              <i class="fas fa-wind"></i><span>Indian Monsoon</span>
+              <i class="fas fa-wind"></i><span>Indian Monsoon / মৌসুমি বায়ু</span>
             </div>
           </div>
         </div>
@@ -653,7 +646,7 @@
         <div class="avatar"><img src="Rohamat_one.png" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir"></div>
         <div class="bubble">
           <div style="display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:0.85rem;">
-            <div class="spinner"></div> Rohamat AI is analyzing...
+            <div class="spinner"></div> Rohamat AI is analyzing / তথ্য বিশ্লেষণ করা হচ্ছে...
           </div>
         </div>
       `;
@@ -717,14 +710,14 @@
           bubble.innerHTML = aiText;
           renderMathAndMarkdown(bubble);
 
-          // Append Copy, Print, PDF, and PPT Action Buttons
+          // Bilingual Action Toolbar
           const actions = document.createElement('div');
           actions.className = 'bubble-actions';
           actions.innerHTML = `
-            <button class="btn-action" onclick="copyBubbleText(this)"><i class="fas fa-copy"></i> Copy</button>
-            <button class="btn-action" onclick="printBubbleContent(this)"><i class="fas fa-print"></i> Print</button>
-            <button class="btn-action" onclick="generatePDFFromBubble(this)"><i class="fas fa-file-pdf"></i> Generate PDF</button>
-            <button class="btn-action" onclick="openPptModal(this)"><i class="fas fa-file-powerpoint"></i> Generate PPT</button>
+            <button class="btn-action" onclick="copyBubbleText(this)"><i class="fas fa-copy"></i> Copy / কপি</button>
+            <button class="btn-action" onclick="printBubbleContent(this)"><i class="fas fa-print"></i> Print / প্রিন্ট</button>
+            <button class="btn-action" onclick="generatePDFFromBubble(this)"><i class="fas fa-file-pdf"></i> Generate PDF / পিডিএফ</button>
+            <button class="btn-action" onclick="openPptModal(this)"><i class="fas fa-file-powerpoint"></i> Generate PPT / পিপিটি</button>
           `;
           bubble.appendChild(actions);
           success = true;
@@ -750,7 +743,7 @@
       if (actions) actions.remove();
       navigator.clipboard.writeText(clone.innerText).then(() => {
         btn.innerHTML = `<i class="fas fa-check"></i> Copied!`;
-        setTimeout(() => { btn.innerHTML = `<i class="fas fa-copy"></i> Copy`; }, 2000);
+        setTimeout(() => { btn.innerHTML = `<i class="fas fa-copy"></i> Copy / কপি`; }, 2000);
       });
     }
 
@@ -775,7 +768,7 @@
       html2pdf().set(opt).from(clone).save();
     }
 
-    // PPT Generation Logic
+    // Bilingual PPT Setup Logic
     function openPptModal(btn) {
       currentActiveTargetBubble = btn.closest('.bubble');
       openModal('pptFormModal');
@@ -795,9 +788,9 @@
       let pptx = new PptxGenJS();
       pptx.layout = 'LAYOUT_16x9';
 
-      // 1. TITLE / FRONT SLIDE
+      // 1. FRONT / TITLE SLIDE
       let titleSlide = pptx.addSlide();
-      titleSlide.background = { color: "0B2545" }; // Brand Blue
+      titleSlide.background = { color: "0B2545" };
 
       if (logoUrl) {
         try { titleSlide.addImage({ url: logoUrl, x: 0.8, y: 0.5, w: 1.2, h: 1.2 }); } catch(e){}
@@ -811,15 +804,15 @@
         x: 0.8, y: 2.2, w: '85%', fontFace: 'Calibri', fontSize: 28, color: 'FFFFFF', bold: true
       });
 
-      titleSlide.addText(`Presented By:\n${student}`, {
+      titleSlide.addText(`Presented By (উপস্থাপনায়):\n${student}`, {
         x: 0.8, y: 4.2, w: '45%', fontFace: 'Calibri', fontSize: 14, color: 'CBD5E1'
       });
 
-      titleSlide.addText(`Under Guidance Of:\n${guide}`, {
+      titleSlide.addText(`Under Guidance Of (তত্ত্বাবধানে):\n${guide}`, {
         x: 5.2, y: 4.2, w: '45%', fontFace: 'Calibri', fontSize: 14, color: 'CBD5E1'
       });
 
-      // 2. PARSE CONTENT SLIDES FROM BUBBLE
+      // 2. CONTENT SLIDES
       const clone = currentActiveTargetBubble.cloneNode(true);
       const actions = clone.querySelector('.bubble-actions');
       if (actions) actions.remove();
@@ -849,7 +842,6 @@
           }
         });
       } else {
-        // Fallback for simple single content block
         let slide = pptx.addSlide();
         slide.background = { color: "F8FAFC" };
         slide.addText(topic, { x: 0.6, y: 0.5, w: '90%', fontFace: 'Georgia', fontSize: 20, color: '0B2545', bold: true });
