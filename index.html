@@ -16,10 +16,12 @@
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
-  <!-- Document & Spreadsheet Parsers -->
+  <!-- Document, Spreadsheet & Presentation Generators -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
   <style>
     :root {
@@ -47,10 +49,7 @@
       color: var(--text-main);
     }
 
-    body {
-      display: flex;
-      flex-direction: column;
-    }
+    body { display: flex; flex-direction: column; }
 
     /* Academy Top Header */
     .academy-header {
@@ -66,258 +65,81 @@
       z-index: 50;
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow: hidden;
-    }
+    .header-left { display: flex; align-items: center; gap: 8px; overflow: hidden; }
 
     .menu-toggle-btn {
-      display: none;
-      background: none;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--brand-gold);
-      font-size: 1.15rem;
-      padding: 5px 8px;
-      border-radius: 6px;
-      cursor: pointer;
-      flex-shrink: 0;
+      display: none; background: none; border: 1px solid rgba(255,255,255,0.2);
+      color: var(--brand-gold); font-size: 1.15rem; padding: 5px 8px; border-radius: 6px; cursor: pointer; flex-shrink: 0;
     }
 
-    .brand-wrap { 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      cursor: pointer; 
-      overflow: hidden;
-    }
+    .brand-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; overflow: hidden; }
+    .brand-logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--brand-gold); background: white; flex-shrink: 0; }
+    .brand-text-block { display: flex; flex-direction: column; line-height: 1.15; overflow: hidden; white-space: nowrap; }
+    .brand-title { font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; }
+    .brand-name-highlight { font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 800; color: var(--brand-gold); }
+    .brand-subtitle { font-size: 0.58rem; color: #e2e8f0; font-weight: 600; text-transform: uppercase; font-family: Arial, sans-serif; }
 
-    .brand-logo-img { 
-      width: 40px; 
-      height: 40px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      border: 1.5px solid var(--brand-gold); 
-      background: white; 
-      flex-shrink: 0;
-    }
-
-    .brand-text-block { 
-      display: flex; 
-      flex-direction: column; 
-      line-height: 1.15; 
-      overflow: hidden; 
-      white-space: nowrap;
-    }
-
-    .brand-title { 
-      font-family: 'Cinzel', serif; 
-      font-size: 0.9rem; 
-      font-weight: 700; 
-      color: #fff; 
-      text-overflow: ellipsis; 
-      overflow: hidden;
-    }
-
-    .brand-name-highlight { 
-      font-family: 'Cinzel', serif; 
-      font-size: 0.8rem; 
-      font-weight: 800; 
-      color: var(--brand-gold); 
-    }
-
-    .brand-subtitle { 
-      font-size: 0.58rem; 
-      color: #e2e8f0; 
-      font-weight: 600; 
-      text-transform: uppercase; 
-      font-family: Arial, sans-serif; 
-    }
-
-    .header-right { 
-      display: flex; 
-      align-items: center; 
-      gap: 6px; 
-      flex-shrink: 0; 
-    }
-    
-    .sir-highlight-badge { 
-      display: flex; 
-      align-items: center; 
-      gap: 6px; 
-      background: rgba(218, 165, 32, 0.15); 
-      border: 1px solid var(--brand-gold); 
-      padding: 3px 8px 3px 3px; 
-      border-radius: 24px;
-    }
-
-    .sir-menu-photo { 
-      width: 32px; 
-      height: 32px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      border: 1px solid #fff; 
-    }
-
-    .sir-name-text { 
-      font-size: 0.75rem; 
-      font-weight: 700; 
-      color: #fff; 
-      font-family: 'Cinzel', serif; 
-    }
-
-    .sir-sub-text { 
-      font-size: 0.55rem; 
-      color: var(--brand-gold); 
-      font-weight: 600; 
-      font-family: Arial, sans-serif; 
-    }
+    .header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .sir-highlight-badge { display: flex; align-items: center; gap: 6px; background: rgba(218, 165, 32, 0.15); border: 1px solid var(--brand-gold); padding: 3px 8px 3px 3px; border-radius: 24px; }
+    .sir-menu-photo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #fff; }
+    .sir-name-text { font-size: 0.75rem; font-weight: 700; color: #fff; font-family: 'Cinzel', serif; }
+    .sir-sub-text { font-size: 0.55rem; color: var(--brand-gold); font-weight: 600; font-family: Arial, sans-serif; }
 
     .header-btn {
-      background: rgba(255,255,255,0.08); 
-      color: white; 
-      border: 1px solid rgba(255,255,255,0.18); 
-      padding: 0.35rem 0.6rem; 
-      border-radius: 6px; 
-      font-size: 0.75rem; 
-      cursor: pointer; 
-      display: flex; 
-      align-items: center; 
-      gap: 4px; 
-      font-family: Arial, sans-serif;
+      background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.18);
+      padding: 0.35rem 0.6rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 4px; font-family: Arial, sans-serif;
     }
     .header-btn:hover { background: rgba(218, 165, 32, 0.25); border-color: var(--brand-gold); }
 
     /* Layout structure */
-    .app-container { 
-      display: flex; 
-      flex: 1; 
-      min-height: 0; 
-      position: relative; 
-      overflow: hidden; 
-    }
+    .app-container { display: flex; flex: 1; min-height: 0; position: relative; overflow: hidden; }
     
-    /* Sidebar */
     .sidebar {
-      width: 270px; 
-      background: var(--bg-sidebar); 
-      color: #cbd5e1; 
-      display: flex; 
-      flex-direction: column; 
-      border-right: 1px solid var(--border-color); 
-      flex-shrink: 0; 
-      font-family: Arial, sans-serif; 
-      transition: var(--transition); 
-      z-index: 40;
+      width: 270px; background: var(--bg-sidebar); color: #cbd5e1; display: flex; flex-direction: column;
+      border-right: 1px solid var(--border-color); flex-shrink: 0; font-family: Arial, sans-serif; transition: var(--transition); z-index: 40;
     }
     .sidebar-header { padding: 0.75rem; display: flex; gap: 6px; }
     .tool-list { display: flex; flex-direction: column; gap: 3px; padding: 0.5rem; overflow-y: auto; }
-    .tool-item {
-      display: flex; align-items: center; gap: 9px; padding: 0.55rem 0.75rem;
-      border-radius: 6px; font-size: 0.82rem; cursor: pointer; color: #cbd5e1;
-    }
+    .tool-item { display: flex; align-items: center; gap: 9px; padding: 0.55rem 0.75rem; border-radius: 6px; font-size: 0.82rem; cursor: pointer; color: #cbd5e1; }
     .tool-item:hover { background: rgba(255,255,255,0.08); color: white; }
     .tool-item i { color: var(--brand-gold); width: 16px; text-align: center; }
 
-    .sidebar-backdrop {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 35;
-    }
+    .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 35; }
 
     /* Main Chat View */
-    .chat-view { 
-      flex: 1; 
-      display: flex; 
-      flex-direction: column; 
-      background: var(--bg-primary); 
-      min-height: 0; 
-      overflow: hidden; 
-    }
+    .chat-view { flex: 1; display: flex; flex-direction: column; background: var(--bg-primary); min-height: 0; overflow: hidden; }
     
     .chat-controls-bar {
-      background: var(--bg-surface); 
-      border-bottom: 1px solid var(--border-color); 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      padding: 0.35rem 0.8rem; 
-      flex-wrap: nowrap; 
-      gap: 6px; 
-      font-family: Arial, sans-serif; 
-      flex-shrink: 0;
+      background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; align-items: center;
+      justify-content: space-between; padding: 0.35rem 0.8rem; flex-wrap: nowrap; gap: 6px; font-family: Arial, sans-serif; flex-shrink: 0;
     }
 
-    .level-pills { 
-      display: flex; 
-      gap: 5px; 
-      align-items: center; 
-      overflow-x: auto; 
-      white-space: nowrap; 
-      padding-bottom: 2px; 
-    }
+    .level-pills { display: flex; gap: 5px; align-items: center; overflow-x: auto; white-space: nowrap; padding-bottom: 2px; }
     .level-pills::-webkit-scrollbar { display: none; }
-    .level-btn {
-      border: 1px solid var(--border-color); background: var(--bg-primary);
-      padding: 3px 8px; font-size: 0.72rem; border-radius: 12px; cursor: pointer; font-weight: 600; color: var(--text-muted);
-      flex-shrink: 0;
-    }
+    .level-btn { border: 1px solid var(--border-color); background: var(--bg-primary); padding: 3px 8px; font-size: 0.72rem; border-radius: 12px; cursor: pointer; font-weight: 600; color: var(--text-muted); flex-shrink: 0; }
     .level-btn.active { background: var(--brand-blue); color: var(--brand-gold); border-color: var(--brand-gold); }
     .level-btn.research-mode { border: 1.5px solid #2563eb; color: #1d4ed8; }
     .level-btn.research-mode.active { background: #1d4ed8; color: #ffffff; border-color: #1d4ed8; }
 
-    .badge-select {
-      background: var(--bg-primary); border: 1px solid var(--border-color);
-      color: var(--text-main); font-size: 0.72rem; padding: 0.25rem 0.4rem; border-radius: 6px; font-family: inherit;
-      flex-shrink: 0;
-    }
+    .badge-select { background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.72rem; padding: 0.25rem 0.4rem; border-radius: 6px; font-family: inherit; flex-shrink: 0; }
 
     /* Messages container */
-    .messages-container { 
-      flex: 1; 
-      overflow-y: auto; 
-      padding: 1rem 0.8rem; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 1rem; 
-      min-height: 0; 
-    }
+    .messages-container { flex: 1; overflow-y: auto; padding: 1rem 0.8rem; display: flex; flex-direction: column; gap: 1rem; min-height: 0; }
 
-    .welcome-screen { 
-      max-width: 650px; 
-      margin: auto; 
-      text-align: center; 
-      padding: 0.5rem; 
-    }
-
-    .welcome-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      background: var(--brand-gold-light); color: #925f00; padding: 0.2rem 0.6rem;
-      border-radius: 12px; font-size: 0.72rem; font-weight: 700; margin-bottom: 0.4rem; font-family: Arial, sans-serif;
-    }
+    .welcome-screen { max-width: 650px; margin: auto; text-align: center; padding: 0.5rem; }
+    .welcome-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--brand-gold-light); color: #925f00; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.72rem; font-weight: 700; margin-bottom: 0.4rem; font-family: Arial, sans-serif; }
     .welcome-title { font-family: 'Cinzel', serif; font-size: 1.35rem; color: var(--brand-blue); }
     .welcome-highlight-name { font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 800; color: var(--brand-gold); margin-bottom: 0.2rem; }
     .welcome-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.45; margin-bottom: 0.9rem; }
 
-    .quick-tiles-grid { 
-      display: grid; 
-      grid-template-columns: repeat(2, 1fr); 
-      gap: 6px; 
-      font-family: Arial, sans-serif; 
-    }
-    .quick-tile {
-      background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius);
-      padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 600;
-    }
+    .quick-tiles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; font-family: Arial, sans-serif; }
+    .quick-tile { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 600; }
     .quick-tile:hover { border-color: var(--brand-gold); }
     .quick-tile i { font-size: 1rem; color: var(--brand-gold); }
 
     .message-row { display: flex; gap: 10px; max-width: 950px; width: 100%; margin: 0 auto; }
     .message-row.user { flex-direction: row-reverse; }
-    .avatar {
-      width: 36px; height: 36px; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;
-      border: 1.5px solid var(--brand-gold); background: #fff;
-    }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; border: 1.5px solid var(--brand-gold); background: #fff; }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .avatar.user { background: var(--brand-gold); color: #0b2545; font-size: 0.95rem; }
 
@@ -329,110 +151,71 @@
     .message-row.user .bubble { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
     .bubble p { margin-bottom: 0.7rem; text-align: justify; }
-    .bubble h1, .bubble h2, .bubble h3, .bubble h4 {
-      margin-top: 0.9rem; margin-bottom: 0.4rem; color: var(--brand-blue); font-weight: 700;
-    }
+    .bubble h1, .bubble h2, .bubble h3, .bubble h4 { margin-top: 0.9rem; margin-bottom: 0.4rem; color: var(--brand-blue); font-weight: 700; }
     .message-row.user .bubble h1, .message-row.user .bubble h2, .message-row.user .bubble h3 { color: #fff; }
     
-    .bubble table {
-      width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; font-family: 'Times New Roman', serif;
-      display: block; overflow-x: auto;
-    }
+    .bubble table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; font-family: 'Times New Roman', serif; display: block; overflow-x: auto; }
     .bubble th, .bubble td { border: 1px solid var(--border-color); padding: 6px 9px; text-align: left; }
     .bubble th { background: #f1f5f9; font-weight: 700; }
 
+    /* Action bar under response */
     .bubble-actions {
-      display: flex; gap: 8px; margin-top: 0.7rem; padding-top: 0.4rem;
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 0.7rem; padding-top: 0.4rem;
       border-top: 1px solid var(--border-color); font-size: 0.75rem; font-family: Arial, sans-serif;
     }
     .btn-action {
-      background: none; border: none; color: var(--text-muted); cursor: pointer;
-      display: flex; align-items: center; gap: 4px; padding: 2px 6px; border-radius: 4px;
+      background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 4px; font-weight: 600;
     }
-    .btn-action:hover { background: var(--bg-primary); color: var(--brand-blue); font-weight: 600; }
+    .btn-action:hover { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue); }
 
     /* Bottom Input Dock */
-    .input-dock { 
-      background: var(--bg-surface); 
-      border-top: 1px solid var(--border-color); 
-      padding: 0.5rem 0.8rem; 
-      font-family: Arial, sans-serif; 
-      flex-shrink: 0; 
-      z-index: 30; 
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
-    }
+    .input-dock { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 0.5rem 0.8rem; font-family: Arial, sans-serif; flex-shrink: 0; z-index: 30; box-shadow: 0 -2px 10px rgba(0,0,0,0.03); }
     .dock-container { max-width: 950px; margin: 0 auto; }
     
-    .file-attachment-chip {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: var(--brand-gold-light); color: #855300; border: 1px solid var(--brand-gold);
-      padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; margin-bottom: 4px; font-weight: 600;
-    }
+    .file-attachment-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--brand-gold-light); color: #855300; border: 1px solid var(--brand-gold); padding: 2px 8px; border-radius: 10px; font-size: 0.72rem; margin-bottom: 4px; font-weight: 600; }
     .file-attachment-chip i.fa-times { cursor: pointer; }
 
-    .input-box-wrapper {
-      display: flex; 
-      background: var(--bg-primary); 
-      border: 1.5px solid var(--border-color); 
-      border-radius: 24px; 
-      padding: 4px 10px; 
-      align-items: center; 
-      gap: 6px;
-    }
+    .input-box-wrapper { display: flex; background: var(--bg-primary); border: 1.5px solid var(--border-color); border-radius: 24px; padding: 4px 10px; align-items: center; gap: 6px; }
     .input-box-wrapper:focus-within { border-color: var(--brand-gold); }
-    #chatInput {
-      flex: 1; border: none; background: transparent; font-size: 0.95rem; outline: none; resize: none;
-      font-family: 'Times New Roman', serif; max-height: 100px;
-    }
-    .dock-btn {
-      width: 32px; height: 32px; border-radius: 50%; border: none;
-      background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
+    #chatInput { flex: 1; border: none; background: transparent; font-size: 0.95rem; outline: none; resize: none; font-family: 'Times New Roman', serif; max-height: 100px; }
+    .dock-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .dock-btn:hover { color: var(--brand-gold); }
     .btn-send { background: var(--brand-blue); color: var(--brand-gold); }
 
     /* Modals */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(11, 23, 44, 0.65);
-      backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 0.8rem;
-    }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(11, 23, 44, 0.65); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 100; padding: 0.8rem; }
     .modal-overlay.active { display: flex; }
-    .glossary-modal {
-      background: var(--bg-surface); border-radius: var(--radius); width: 100%; max-width: 960px;
-      height: 85vh; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden;
-    }
-    .glossary-header {
-      background: var(--brand-blue); color: white; padding: 0.75rem 1rem;
-      display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--brand-gold);
-      font-family: Arial, sans-serif;
-    }
+    
+    .glossary-modal { background: var(--bg-surface); border-radius: var(--radius); width: 100%; max-width: 960px; height: 85vh; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
+    .glossary-header { background: var(--brand-blue); color: white; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--brand-gold); font-family: Arial, sans-serif; }
     .glossary-layout { display: flex; flex: 1; overflow: hidden; }
-    .subject-nav-list {
-      width: 280px; background: var(--bg-primary); border-right: 1px solid var(--border-color);
-      overflow-y: auto; padding: 0.4rem; display: flex; flex-direction: column; gap: 3px; font-family: Arial, sans-serif;
-    }
-    .subject-nav-item {
-      padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600;
-      cursor: pointer; color: var(--text-main);
-    }
-    .subject-nav-item:hover, .subject-nav-item.active {
-      background: var(--brand-blue); color: var(--brand-gold);
-    }
+    .subject-nav-list { width: 280px; background: var(--bg-primary); border-right: 1px solid var(--border-color); overflow-y: auto; padding: 0.4rem; display: flex; flex-direction: column; gap: 3px; font-family: Arial, sans-serif; }
+    .subject-nav-item { padding: 0.5rem 0.7rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; color: var(--text-main); }
+    .subject-nav-item:hover, .subject-nav-item.active { background: var(--brand-blue); color: var(--brand-gold); }
     .keyword-display-panel { flex: 1; padding: 0.8rem; overflow-y: auto; background: var(--bg-surface); }
-    .kw-card {
-      background: var(--bg-primary); border-left: 3px solid var(--brand-gold);
-      padding: 0.6rem 0.8rem; border-radius: 6px; margin-bottom: 0.5rem;
-    }
+    .kw-card { background: var(--bg-primary); border-left: 3px solid var(--brand-gold); padding: 0.6rem 0.8rem; border-radius: 6px; margin-bottom: 0.5rem; }
     .kw-title { font-weight: 700; color: var(--brand-blue); font-size: 0.85rem; display: flex; justify-content: space-between; font-family: Arial, sans-serif; }
     .kw-bengali { font-size: 0.8rem; color: #7c2d12; font-weight: 600; margin-top: 2px; }
     .kw-desc { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
 
-    .spinner {
-      width: 16px; height: 16px; border: 2.5px solid rgba(218, 165, 32, 0.3);
-      border-radius: 50%; border-top-color: var(--brand-gold); animation: spin 1s infinite linear;
-    }
+    /* PPT Form Modal Styling */
+    .ppt-modal { background: var(--bg-surface); border-radius: var(--radius); width: 100%; max-width: 500px; padding: 1.2rem; border: 1px solid var(--border-color); font-family: Arial, sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .ppt-form-group { margin-bottom: 0.8rem; display: flex; flex-direction: column; gap: 4px; }
+    .ppt-form-group label { font-size: 0.8rem; font-weight: 700; color: var(--brand-blue); }
+    .ppt-form-group input { padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.88rem; outline: none; }
+    .ppt-form-group input:focus { border-color: var(--brand-gold); }
+    .ppt-submit-btn { background: var(--brand-blue); color: var(--brand-gold); border: none; padding: 0.6rem; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 0.5rem; }
+    .ppt-submit-btn:hover { background: #07172c; }
+
+    .spinner { width: 16px; height: 16px; border: 2.5px solid rgba(218, 165, 32, 0.3); border-radius: 50%; border-top-color: var(--brand-gold); animation: spin 1s infinite linear; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media print {
+      .academy-header, .sidebar, .chat-controls-bar, .input-dock, .bubble-actions { display: none !important; }
+      body, .chat-view, .messages-container { height: auto !important; overflow: visible !important; background: #fff !important; }
+      .bubble { border: none !important; box-shadow: none !important; max-width: 100% !important; padding: 0 !important; }
+    }
 
     @media (max-width: 768px) {
       .menu-toggle-btn { display: block; }
@@ -447,12 +230,7 @@
       .sir-sub-text { display: none; }
       .sir-menu-photo { width: 26px; height: 26px; }
 
-      .sidebar {
-        position: fixed;
-        top: 0; bottom: 0; left: 0; width: 250px;
-        transform: translateX(-100%);
-        box-shadow: 4px 0 16px rgba(0,0,0,0.5);
-      }
+      .sidebar { position: fixed; top: 0; bottom: 0; left: 0; width: 250px; transform: translateX(-100%); box-shadow: 4px 0 16px rgba(0,0,0,0.5); }
       .sidebar.open { transform: translateX(0); }
       .sidebar-backdrop.active { display: block; }
 
@@ -469,9 +247,7 @@
   <!-- HEADER -->
   <header class="academy-header">
     <div class="header-left">
-      <button class="menu-toggle-btn" onclick="toggleMobileSidebar()" title="Toggle Menu">
-        <i class="fas fa-bars"></i>
-      </button>
+      <button class="menu-toggle-btn" onclick="toggleMobileSidebar()" title="Toggle Menu"><i class="fas fa-bars"></i></button>
 
       <div class="brand-wrap" onclick="resetToWelcome()">
         <img src="logo.jpg" class="brand-logo-img" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/2784/2784403.png';" alt="Logo">
@@ -484,11 +260,8 @@
     </div>
 
     <div class="header-right">
-      <button class="header-btn" onclick="openGlossaryModal()">
-        <i class="fas fa-book-atlas"></i> <span>Keywords</span>
-      </button>
+      <button class="header-btn" onclick="openGlossaryModal()"><i class="fas fa-book-atlas"></i> <span>Keywords</span></button>
 
-      <!-- Rohamat Sir Profile Badge -->
       <div class="sir-highlight-badge">
         <img src="Rohamat_one.png" class="sir-menu-photo" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" alt="Rohamat Sir">
         <div>
@@ -615,6 +388,37 @@
     </div>
   </div>
 
+  <!-- PPT FRONT PAGE FORM MODAL -->
+  <div class="modal-overlay" id="pptFormModal">
+    <div class="ppt-modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <h3 style="color:var(--brand-blue);"><i class="fas fa-file-powerpoint" style="color:var(--brand-gold);"></i> Academic PPT Setup</h3>
+        <button style="background:none;border:none;cursor:pointer;font-size:1.1rem;" onclick="closeModal('pptFormModal')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="ppt-form-group">
+        <label>University / Institution Name:</label>
+        <input type="text" id="pptUnivName" placeholder="e.g. University of Calcutta">
+      </div>
+      <div class="ppt-form-group">
+        <label>Presentation Title / Topic:</label>
+        <input type="text" id="pptTopic" placeholder="e.g. Types of Climate and Global Distribution">
+      </div>
+      <div class="ppt-form-group">
+        <label>Presented By (Student Name / Roll):</label>
+        <input type="text" id="pptStudent" placeholder="e.g. Rahul Sharma (Roll No: 12)">
+      </div>
+      <div class="ppt-form-group">
+        <label>Under Guidance Of (Supervisor Name):</label>
+        <input type="text" id="pptGuide" placeholder="e.g. Rohamat Sir, R.M. Vision Academy">
+      </div>
+      <div class="ppt-form-group">
+        <label>University Logo URL (Optional):</label>
+        <input type="text" id="pptLogoUrl" placeholder="https://example.com/logo.png">
+      </div>
+      <button class="ppt-submit-btn" style="width:100%;" onclick="executePptGeneration()"><i class="fas fa-download"></i> Generate PPT Now</button>
+    </div>
+  </div>
+
   <script>
     const GROQ_API_KEY = "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";
 
@@ -623,6 +427,7 @@
     let attachedDocText = null;
     let attachedFileName = '';
     let availableModelsList = [];
+    let currentActiveTargetBubble = null;
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -639,93 +444,10 @@
     const geographyGlossaryData = {
       "Geotectonics and Geomorphology": [
         { term: "Plate Tectonics", bn: "পাত সংস্থান তত্ত্ব", desc: "পৃথিবীর অশ্মমণ্ডলের গতিশীল খণ্ডগুলির পারস্পরিক চলন ও সংঘাত।" },
-        { term: "Isostasy", bn: "ভূ-ভারসাম্য", desc: "ভূত্বক ও গুরুমণ্ডলের মধ্যে উচ্চতা ও ঘনত্বের ভারসাম্যাবস্থা।" },
-        { term: "Peneplain", bn: "সমপ্রায় ভূমি", desc: "ক্ষয়চক্রের অন্তিম পর্যায়ে সৃষ্ট তরঙ্গায়িত সমতল ভূভাগ (Davisian concept)।" },
-        { term: "Pediment", bn: "পেডিমেন্ট", desc: "মরু অঞ্চলের পর্বতের পাদদেশে ক্ষয়জাত মৃদু ঢালযুক্ত শিলাতল।" }
+        { term: "Isostasy", bn: "ভূ-ভারসাম্য", desc: "ভূত্বক ও গুরুমণ্ডলের মধ্যে উচ্চতা ও ঘনত্বের ভারসাম্যাবস্থা।" }
       ],
       "Climatology": [
-        { term: "ITCZ", bn: "আন্তঃক্রান্তীয় অভিসরণ অঞ্চল", desc: "উভয় গোলার্ধের বাণিজ্য বায়ুর মিলনস্থল নিম্নচাপ বলয়।" },
-        { term: "Jet Stream", bn: "জেট বায়ুপ্রবাহ", desc: "ঊর্ধ্ব ট্রপোমণ্ডলে দ্রুতগামী সংকীর্ণ তরঙ্গায়িত পশ্চিমা বায়ুপ্রবাহ।" },
-        { term: "Inversion of Temperature", bn: "উত্তাপের বিপরীত অবস্থা", desc: "উচ্চতা বৃদ্ধির সাথে সাথে বায়ুর উষ্ণতা হ্রাসের বদলে বৃদ্ধি পাওয়া।" },
-        { term: "Albedo", bn: "অ্যালবেডো", desc: "পৃষ্ঠতল কর্তৃক প্রতিফলিত সৌর বিকিরণের অনুপাত।" }
-      ],
-      "Hydrology and Oceanography": [
-        { term: "Hydrograph", bn: "জললেখচিত্র", desc: "সময়ের প্রেক্ষিতে নদীর জলপ্রবাহের হ্রাস-বৃদ্ধির লেখচিত্র।" },
-        { term: "Salinity", bn: "লবণাক্ততা", desc: "১০০০ গ্রাম সমুদ্রজলে দ্রবীভূত খনিজ লবণের পরিমাণ (ppt)।" },
-        { term: "Upwelling", bn: "উর্ধ্বপ্রবাহ", desc: "গভীর সমুদ্রের শীতল ও পুষ্টিসমৃদ্ধ জলের পৃষ্ঠে আগমন।" }
-      ],
-      "Human Geography": [
-        { term: "Environmental Determinism", bn: "পরিবেশীয় নিয়ন্ত্রণবাদ", desc: "মানুষের কার্যকলাপ প্রকৃতি দ্বারা চূড়ান্তভাবে নিয়ন্ত্রিত।" },
-        { term: "Possibilism", bn: "সম্ভবাবাদ", desc: "প্রকৃতি সুযোগ দেয়, মানুষ তার বুদ্ধি দ্বারা পরিবেশ বদলায় (Vidal de la Blache)।" }
-      ],
-      "Cartography and Thematic Mapping": [
-        { term: "Choropleth Map", bn: "বর্ণানুক্রমিক মানচিত্র", desc: "প্রশাসনিক এককে ঘনত্বের ভিত্তিতে রঙের প্রলেপে প্রদর্শিত মানচিত্র।" },
-        { term: "RF", bn: "ভগ্নাংশসূচক অনুপাত", desc: "মানচিত্র দূরত্ব ও ভূদূরত্বের এককহীন অনুপাতিক ভগ্নাংশ।" }
-      ],
-      "Surveying and Levelling": [
-        { term: "Benchmark", bn: "বেঞ্চমার্ক", desc: "সমুদ্রপৃষ্ঠ থেকে নিখুঁত উচ্চতা চিহ্নিত স্থায়ী সার্ভে বিন্দু।" },
-        { term: "Prismatic Compass", bn: "প্রিজমেটিক কম্পাস", desc: "চৌম্বকীয় দিক ও কোণ (Bearing) পরিমাপক যন্ত্র।" }
-      ],
-      "Remote Sensing and GIS": [
-        { term: "NDVI", bn: "উদ্ভিদ সূচক", desc: "লাল ও নিকট-অবলোহিত তরঙ্গের ভিত্তিতে উদ্ভিদের সজীবতা নির্ণয়।" },
-        { term: "FCC", bn: "মিথ্যা রঙ সমন্বয়", desc: "অদৃশ্য তরঙ্গদৈর্ঘ্যকে লাল, সবুজ বা নীল রঙে রূপান্তরিত প্রতিচ্ছবি।" },
-        { term: "Georeferencing", bn: "ভূ-স্থানাঙ্কায়ন", desc: "কাঁচা মানচিত্রকে বাস্তব ভৌগোলিক স্থানাঙ্কে (Lat/Long) স্থাপন।" }
-      ],
-      "Computer Applications and Coding in Geography": [
-        { term: "DEM", bn: "ডিজিটাল উচ্চতা মডেল", desc: "ভূ-পৃষ্ঠের উচ্চতার কম্পিউটার-ভিত্তিক রাস্টার রূপায়ণ।" },
-        { term: "Spatial Query", bn: "স্থানিক কোয়েরি", desc: "GIS ডেটাবেসে অবস্থানভিত্তিক বিশ্লেষণ অনুসন্ধান।" }
-      ],
-      "Statistical Techniques in Geography": [
-        { term: "Nearest Neighbour Analysis", bn: "নিকটতম প্রতিবেশী বিশ্লেষণ", desc: "বিন্দুর বিন্যাস গুচ্ছাকার, সমসত্ত্ব না দৈব তা পরিমাপের পদ্ধতি।" },
-        { term: "Lorenz Curve", bn: "লরেঞ্জ বক্ররেখা", desc: "সম্পদ বা জনসংখ্যার অসম বন্টন পরিমাপের গ্রাফিক্যাল পদ্ধতি।" }
-      ],
-      "Economic and Resource Geography": [
-        { term: "Agglomeration Economies", bn: "পুঞ্জিভবন সুবিধা", desc: "শিল্পসমূহ কাছাকাছি থাকায় পরিবহন ও পরিকাঠামোগত সাশ্রয়।" }
-      ],
-      "Population Geography": [
-        { term: "Demographic Transition", bn: "জনমিতিক রূপান্তর মডেল", desc: "উচ্চ জন্ম-মৃত্যুহার থেকে নিম্ন জন্ম-মৃত্যুহারে পৌঁছানোর পর্যায়ক্রম।" }
-      ],
-      "Settlement and Transport Geography": [
-        { term: "Conurbation", bn: "পৌরপুঞ্জ", desc: "একাধিক নগর বৃদ্ধি পেয়ে পরস্পর সংযুক্ত হওয়া পৌরবলয়।" }
-      ],
-      "Urban Geography": [
-        { term: "Primate City", bn: "প্রধান নগর তত্ত্ব", desc: "দেশের দ্বিতীয় বৃহত্তম নগরের দ্বিগুণের বেশি জনসংখ্যাযুক্ত নগর।" }
-      ],
-      "Agricultural Geography": [
-        { term: "Crop Diversification", bn: "শস্য বহুমুখীকরণ", desc: "একই অঞ্চলে বিভিন্ন ধরণের ফসলের উৎপাদন অনুপাত।" }
-      ],
-      "Agriculture and Rural Development-I": [
-        { term: "Dry Farming", bn: "শুষ্ক কৃষি", desc: "স্বল্প বৃষ্টিপাতযুক্ত অঞ্চলে আর্দ্রতা সংরক্ষণ করে কৃষিকাজ।" }
-      ],
-      "Social, Cultural and Political Geography": [
-        { term: "Heartland Theory", bn: "হার্টল্যান্ড তত্ত্ব", desc: "ইউরেশিয়ার কেন্দ্রীয় ভূভাগ নিয়ন্ত্রণকারী বিশ্ব শাসন করবে।" }
-      ],
-      "Environmental Geography": [
-        { term: "Carrying Capacity", bn: "ধারণ ক্ষমতা", desc: "একটি পরিবেশের সর্বাধিক জীব ধারণ করার সামর্থ্য।" }
-      ],
-      "Hazard and Disaster Management": [
-        { term: "Vulnerability", bn: "ক্ষতিগ্রস্ত হওয়ার সম্ভাবনা", desc: "দুর্যোগের প্রভাবে মানুষের শারীরিক ও পরিবেশগত ক্ষতি হবার প্রবণতা।" }
-      ],
-      "Sustainable Tourism and Regional Development": [
-        { term: "Ecotourism", bn: "পরিবেশবান্ধব পর্যটন", desc: "প্রকৃতির ক্ষতি না করে স্থানীয় সংস্কৃতির সাথে সামঞ্জস্যপূর্ণ পর্যটন।" }
-      ],
-      "Pedological and Petrographical Analysis": [
-        { term: "Soil Horizon", bn: "মৃত্তিকা স্তর", desc: "মৃত্তিকা পরিলেখের অন্তর্গত সমান্তরাল রাসায়নিক ও জৈব বৈশিষ্ট্যযুক্ত স্তর।" }
-      ],
-      "Geography of Pedosphere and Biosphere": [
-        { term: "Biome", bn: "বায়োম", desc: "নির্দিষ্ট জলবায়ু অঞ্চলের অন্তর্গত সুনির্দিষ্ট উদ্ভিদ ও প্রাণী সমষ্টি।" }
-      ],
-      "Regional Geography of India": [
-        { term: "Western Disturbance", bn: "পশ্চিমী ঝঞ্ঝা", desc: "ভূমধ্যসাগর থেকে আগত শীতকালীন বৃষ্টিপাত সৃষ্টিকারী ঘূর্ণবাত।" }
-      ],
-      "Regional Planning and Development": [
-        { term: "Core-Periphery Model", bn: "কেন্দ্র-প্রান্তীয় মডেল", desc: "কেন্দ্রে সম্পদের সঞ্চয় এবং প্রান্তীয় অঞ্চলের শোষণ ও বঞ্চনার তাত্ত্বিক রূপ।" }
-      ],
-      "Field Work Techniques in Geography": [
-        { term: "Transect Walk", bn: "প্রস্থচ্ছেদভিত্তিক সমীক্ষা পদযাত্রা", desc: "এলাকার ভূমি ব্যবহার পর্যবেক্ষণে নির্দিষ্ট সরলরেখা বরাবর হাঁটা।" }
-      ],
-      "Geographical Thought": [
-        { term: "Chorology", bn: "স্থানিক বিজ্ঞান (কোরোলজি)", desc: "স্থানের পার্থক্যের স্থানিক পর্যালোচনা (Hettner & Hartshorne)।" }
+        { term: "ITCZ", bn: "আন্তঃক্রান্তীয় অভিসরণ অঞ্চল", desc: "উভয় গোলার্ধের বাণিজ্য বায়ুর মিলনস্থল নিম্নচাপ বলয়।" }
       ]
     };
 
@@ -734,7 +456,6 @@
       fetchActiveGroqModels();
     });
 
-    // Dynamically fetch live available models from Groq API endpoint
     async function fetchActiveGroqModels() {
       try {
         let res = await fetch("https://api.groq.com/openai/v1/models", {
@@ -805,21 +526,14 @@
           <h1 class="welcome-title">R.M. VISION ACADEMY</h1>
           <div class="welcome-highlight-name">ROHAMAT AI</div>
           <p class="welcome-desc">
-            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files (Excel, CSV, PDF, Word, Image) below.
+            Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files below.
           </p>
-
           <div class="quick-tiles-grid">
             <div class="quick-tile" onclick="insertPrompt('Explain the Types of Climate with their criteria and global distribution.')">
               <i class="fas fa-cloud-sun"></i><span>Types of Climate</span>
             </div>
             <div class="quick-tile" onclick="insertPrompt('Explain the Mechanism of Indian Monsoon with ITCZ.')">
               <i class="fas fa-wind"></i><span>Indian Monsoon</span>
-            </div>
-            <div class="quick-tile" onclick="insertPrompt('Explain Plate Tectonics theory with boundaries.')">
-              <i class="fas fa-layer-group"></i><span>Plate Tectonics</span>
-            </div>
-            <div class="quick-tile" onclick="openGlossaryModal()">
-              <i class="fas fa-book-reader"></i><span>Keywords</span>
             </div>
           </div>
         </div>
@@ -889,55 +603,6 @@
           showAttachmentChip(file.name);
         };
         reader.readAsText(file);
-      } else if (ext === 'xlsx' || ext === 'xls') {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          try {
-            const data = new Uint8Array(evt.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            let sheetText = '';
-            workbook.SheetNames.forEach(sheetName => {
-              sheetText += `Sheet: ${sheetName}\n` + XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]) + '\n\n';
-            });
-            attachedDocText = sheetText;
-            showAttachmentChip(file.name);
-          } catch(err) {
-            alert("Error parsing Excel file.");
-          }
-        };
-        reader.readAsArrayBuffer(file);
-      } else if (ext === 'docx') {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          mammoth.extractRawText({ arrayBuffer: evt.target.result })
-            .then(result => {
-              attachedDocText = result.value;
-              showAttachmentChip(file.name);
-            })
-            .catch(() => alert("Error reading DOCX file."));
-        };
-        reader.readAsArrayBuffer(file);
-      } else if (ext === 'pdf') {
-        const reader = new FileReader();
-        reader.onload = function() {
-          const typedarray = new Uint8Array(this.result);
-          pdfjsLib.getDocument(typedarray).promise.then(pdf => {
-            let maxPages = Math.min(pdf.numPages, 10);
-            let countPromises = [];
-            for (let i = 1; i <= maxPages; i++) {
-              countPromises.push(pdf.getPage(i).then(page => {
-                return page.getTextContent().then(text => {
-                  return text.items.map(s => s.str).join(' ');
-                });
-              }));
-            }
-            Promise.all(countPromises).then(pagesText => {
-              attachedDocText = pagesText.join('\n\n');
-              showAttachmentChip(file.name);
-            });
-          }).catch(() => alert("Error parsing PDF file."));
-        };
-        reader.readAsArrayBuffer(file);
       }
     }
 
@@ -968,7 +633,6 @@
 
       const messagesContainer = document.getElementById('messagesContainer');
 
-      // User Message UI
       const userRow = document.createElement('div');
       userRow.className = 'message-row user';
       let userHtml = `<div class="avatar user"><i class="fas fa-user"></i></div><div class="bubble">`;
@@ -980,11 +644,9 @@
       messagesContainer.appendChild(userRow);
 
       input.value = '';
-      const currentImg = attachedImageBase64;
       const currentDoc = attachedDocText;
       clearAttachment();
 
-      // Bot Message Loading UI
       const botRow = document.createElement('div');
       botRow.className = 'message-row';
       botRow.innerHTML = `
@@ -1000,39 +662,29 @@
 
       const lang = document.getElementById('languageMode').value;
       
-      let fullPrompt = `You are ROHAMAT AI, an expert academic AI tutor and director at R.M. Vision Academy, created under the guidance of Rohamat Sir.\n`;
+      let fullPrompt = `You are ROHAMAT AI, an expert academic AI tutor at R.M. Vision Academy.\n`;
       fullPrompt += `Target Academic Level: ${activeLevel}\n`;
       fullPrompt += `Language Mode: ${lang}\n\n`;
 
       if (currentDoc) {
-        fullPrompt += `[ATTACHED DOCUMENT / SPREADSHEET CONTENT]:\n${currentDoc.substring(0, 8000)}\n\n`;
+        fullPrompt += `[ATTACHED DOCUMENT]:\n${currentDoc.substring(0, 8000)}\n\n`;
       }
 
-      fullPrompt += `[USER QUESTION / PROMPT]:\n${text}`;
+      fullPrompt += `[USER QUESTION]:\n${text}`;
 
-      // Refresh live models if empty
       if (availableModelsList.length === 0) {
         await fetchActiveGroqModels();
       }
 
-      // Priority list of models including newest production IDs
       const preferredModels = [
-        "openai/gpt-oss-120b",
-        "openai/gpt-oss-20b",
         "llama-3.3-70b-versatile",
         "llama-3.1-8b-instant",
-        "qwen/qwen3.8-27b",
+        "openai/gpt-oss-120b",
         "mixtral-8x7b-32768"
       ];
 
-      // Build target list from available models matching preference, or fallback to full available list
       let targetModels = preferredModels.filter(m => availableModelsList.includes(m));
-      if (targetModels.length === 0 && availableModelsList.length > 0) {
-        targetModels = availableModelsList;
-      }
-      if (targetModels.length === 0) {
-        targetModels = preferredModels; // standard fallback
-      }
+      if (targetModels.length === 0) targetModels = availableModelsList.length ? availableModelsList : preferredModels;
 
       let success = false;
       let lastError = "";
@@ -1047,35 +699,32 @@
             },
             body: JSON.stringify({
               model: modelName,
-              messages: [
-                {
-                  role: "system",
-                  content: "You are Rohamat AI, an expert geography and research educator at R.M. Vision Academy."
-                },
-                { role: "user", content: fullPrompt }
-              ],
+              messages: [{ role: "user", content: fullPrompt }],
               temperature: 0.6,
               max_tokens: 3000
             })
           });
 
           let data = await response.json();
-
           if (!response.ok) {
             lastError = data.error?.message || `HTTP Error ${response.status}`;
             continue;
           }
 
-          let aiText = data.choices?.[0]?.message?.content || "Apologies, I could not generate a response. Please try again.";
+          let aiText = data.choices?.[0]?.message?.content || "Apologies, I could not generate a response.";
 
           const bubble = botRow.querySelector('.bubble');
           bubble.innerHTML = aiText;
           renderMathAndMarkdown(bubble);
 
+          // Append Copy, Print, PDF, and PPT Action Buttons
           const actions = document.createElement('div');
           actions.className = 'bubble-actions';
           actions.innerHTML = `
             <button class="btn-action" onclick="copyBubbleText(this)"><i class="fas fa-copy"></i> Copy</button>
+            <button class="btn-action" onclick="printBubbleContent(this)"><i class="fas fa-print"></i> Print</button>
+            <button class="btn-action" onclick="generatePDFFromBubble(this)"><i class="fas fa-file-pdf"></i> Generate PDF</button>
+            <button class="btn-action" onclick="openPptModal(this)"><i class="fas fa-file-powerpoint"></i> Generate PPT</button>
           `;
           bubble.appendChild(actions);
           success = true;
@@ -1101,10 +750,113 @@
       if (actions) actions.remove();
       navigator.clipboard.writeText(clone.innerText).then(() => {
         btn.innerHTML = `<i class="fas fa-check"></i> Copied!`;
-        setTimeout(() => {
-          btn.innerHTML = `<i class="fas fa-copy"></i> Copy`;
-        }, 2000);
+        setTimeout(() => { btn.innerHTML = `<i class="fas fa-copy"></i> Copy`; }, 2000);
       });
+    }
+
+    function printBubbleContent(btn) {
+      window.print();
+    }
+
+    function generatePDFFromBubble(btn) {
+      const bubble = btn.closest('.bubble');
+      const clone = bubble.cloneNode(true);
+      const actions = clone.querySelector('.bubble-actions');
+      if (actions) actions.remove();
+
+      const opt = {
+        margin:       0.5,
+        filename:     'Academic_Notes_Rohamat_AI.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(clone).save();
+    }
+
+    // PPT Generation Logic
+    function openPptModal(btn) {
+      currentActiveTargetBubble = btn.closest('.bubble');
+      openModal('pptFormModal');
+    }
+
+    function executePptGeneration() {
+      if (!currentActiveTargetBubble) return;
+
+      const univName = document.getElementById('pptUnivName').value || 'R.M. Vision Academy';
+      const topic = document.getElementById('pptTopic').value || 'Academic Geography Presentation';
+      const student = document.getElementById('pptStudent').value || 'Student Presentation';
+      const guide = document.getElementById('pptGuide').value || 'Rohamat Sir (Director)';
+      const logoUrl = document.getElementById('pptLogoUrl').value;
+
+      closeModal('pptFormModal');
+
+      let pptx = new PptxGenJS();
+      pptx.layout = 'LAYOUT_16x9';
+
+      // 1. TITLE / FRONT SLIDE
+      let titleSlide = pptx.addSlide();
+      titleSlide.background = { color: "0B2545" }; // Brand Blue
+
+      if (logoUrl) {
+        try { titleSlide.addImage({ url: logoUrl, x: 0.8, y: 0.5, w: 1.2, h: 1.2 }); } catch(e){}
+      }
+
+      titleSlide.addText(univName.toUpperCase(), {
+        x: 0.8, y: 1.2, w: '85%', fontFace: 'Georgia', fontSize: 22, color: 'DAA520', bold: true
+      });
+
+      titleSlide.addText(topic, {
+        x: 0.8, y: 2.2, w: '85%', fontFace: 'Calibri', fontSize: 28, color: 'FFFFFF', bold: true
+      });
+
+      titleSlide.addText(`Presented By:\n${student}`, {
+        x: 0.8, y: 4.2, w: '45%', fontFace: 'Calibri', fontSize: 14, color: 'CBD5E1'
+      });
+
+      titleSlide.addText(`Under Guidance Of:\n${guide}`, {
+        x: 5.2, y: 4.2, w: '45%', fontFace: 'Calibri', fontSize: 14, color: 'CBD5E1'
+      });
+
+      // 2. PARSE CONTENT SLIDES FROM BUBBLE
+      const clone = currentActiveTargetBubble.cloneNode(true);
+      const actions = clone.querySelector('.bubble-actions');
+      if (actions) actions.remove();
+
+      const headers = clone.querySelectorAll('h1, h2, h3');
+
+      if (headers.length > 0) {
+        headers.forEach(h => {
+          let slide = pptx.addSlide();
+          slide.background = { color: "F8FAFC" };
+
+          slide.addText(h.innerText, {
+            x: 0.6, y: 0.5, w: '90%', fontFace: 'Georgia', fontSize: 22, color: '0B2545', bold: true
+          });
+
+          let bodyText = "";
+          let nextElem = h.nextElementSibling;
+          while (nextElem && !['H1', 'H2', 'H3'].includes(nextElem.tagName)) {
+            bodyText += nextElem.innerText + "\n\n";
+            nextElem = nextElem.nextElementSibling;
+          }
+
+          if (bodyText.trim()) {
+            slide.addText(bodyText.trim(), {
+              x: 0.6, y: 1.5, w: '90%', h: 4.5, fontFace: 'Calibri', fontSize: 14, color: '111827', align: 'left', valign: 'top'
+            });
+          }
+        });
+      } else {
+        // Fallback for simple single content block
+        let slide = pptx.addSlide();
+        slide.background = { color: "F8FAFC" };
+        slide.addText(topic, { x: 0.6, y: 0.5, w: '90%', fontFace: 'Georgia', fontSize: 20, color: '0B2545', bold: true });
+        slide.addText(clone.innerText.substring(0, 1200), { x: 0.6, y: 1.5, w: '90%', h: 4.5, fontFace: 'Calibri', fontSize: 13, color: '111827' });
+      }
+
+      pptx.writeFile({ fileName: `${topic.replace(/[^a-zA-Z0-9]/g, '_')}.pptx` });
     }
   </script>
 </body>
