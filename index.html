@@ -616,8 +616,8 @@
   </div>
 
   <script>
-    // Stable Free Production Model on Groq
-    const GROQ_API_KEY = "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";
+    // Replace with a valid Groq API Key generated from https://console.groq.com/keys
+    const GROQ_API_KEY = "YOUR_VALID_GROQ_API_KEY_HERE";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
@@ -983,7 +983,6 @@
       messagesContainer.appendChild(botRow);
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-      // Construct Prompt according to user's question dynamically without hardcoded static structure
       const lang = document.getElementById('languageMode').value;
       
       let fullPrompt = `You are ROHAMAT AI, an expert academic AI tutor and director at R.M. Vision Academy, created under the guidance of Rohamat Sir.\n`;
@@ -1024,7 +1023,12 @@
         });
 
         let data = await response.json();
-        let aiText = data.choices && data.choices[0] ? data.choices[0].message.content : "Apologies, I could not generate a response. Please try again.";
+
+        if (!response.ok) {
+          throw new Error(data.error?.message || `HTTP Error ${response.status}`);
+        }
+
+        let aiText = data.choices?.[0]?.message?.content || "No content generated.";
 
         chatHistory.push({ role: "assistant", content: aiText });
 
@@ -1041,7 +1045,7 @@
 
       } catch (err) {
         const bubble = botRow.querySelector('.bubble');
-        bubble.innerHTML = `<p style="color:#dc2626;">Error connecting to Rohamat AI service. Please check your network or try again.</p>`;
+        bubble.innerHTML = `<p style="color:#dc2626;"><strong>API Error:</strong> ${err.message}</p>`;
       }
 
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
