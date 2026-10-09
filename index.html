@@ -616,13 +616,13 @@
   </div>
 
   <script>
-    // Groq API Key
     const GROQ_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
+    let detectedModel = null;
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -731,7 +731,41 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       initGlossaryNav();
+      detectAvailableModel();
     });
+
+    // Auto-detect valid model from Groq API key directly
+    async function detectAvailableModel() {
+      try {
+        let res = await fetch("https://api.groq.com/openai/v1/models", {
+          headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
+        });
+        if (res.ok) {
+          let data = await res.json();
+          let availableIds = (data.data || []).map(m => m.id);
+          // Prefer high-capacity models, fallback to standard ones dynamically
+          const preference = [
+            "llama-3.3-70b-versatile",
+            "llama3-70b-8192",
+            "llama-3.1-70b-versatile",
+            "mixtral-8x7b-32768",
+            "llama3-8b-8192",
+            "gemma2-9b-it"
+          ];
+          for (let p of preference) {
+            if (availableIds.includes(p)) {
+              detectedModel = p;
+              break;
+            }
+          }
+          if (!detectedModel && availableIds.length > 0) {
+            detectedModel = availableIds[0];
+          }
+        }
+      } catch (e) {
+        console.warn("Auto-detect model failed, using default sequence.", e);
+      }
+    }
 
     function setLevel(lvl, btn) {
       activeLevel = lvl;
@@ -994,49 +1028,70 @@
 
       fullPrompt += `[USER QUESTION / PROMPT]:\n${text}`;
 
-      try {
-        let response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${GROQ_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: "llama-3.1-8b-instant",
-            messages: [
-              {
-                role: "system",
-                content: "You are Rohamat AI, an expert geography and research educator at R.M. Vision Academy."
-              },
-              { role: "user", content: fullPrompt }
-            ],
-            temperature: 0.6,
-            max_tokens: 3000
-          })
-        });
+      // Fallback order if auto-detection hasn't populated
+      const fallbackModels = [
+        detectedModel,
+        "llama-3.3-70b-versatile",
+        "llama3-70b-8192",
+        "mixtral-8x7b-32768",
+        "llama3-8b-8192"
+      ].filter(Boolean);
 
-        let data = await response.json();
+      let success = false;
+      let lastError = "";
 
-        if (!response.ok) {
-          throw new Error(data.error?.message || `HTTP Error ${response.status}`);
+      for (let modelName of fallbackModels) {
+        try {
+          let response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${GROQ_API_KEY}`
+            },
+            body: JSON.stringify({
+              model: modelName,
+              messages: [
+                {
+                  role: "system",
+                  content: "You are Rohamat AI, an expert geography and research educator at R.M. Vision Academy."
+                },
+                { role: "user", content: fullPrompt }
+              ],
+              temperature: 0.6,
+              max_tokens: 3000
+            })
+          });
+
+          let data = await response.json();
+
+          if (!response.ok) {
+            lastError = data.error?.message || `HTTP Error ${response.status}`;
+            continue; // Try next model in loop
+          }
+
+          let aiText = data.choices?.[0]?.message?.content || "Apologies, I could not generate a response. Please try again.";
+
+          const bubble = botRow.querySelector('.bubble');
+          bubble.innerHTML = aiText;
+          renderMathAndMarkdown(bubble);
+
+          const actions = document.createElement('div');
+          actions.className = 'bubble-actions';
+          actions.innerHTML = `
+            <button class="btn-action" onclick="copyBubbleText(this)"><i class="fas fa-copy"></i> Copy</button>
+          `;
+          bubble.appendChild(actions);
+          success = true;
+          break; // Stop loop on success
+
+        } catch (err) {
+          lastError = err.message;
         }
+      }
 
-        let aiText = data.choices && data.choices[0] ? data.choices[0].message.content : "Apologies, I could not generate a response. Please try again.";
-
+      if (!success) {
         const bubble = botRow.querySelector('.bubble');
-        bubble.innerHTML = aiText;
-        renderMathAndMarkdown(bubble);
-
-        const actions = document.createElement('div');
-        actions.className = 'bubble-actions';
-        actions.innerHTML = `
-          <button class="btn-action" onclick="copyBubbleText(this)"><i class="fas fa-copy"></i> Copy</button>
-        `;
-        bubble.appendChild(actions);
-
-      } catch (err) {
-        const bubble = botRow.querySelector('.bubble');
-        bubble.innerHTML = `<p style="color:#dc2626;"><strong>API Error:</strong> ${err.message}</p>`;
+        bubble.innerHTML = `<p style="color:#dc2626;"><strong>API Error:</strong> ${lastError}</p>`;
       }
 
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
