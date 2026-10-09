@@ -616,14 +616,13 @@
   </div>
 
   <script>
-    // Groq API Key
+    // Stable API Key
     const GROQ_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
-    let chatHistory = [];
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -783,7 +782,6 @@
     }
 
     function startNewChat() {
-      chatHistory = [];
       const container = document.getElementById('messagesContainer');
       container.innerHTML = `
         <div class="welcome-screen" id="welcomeScreen">
@@ -793,6 +791,7 @@
           <p class="welcome-desc">
             Direct academic notes, data interpretation, and research evaluation. Ask questions or upload files (Excel, CSV, PDF, Word, Image) below.
           </p>
+
           <div class="quick-tiles-grid">
             <div class="quick-tile" onclick="insertPrompt('Explain the Types of Climate with their criteria and global distribution.')">
               <i class="fas fa-cloud-sun"></i><span>Types of Climate</span>
@@ -988,18 +987,12 @@
       let fullPrompt = `You are ROHAMAT AI, an expert academic AI tutor and director at R.M. Vision Academy, created under the guidance of Rohamat Sir.\n`;
       fullPrompt += `Target Academic Level: ${activeLevel}\n`;
       fullPrompt += `Language Mode: ${lang}\n\n`;
-      fullPrompt += `IMPORTANT INSTRUCTIONS:\n`;
-      fullPrompt += `1. Adapt your output format dynamically based specifically on what the user is asking. DO NOT force every answer into a fixed pre-defined rigid template or identical section headers.\n`;
-      fullPrompt += `2. If the user asks for a simple definition, give a direct, clear answer. If they ask for a detailed explanation, comparison, calculation, or syllabus topic, structure it naturally with headings, bullet points, LaTeX equations, or tables as needed.\n`;
-      fullPrompt += `3. Always maintain high academic rigor appropriate for ${activeLevel}.\n\n`;
 
       if (currentDoc) {
         fullPrompt += `[ATTACHED DOCUMENT / SPREADSHEET CONTENT]:\n${currentDoc.substring(0, 8000)}\n\n`;
       }
 
       fullPrompt += `[USER QUESTION / PROMPT]:\n${text}`;
-
-      chatHistory.push({ role: "user", content: fullPrompt });
 
       try {
         let response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -1013,9 +1006,9 @@
             messages: [
               {
                 role: "system",
-                content: "You are Rohamat AI, an expert, adaptable, and academically rigorous geography and research educator at R.M. Vision Academy. Answer naturally, tailoring the tone, formatting, and structural depth directly to the user's explicit question and requested academic level."
+                content: "You are Rohamat AI, an expert geography and research educator at R.M. Vision Academy."
               },
-              ...chatHistory
+              { role: "user", content: fullPrompt }
             ],
             temperature: 0.6,
             max_tokens: 3000
@@ -1023,14 +1016,7 @@
         });
 
         let data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error?.message || `HTTP Error ${response.status}`);
-        }
-
-        let aiText = data.choices?.[0]?.message?.content || "No content generated.";
-
-        chatHistory.push({ role: "assistant", content: aiText });
+        let aiText = data.choices && data.choices[0] ? data.choices[0].message.content : "Apologies, I could not generate a response. Please try again.";
 
         const bubble = botRow.querySelector('.bubble');
         bubble.innerHTML = aiText;
@@ -1045,7 +1031,7 @@
 
       } catch (err) {
         const bubble = botRow.querySelector('.bubble');
-        bubble.innerHTML = `<p style="color:#dc2626;"><strong>API Error:</strong> ${err.message}</p>`;
+        bubble.innerHTML = `<p style="color:#dc2626;">Error connecting to Rohamat AI service. Please check your network or try again.</p>`;
       }
 
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
