@@ -616,7 +616,7 @@
   </div>
 
   <script>
-    // Stable API Key
+    // Groq API Key
     const GROQ_API_KEY = "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";
 
     let activeLevel = 'UG/PG Level';
@@ -1002,7 +1002,7 @@
             "Authorization": `Bearer ${GROQ_API_KEY}`
           },
           body: JSON.stringify({
-            model: "llama-3.3-70b-versatile",
+            model: "llama-3.1-8b-instant",
             messages: [
               {
                 role: "system",
@@ -1016,6 +1016,11 @@
         });
 
         let data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error?.message || `HTTP Error ${response.status}`);
+        }
+
         let aiText = data.choices && data.choices[0] ? data.choices[0].message.content : "Apologies, I could not generate a response. Please try again.";
 
         const bubble = botRow.querySelector('.bubble');
@@ -1031,7 +1036,7 @@
 
       } catch (err) {
         const bubble = botRow.querySelector('.bubble');
-        bubble.innerHTML = `<p style="color:#dc2626;">Error connecting to Rohamat AI service. Please check your network or try again.</p>`;
+        bubble.innerHTML = `<p style="color:#dc2626;"><strong>API Error:</strong> ${err.message}</p>`;
       }
 
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
