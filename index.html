@@ -622,7 +622,7 @@
     let attachedImageBase64 = null;
     let attachedDocText = null;
     let attachedFileName = '';
-    let detectedModel = null;
+    let availableModelsList = [];
 
     function toggleMobileSidebar() {
       const sidebar = document.getElementById('appSidebar');
@@ -731,39 +731,21 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       initGlossaryNav();
-      detectAvailableModel();
+      fetchActiveGroqModels();
     });
 
-    // Auto-detect valid model from Groq API key directly
-    async function detectAvailableModel() {
+    // Dynamically fetch live available models from Groq API endpoint
+    async function fetchActiveGroqModels() {
       try {
         let res = await fetch("https://api.groq.com/openai/v1/models", {
           headers: { "Authorization": `Bearer ${GROQ_API_KEY}` }
         });
         if (res.ok) {
           let data = await res.json();
-          let availableIds = (data.data || []).map(m => m.id);
-          // Prefer high-capacity models, fallback to standard ones dynamically
-          const preference = [
-            "llama-3.3-70b-versatile",
-            "llama3-70b-8192",
-            "llama-3.1-70b-versatile",
-            "mixtral-8x7b-32768",
-            "llama3-8b-8192",
-            "gemma2-9b-it"
-          ];
-          for (let p of preference) {
-            if (availableIds.includes(p)) {
-              detectedModel = p;
-              break;
-            }
-          }
-          if (!detectedModel && availableIds.length > 0) {
-            detectedModel = availableIds[0];
-          }
+          availableModelsList = (data.data || []).map(m => m.id);
         }
       } catch (e) {
-        console.warn("Auto-detect model failed, using default sequence.", e);
+        console.warn("Could not query live Groq models endpoint.", e);
       }
     }
 
@@ -1028,19 +1010,34 @@
 
       fullPrompt += `[USER QUESTION / PROMPT]:\n${text}`;
 
-      // Fallback order if auto-detection hasn't populated
-      const fallbackModels = [
-        detectedModel,
+      // Refresh live models if empty
+      if (availableModelsList.length === 0) {
+        await fetchActiveGroqModels();
+      }
+
+      // Priority list of models including newest production IDs
+      const preferredModels = [
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
         "llama-3.3-70b-versatile",
-        "llama3-70b-8192",
-        "mixtral-8x7b-32768",
-        "llama3-8b-8192"
-      ].filter(Boolean);
+        "llama-3.1-8b-instant",
+        "qwen/qwen3.8-27b",
+        "mixtral-8x7b-32768"
+      ];
+
+      // Build target list from available models matching preference, or fallback to full available list
+      let targetModels = preferredModels.filter(m => availableModelsList.includes(m));
+      if (targetModels.length === 0 && availableModelsList.length > 0) {
+        targetModels = availableModelsList;
+      }
+      if (targetModels.length === 0) {
+        targetModels = preferredModels; // standard fallback
+      }
 
       let success = false;
       let lastError = "";
 
-      for (let modelName of fallbackModels) {
+      for (let modelName of targetModels) {
         try {
           let response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
@@ -1066,7 +1063,7 @@
 
           if (!response.ok) {
             lastError = data.error?.message || `HTTP Error ${response.status}`;
-            continue; // Try next model in loop
+            continue;
           }
 
           let aiText = data.choices?.[0]?.message?.content || "Apologies, I could not generate a response. Please try again.";
@@ -1082,7 +1079,7 @@
           `;
           bubble.appendChild(actions);
           success = true;
-          break; // Stop loop on success
+          break;
 
         } catch (err) {
           lastError = err.message;
